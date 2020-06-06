@@ -1,62 +1,45 @@
+:root
+{
+  --height-top: 15%;
+  --height-middle: 80%;
+  --height-bottom: 5%;
+}
+
 .App {
   text-align: center;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+html, body, #root, .App{
+  height: 100%;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 footer{
-  border: 2px solid teal;
+  /*border: 2px solid teal;*/
+  background-color: gray;
+  height: var(--height-bottom);
 }
 
 #resources-div{
-  border: 2px solid teal;
+  /*border: 2px solid teal;*/
+  background-color: gray;
+  height: var(--height-top);
 }
 
 #game-informations-div{
-  border: 2px solid gray;
+  /*border: 2px solid gray;*/
+  background-color: lightgray;
   float: right;
+  height: var(--height-middle);
   width: 20%;
 }
 
 #game-text-div{
-  border: 2px solid black;
+  /*border: 2px solid black;*/
+  height: var(--height-middle);
 }
 
 #tabs-div{
-  border: 2px solid gray;
+  /*border: 2px solid gray;*/
+  background-color: lightgray;
   float: left;
+  height: var(--height-middle);
   width: 20%;
 }
