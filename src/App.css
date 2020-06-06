@@ -36,3 +36,27 @@
     transform: rotate(360deg);
   }
 }
+
+footer{
+  border: 2px solid teal;
+}
+
+#resources-div{
+  border: 2px solid teal;
+}
+
+#game-informations-div{
+  border: 2px solid gray;
+  float: right;
+  width: 20%;
+}
+
+#game-text-div{
+  border: 2px solid black;
+}
+
+#tabs-div{
+  border: 2px solid gray;
+  float: left;
+  width: 20%;
+}
