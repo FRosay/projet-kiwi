@@ -3,14 +3,17 @@
   --height-top: 15%;
   --height-middle: 80%;
   --height-bottom: 5%;
+  --color-hightlight: orange;
 }
 
 .App {
   text-align: center;
 }
+
 html, body, #root, .App{
   height: 100%;
 }
+
 footer{
   /*border: 2px solid teal;*/
   background-color: gray;
@@ -28,12 +31,14 @@ footer{
   background-color: lightgray;
   float: right;
   height: var(--height-middle);
+  overflow: auto;
   width: 20%;
 }
 
 #game-text-div{
   /*border: 2px solid black;*/
   height: var(--height-middle);
+  overflow: auto;
 }
 
 #tabs-div{
@@ -42,4 +47,8 @@ footer{
   float: left;
   height: var(--height-middle);
   width: 20%;
+}
+
+#tabs-div button{
+  width: 100%;
 }
