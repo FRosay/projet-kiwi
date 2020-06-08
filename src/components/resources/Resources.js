@@ -17,7 +17,7 @@ class Resources extends React.Component {
 
   render () {
     return (
-        <div>
+        <div id="resources-div">
             <p>Nom : { this.state.name }</p>
             <p>Type de la ressource : { this.state.type }</p>
             <p>Quantité acquise : { this.state.quantity }</p>
