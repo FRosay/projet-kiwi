@@ -12,7 +12,7 @@ class Resource extends React.Component {
       quantity: this.props.quantity,
       isUnique: this.props.isUnique,
       shortVersion: this.props.shortVersion,
-      imagePath: '',
+      imagePath: '../images/'+this.props.name+'.png',
     }
 
   }
@@ -21,7 +21,7 @@ class Resource extends React.Component {
     if (this.state.shortVersion===true) {
       return (
         <div id="resource-div">
-          { this.state.quantity } <img src= { this.state.imagePath }></img>
+          { this.state.quantity } <img alt={ this.state.name } src= { this.state.imagePath }></img>
         </div>
       )
     } else {

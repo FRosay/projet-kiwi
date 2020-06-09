@@ -11,8 +11,8 @@ function App() {
     <div className="App">
       <ResourcesView />
       <Tabs />
-      <GameInformations />
       <GameText />
+      <GameInformations />
       <footer>Footer de merde</footer>
     </div>
   );

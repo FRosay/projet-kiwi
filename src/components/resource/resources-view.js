@@ -15,7 +15,7 @@ class ResourcesView extends React.Component {
 
   render () {
     return (
-        <div id="resources-div">
+        <div id="resources-view-div">
             {this.state.resources.map((resource, index) => {
                 return (
                     <Resource key= { index } name= { resource.name } type= { resource.type } quantity= { resource.quantity } isUnique= { resource.isUnique} />
