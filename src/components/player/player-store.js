@@ -7,11 +7,11 @@ const playerReducer = (state, action) => {
     switch(action.type) {
         case 'increment':
             return {
-                preoccupationPoints: state.preoccupationPoints + 1
+                preoccupationPoints: state.preoccupationPoints + action.range
             }
         case 'decrement':
             return {
-                preoccupationPoints: state.preoccupationPoints - 1
+                preoccupationPoints: state.preoccupationPoints - action.range
             }
             case 'reset':
             return {
@@ -24,7 +24,7 @@ const playerReducer = (state, action) => {
 
 export const PlayerProvider = ({ children }) => {
     const [state, dispatch] = useReducer(playerReducer, initialState);
-    
+
     return (
         <PlayerContext.Provider value= {{ state, dispatch }}>
             { children }
