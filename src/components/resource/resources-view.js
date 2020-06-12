@@ -1,30 +1,26 @@
 import React from 'react';
+import SingleResource from './single-resource'
+import { usePlayerStore } from '../player/player-store.js';
 
-import Resource from './Resource'
 
+function ResourcesView() {
 
-class ResourcesView extends React.Component {
-
-  constructor(props) {
-
-    super(props)
-    this.state = {
-      resources: []
-    }
-  }
-
-  render () {
-    return (
-        <div id="resources-view-div">
-            {this.state.resources.map((resource, index) => {
-                return (
-                    <Resource key= { index } name= { resource.name } type= { resource.type } quantity= { resource.quantity } isUnique= { resource.isUnique} />
-                )
-            })}
-            <br/>
-        </div>
-    )
-  }
+  const { state, dispatch } = usePlayerStore();
+  
+  return (
+      <div id="resources-view-div">
+          { state.resources.map((resource, index) => {
+              return (
+                <div>
+                  <button onClick={() => dispatch({ resource: resource.name, type: 'decrement' })}>-</button>
+                  <SingleResource key= { index } name= { resource.name } type= { resource.type } quantity= { resource.quantity } isUnique= { resource.isUnique} shortVersion= { true } />
+                  <button onClick={() => dispatch({ resource: resource.name, type: 'increment' })}>+</button>
+                </div>
+              )
+          })}
+          <br/>
+      </div>
+  )
 }
-
-export default ResourcesView;
+ 
+export default ResourcesView

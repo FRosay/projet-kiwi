@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-class Resource extends React.Component {
+class SingleResource extends React.Component {
 
   constructor(props) {
 
@@ -12,7 +12,7 @@ class Resource extends React.Component {
       quantity: this.props.quantity,
       isUnique: this.props.isUnique,
       shortVersion: this.props.shortVersion,
-      imagePath: '../images/'+this.props.name+'.png',
+      imagePath: '/images/'+this.props.name+'.png',
     }
 
   }
@@ -38,4 +38,4 @@ class Resource extends React.Component {
   }
 }
 
-export default Resource;
+export default SingleResource;
