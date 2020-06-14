@@ -11,11 +11,7 @@ function ResourcesView() {
       <div id="resources-view-div">
           { state.resources.map((resource, index) => {
               return (
-                <div>
-                  <button onClick={() => dispatch({ resource: resource.name, type: 'decrement' })}>-</button>
-                  <SingleResource key= { index } name= { resource.name } type= { resource.type } quantity= { resource.quantity } isUnique= { resource.isUnique} shortVersion= { true } />
-                  <button onClick={() => dispatch({ resource: resource.name, type: 'increment' })}>+</button>
-                </div>
+                <SingleResource key= { index } name= { resource.name } type= { resource.type } quantity= { resource.quantity } isUnique= { resource.isUnique} shortVersion= { true } dispatch= { dispatch } />
               )
           })}
           <br/>

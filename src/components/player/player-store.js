@@ -5,6 +5,7 @@ const initialState = { preoccupationPoints: 1, resources: [{ name: 'bois', type:
 
 const playerReducer = (state, action) => {
     let newResources = state.resources
+    console.log(newResources[0])
     if (action.resource === 'bois') {
         switch(action.type) {
             case 'increment':
