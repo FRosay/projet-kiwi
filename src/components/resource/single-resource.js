@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 
 function SingleResource(props) {
-
+console.log("goin")
   const [resource, setResource] = useState({  name: props.name,
                                               type: props.type,
                                               quantity: props.quantity,
@@ -14,9 +14,7 @@ function SingleResource(props) {
     //console.log(props.quantity)
     return (
       <div id="resource-div">
-        {/*}<button onClick={() => props.dispatch({ resource: resource.name, type: 'decrement' })}>-</button>*/}
         { resource.quantity } <img alt={ resource.name } src= { resource.imagePath }></img>
-        {/*}<button onClick={() => props.dispatch({ resource: resource.name, type: 'increment' })}>+</button>*/}
       </div>
     )
   } else {

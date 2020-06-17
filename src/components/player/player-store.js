@@ -67,6 +67,7 @@ const playerReducer = (state, action) => {
                 throw new Error(`Unhandled action type: ${action.type}`);
         }
     }*/
+    //console.log("[ - - - - - playerReducer - - - - - ]")
     let newPreoccupationPoints = state.preoccupationPoints
     let newPreoccupationPointsMax = state.preoccupationPointsMax
     let newResources = state.resources

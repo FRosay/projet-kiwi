@@ -3,7 +3,6 @@ import { usePlayerStore } from '../player/player-store.js';
 
 
 function GameText() {
-
   const { state, dispatch } = usePlayerStore();
   const [range, setRange] = useState(1);
 
@@ -42,6 +41,7 @@ function GameText() {
       <div id='game-text-div'>
         <h1>Triche</h1>
           <ul>
+            <li>{ state.preoccupationPoints } PP : <button onClick={() => dispatch({ type: 'addPoints', range:1}) }>+</button><button onClick={() => dispatch({ type: 'removePoints', range:1}) }>-</button></li>
             <li>{ state.resources[0].quantity } Bois : <button onClick={() => dispatch({ resource:'bois', type: 'increment', range:1}) }>+</button><button onClick={() => dispatch({ resource:'bois', type: 'decrement', range:1}) }>-</button></li>
             <li>{ state.resources[1].quantity } Pierre : <button onClick={() => dispatch({ resource:'pierre', type: 'increment', range:1}) }>+</button><button onClick={() => dispatch({ resource:'pierre', type: 'decrement', range:1}) }>-</button></li>
           </ul>
