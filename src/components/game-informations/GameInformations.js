@@ -16,7 +16,7 @@ class GameInformations extends React.Component {
 
   render () {
     return (
-        <div id="game-informations-div">
+        <div id='game-informations-div'>
             <h1>Header : { this.state.header }</h1>
             <p>Text : { this.state.text }</p>
             <p><button>{ this.state.button }</button></p>

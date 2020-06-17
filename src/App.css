@@ -1,18 +1,19 @@
 :root
 {
   --height-top: 15%;
-  --height-middle: 80%;
+  --height-middle: 75%;
   --height-bottom: 5%;
   --color-hightlight: orange;
 }
 
 .App {
-  text-align: center;
+  background-color: black;
   display: flex;
+  align-content: space-between;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
-  align-content: space-between;
+  text-align: center;  
 }
 
 html, body, #root, .App{
@@ -42,9 +43,10 @@ footer{
 }
 
 #game-text-div{
+  background-color: white;
   height: var(--height-middle);
   overflow: auto; /*scroll*/
-  width: 60%;
+  width: 58%;
 }
 
 #tabs-div{

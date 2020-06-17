@@ -1,39 +1,30 @@
 import React from 'react';
+import { usePlayerStore } from '../player/player-store.js';
 import './Tabs.css';
 
-const NAMES_TABS = ["Rapport", "Exploration", "Diplomatie", "Technologie", "Politique"]
+const NAMES_TABS = ['Rapport', 'Exploration', 'Diplomatie', 'Technologie', 'Politique', 'Cheat', 'Brouillon']
 
-class Tabs extends React.Component {
+function Tabs() {
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      isDisplayed: [false, false, false, false, false],
-      isClickable: [true, true, false, true, true]
-    }
-  }
+  const { state, dispatch } = usePlayerStore();
 
-  buttonsRender(){
+  let isDisplayed = [false, false, false, false, false, false, false]
+  isDisplayed[state.witchTab] = true
+  let isClickable = [true, true, false, true, true, true, true]
+
+  function buttonsRender(){
     let buttons = []
     for (let i = 0; i < NAMES_TABS.length; i++) {
-      buttons.push(<button className={ this.state.isDisplayed[i] ? "is-displayed" : ""} disabled={ this.state.isClickable[i] ? false : true }  onClick={ () => this.handleClick(i) } key={i}>{ NAMES_TABS[i] }</button>);
+      buttons.push(<button className={ isDisplayed[i] ? 'is-displayed' : ''} disabled={ isClickable[i] ? false : true }  onClick={ () => dispatch({ tab: i }) } key={i}>{ NAMES_TABS[i] }</button>);
     }
     return buttons
   }
 
-  handleClick(witchMenu){
-    let rIsDisplayed = [false, false, false, false, false]
-    rIsDisplayed[witchMenu]=true
-    this.setState({isDisplayed: rIsDisplayed})
-  }
-
-  render() {
-    return (
-      <div id="tabs-div">
-        { this.buttonsRender() }
-      </div>
-    )
-  }
+  return (
+    <div id='tabs-div'>
+      { buttonsRender() }
+    </div>
+  )
 }
 
 export default Tabs;
