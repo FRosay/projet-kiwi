@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 
 function SingleResource(props) {
-console.log("goin")
   const [resource, setResource] = useState({  name: props.name,
                                               type: props.type,
                                               quantity: props.quantity,
