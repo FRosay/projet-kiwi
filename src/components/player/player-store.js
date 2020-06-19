@@ -1,13 +1,17 @@
 import React, { createContext, useContext, useReducer } from 'react';
 
 const PlayerContext = createContext();
-const INITIAL_STATE = { preoccupationPoints: 1, preoccupationPointsMax: 5, resources: [{ name: 'bois', type: 'basic', quantity: 1, isUnique: false }, { name: 'pierre', type: 'basic', quantity: 0, isUnique: false }], witchTab: 6 };
+const INITIAL_STATE = { preoccupationPoints: 1, preoccupationPointsMax: 5, resources: [{ name: 'bois', type: 'basic', quantity: 1, isUnique: false }, { name: 'pierre', type: 'basic', quantity: 0, isUnique: false }], whichTab: 6, resourcesQuantity: [0,0] };
 
 const playerReducer = (state, action) => {
     let newPreoccupationPoints = state.preoccupationPoints
     let newPreoccupationPointsMax = state.preoccupationPointsMax
     let newResources = state.resources
-    let newWitchTab = state.witchTab
+    let newResourcesQuantity = []
+    for(let i = 0; i < state.resourcesQuantity.length; i++){
+      newResourcesQuantity[i] = state.resourcesQuantity[i]
+    }
+    let newWitchTab = state.whichTab
 
     if (action.resource !== undefined){
       if(action.resource === 'bois'){
@@ -35,6 +39,10 @@ const playerReducer = (state, action) => {
       newPreoccupationPoints -= action.range
     } else if (action.type === 'resetPoints') {
      newPreoccupationPoints = newPreoccupationPointsMax
+   } else if (action.type === 'increaseRes') {
+     newResourcesQuantity[action.index] += action.range
+   } else if (action.type === 'decreaseRes') {
+     newResourcesQuantity[action.index] -= action.range
    } else {
       throw new Error(`Unhandled action type: ${action.type}`);
     }
@@ -43,7 +51,8 @@ console.log("state: "+state.resources[0].quantity)
       preoccupationPoints: newPreoccupationPoints,
       preoccupationPointsMax: newPreoccupationPointsMax,
       resources: newResources,
-      witchTab: newWitchTab
+      resourcesQuantity: newResourcesQuantity,
+      whichTab: newWitchTab
     }
 }
 

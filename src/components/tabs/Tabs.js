@@ -9,7 +9,7 @@ function Tabs() {
   const { state, dispatch } = usePlayerStore();
 
   let isDisplayed = [false, false, false, false, false, false, false]
-  isDisplayed[state.witchTab] = true
+  isDisplayed[state.whichTab] = true
   let isClickable = [true, true, false, true, true, true, true]
 
   function buttonsRender(){

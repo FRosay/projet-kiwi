@@ -6,37 +6,37 @@ function GameText() {
   const { state, dispatch } = usePlayerStore();
   const [range, setRange] = useState(1);
 
-  if(state.witchTab === 0){//report
+  if(state.whichTab === 0){//report
     return (
       <div id='game-text-div'>
         <p>Rapport</p>
       </div>
     )
-  } else if (state.witchTab === 1){//exploration
+  } else if (state.whichTab === 1){//exploration
     return (
       <div id='game-text-div'>
         <p>Exploration</p>
       </div>
     )
-  } else if (state.witchTab === 2){//diplomacy
+  } else if (state.whichTab === 2){//diplomacy
     return (
       <div id='game-text-div'>
         <p>Diplomatie</p>
       </div>
     )
-  } else if (state.witchTab === 3){//technology
+  } else if (state.whichTab === 3){//technology
     return (
       <div id='game-text-div'>
         <p>Technlogie</p>
       </div>
     )
-  } else if (state.witchTab === 4){//politic
+  } else if (state.whichTab === 4){//politic
     return (
       <div id='game-text-div'>
         <p>Politique</p>
       </div>
     )
-  } else if (state.witchTab === 5){//cheat
+  } else if (state.whichTab === 5){//cheat
     return (
       <div id='game-text-div'>
         <h1>Triche</h1>
@@ -44,6 +44,8 @@ function GameText() {
             <li>{ state.preoccupationPoints } PP : <button onClick={() => dispatch({ type: 'addPoints', range:1}) }>+</button><button onClick={() => dispatch({ type: 'removePoints', range:1}) }>-</button></li>
             <li>{ state.resources[0].quantity } Bois : <button onClick={() => dispatch({ resource:'bois', type: 'increment', range:1}) }>+</button><button onClick={() => dispatch({ resource:'bois', type: 'decrement', range:1}) }>-</button></li>
             <li>{ state.resources[1].quantity } Pierre : <button onClick={() => dispatch({ resource:'pierre', type: 'increment', range:1}) }>+</button><button onClick={() => dispatch({ resource:'pierre', type: 'decrement', range:1}) }>-</button></li>
+            <li>{ state.resourcesQuantity[0] } resourcesQuantity[0] : <button onClick={() => dispatch({ type: 'increaseRes', index:0, range:1}) }>+</button><button onClick={() => dispatch({ type: 'decreaseRes', index:0, range:1}) }>-</button></li>
+            <li>{ state.resourcesQuantity[1] } resourcesQuantity[1] : <button onClick={() => dispatch({ type: 'increaseRes', index:1, range:1}) }>+</button><button onClick={() => dispatch({ type: 'decreaseRes', index:1, range:1}) }>-</button></li>
           </ul>
       </div>
     )
