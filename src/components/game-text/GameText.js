@@ -1,49 +1,32 @@
 import React, { useState } from 'react';
 import { usePlayerStore } from '../player/player-store.js';
 
+import Report from './Report.js'
+import Map from './Map.js'
+import Technologies from './Technologies.js'
+import Politic from './Politic.js'
+
 
 function GameText() {
   const { state, dispatch } = usePlayerStore();
   const [range, setRange] = useState(1);
 
-  if(state.whichTab === 0){//report
-    return (
-      <div id='game-text-div'>
-        <p>Rapport</p>
-      </div>
-    )
-  } else if (state.whichTab === 1){//exploration
-    return (
-      <div id='game-text-div'>
-        <p>Exploration</p>
-      </div>
-    )
-  } else if (state.whichTab === 2){//diplomacy
-    return (
-      <div id='game-text-div'>
-        <p>Diplomatie</p>
-      </div>
-    )
-  } else if (state.whichTab === 3){//technology
-    return (
-      <div id='game-text-div'>
-        <p>Technlogie</p>
-      </div>
-    )
-  } else if (state.whichTab === 4){//politic
-    return (
-      <div id='game-text-div'>
-        <p>Politique</p>
-      </div>
-    )
-  } else if (state.whichTab === 5){//cheat
+  if(state.whichTab === 0){
+    return (<div id='game-text-div'><Report /></div>)
+  } else if (state.whichTab === 1){
+    return (<div id='game-text-div'><Map /></div>)
+  } else if (state.whichTab === 2){
+    return (<div id='game-text-div'><Technologies /></div>)
+  } else if (state.whichTab === 3){
+    return (<div id='game-text-div'><Politic /></div>)
+  } else if (state.whichTab === 4){//cheat
     return (
       <div id='game-text-div'>
         <h1>Triche</h1>
           <ul>
             <li>{ state.preoccupationPoints } PP : <button onClick={() => dispatch({ type: 'addPoints', range:1}) }>+</button><button onClick={() => dispatch({ type: 'removePoints', range:1}) }>-</button></li>
-            <li>{ state.resourcesQuantity[0] } resourcesQuantity[0] : <button onClick={() => dispatch({ type: 'increaseRes', index:0, range:1}) }>+</button><button onClick={() => dispatch({ type: 'decreaseRes', index:0, range:1}) }>-</button></li>
-            <li>{ state.resourcesQuantity[1] } resourcesQuantity[1] : <button onClick={() => dispatch({ type: 'increaseRes', index:1, range:1}) }>+</button><button onClick={() => dispatch({ type: 'decreaseRes', index:1, range:1}) }>-</button></li>
+            <li>{ state.resourcesQuantity[0] } { state.resourcesName[0] } : <button onClick={() => dispatch({ type: 'increaseRes', index:0, range:1}) }>+</button><button onClick={() => dispatch({ type: 'decreaseRes', index:0, range:1}) }>-</button></li>
+            <li>{ state.resourcesQuantity[1] } { state.resourcesName[1] } : <button onClick={() => dispatch({ type: 'increaseRes', index:1, range:1}) }>+</button><button onClick={() => dispatch({ type: 'decreaseRes', index:1, range:1}) }>-</button></li>
           </ul>
       </div>
     )

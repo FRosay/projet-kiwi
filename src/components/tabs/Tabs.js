@@ -2,15 +2,15 @@ import React from 'react';
 import { usePlayerStore } from '../player/player-store.js';
 import './Tabs.css';
 
-const NAMES_TABS = ['Rapport', 'Exploration', 'Diplomatie', 'Technologie', 'Politique', 'Cheat', 'Brouillon']
+const NAMES_TABS = ['Rapport', 'Carte', 'Technologie', 'Politique', 'Cheat', 'Brouillon']
 
 function Tabs() {
 
   const { state, dispatch } = usePlayerStore();
 
-  let isDisplayed = [false, false, false, false, false, false, false]
+  let isDisplayed = [false, false, false, false, false, false]
   isDisplayed[state.whichTab] = true
-  let isClickable = [true, true, false, true, true, true, true]
+  let isClickable = [true, true, false, true, true, true]
 
   function buttonsRender(){
     let buttons = []
