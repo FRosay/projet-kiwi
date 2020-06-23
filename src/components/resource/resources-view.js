@@ -7,13 +7,16 @@ function ResourcesView() {
 
   const { state, dispatch } = usePlayerStore();
 
+  let res = []
+  for(let i = 0; i < state.resourcesName.length; i++){
+    res.push(
+      <SingleResource key= { i } name= { state.resourcesName[i] } type= { state.resourcesCategory[i] } quantity= { state.resourcesQuantity[i] } isUnique= { state.resourcesIsUnique[i] } shortVersion= { true } dispatch= { dispatch } />
+    )
+  }
+
   return (
       <div id='resources-view-div'>
-          { state.resources.map((resource, index) => {
-              return (
-                <SingleResource key= { index } name= { resource.name } type= { resource.type } quantity= { resource.quantity } isUnique= { resource.isUnique} shortVersion= { true } dispatch= { dispatch } />
-              )
-          })}
+                {res}
           <br/>
       </div>
   )

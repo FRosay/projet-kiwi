@@ -42,8 +42,6 @@ function GameText() {
         <h1>Triche</h1>
           <ul>
             <li>{ state.preoccupationPoints } PP : <button onClick={() => dispatch({ type: 'addPoints', range:1}) }>+</button><button onClick={() => dispatch({ type: 'removePoints', range:1}) }>-</button></li>
-            <li>{ state.resources[0].quantity } Bois : <button onClick={() => dispatch({ resource:'bois', type: 'increment', range:1}) }>+</button><button onClick={() => dispatch({ resource:'bois', type: 'decrement', range:1}) }>-</button></li>
-            <li>{ state.resources[1].quantity } Pierre : <button onClick={() => dispatch({ resource:'pierre', type: 'increment', range:1}) }>+</button><button onClick={() => dispatch({ resource:'pierre', type: 'decrement', range:1}) }>-</button></li>
             <li>{ state.resourcesQuantity[0] } resourcesQuantity[0] : <button onClick={() => dispatch({ type: 'increaseRes', index:0, range:1}) }>+</button><button onClick={() => dispatch({ type: 'decreaseRes', index:0, range:1}) }>-</button></li>
             <li>{ state.resourcesQuantity[1] } resourcesQuantity[1] : <button onClick={() => dispatch({ type: 'increaseRes', index:1, range:1}) }>+</button><button onClick={() => dispatch({ type: 'decreaseRes', index:1, range:1}) }>-</button></li>
           </ul>

@@ -1,28 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 
 function SingleResource(props) {
-  const [resource, setResource] = useState({  name: props.name,
-                                              type: props.type,
-                                              quantity: props.quantity,
-                                              isUnique: props.isUnique,
-                                              shortVersion: props.shortVersion,
-                                              imagePath: require('../../assets/images/'+props.name+'.png') });
 
-  if (resource.shortVersion===true) {
-    //console.log(props.quantity)
+  if (props.shortVersion===true) {
     return (
       <div id="resource-div">
-        { resource.quantity } <img alt={ resource.name } src= { resource.imagePath }></img>
+        { props.quantity } <img alt={ props.name } src= { require('../../assets/images/'+props.name+'.png') }></img>
       </div>
     )
   } else {
     return (
       <div id="resource-div">
-          <p>Nom : { resource.name }</p>
-          <p>Type de la ressource : { resource.type }</p>
-          <p>Quantité acquise : { resource.quantity }</p>
-          <p>Ressource unique : { resource.isUnique ? 'Oui' : 'Non' }</p>
+          <p>Nom : { props.name }</p>
+          <p>Type de la ressource : { props.type }</p>
+          <p>Quantité acquise : { props.quantity }</p>
+          <p>Ressource unique : { props.isUnique ? 'Oui' : 'Non' }</p>
           <br/>
       </div>
     )
