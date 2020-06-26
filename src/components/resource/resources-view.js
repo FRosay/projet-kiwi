@@ -16,8 +16,8 @@ function ResourcesView() {
 
   return (
       <div id='resources-view-div'>
-                {res}
-          <br/>
+        <div>{state.preoccupationPoints} PP</div>
+        {res}
       </div>
   )
 }

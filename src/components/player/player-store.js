@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useReducer } from 'react';
 
 const PlayerContext = createContext();
-const INITIAL_STATE = { preoccupationPoints: 1,
+const INITIAL_STATE = { preoccupationPoints: 3,
   preoccupationPointsMax: 5,
   resourcesName: ['wood', 'stone'],
   resourcesCategory: ['resource', 'resource'],

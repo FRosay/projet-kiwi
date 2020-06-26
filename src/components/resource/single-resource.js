@@ -4,11 +4,15 @@ import React from 'react';
 function SingleResource(props) {
 
   if (props.shortVersion===true) {
-    return (
-      <div id="resource-div">
-        { props.quantity } <img alt={ props.name } src= { require('../../assets/images/'+props.name+'.png') }></img>
-      </div>
-    )
+    if(props.quantity > 0){
+      return (
+        <div id="resource-div">
+          { props.quantity } <img alt={ props.name } src= { require('../../assets/images/resources/'+props.name+'.png') }></img>
+        </div>
+      )
+    } else {
+      return null
+    }
   } else {
     return (
       <div id="resource-div">

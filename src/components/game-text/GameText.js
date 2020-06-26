@@ -19,7 +19,9 @@ function GameText() {
     return (<div id='game-text-div'><Technologies /></div>)
   } else if (state.whichTab === 3){
     return (<div id='game-text-div'><Politic /></div>)
-  } else if (state.whichTab === 4){//cheat
+  } else if (state.whichTab === 4){
+    return (<div id='game-text-div'><h1>Fin de cycle</h1></div>)
+  } else if (state.whichTab === 5){//cheat
     return (
       <div id='game-text-div'>
         <h1>Triche</h1>

@@ -7,6 +7,7 @@ import GameInformations from './components/game-informations/GameInformations.js
 import GameText from './components/game-text/GameText.js'
 
 import { PlayerProvider } from './components/player/player-store.js'
+import { RegionsProvider } from './components/regions/regions-store.js'
 
 
 function App() {
@@ -16,7 +17,7 @@ function App() {
       <PlayerProvider>
         <ResourcesView />
         <Tabs />
-        <GameText />
+        <RegionsProvider><GameText /></RegionsProvider>
         <GameInformations />
         <footer>Footer de merde</footer>
       </PlayerProvider>
