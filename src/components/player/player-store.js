@@ -1,7 +1,9 @@
 import React, { createContext, useContext, useReducer } from 'react';
 
 const PlayerContext = createContext();
-const INITIAL_STATE = { preoccupationPoints: 3,
+const INITIAL_STATE = {
+  turnNumber: 0,
+  preoccupationPoints: 3,
   preoccupationPointsMax: 5,
   resourcesName: ['wood', 'stone'],
   resourcesCategory: ['resource', 'resource'],
@@ -10,38 +12,43 @@ const INITIAL_STATE = { preoccupationPoints: 3,
   whichTab: 6 };
 
 const playerReducer = (state, action) => {
-    let newPreoccupationPoints = state.preoccupationPoints
-    let newPreoccupationPointsMax = state.preoccupationPointsMax
-    let newResourcesName = state.resourcesName.slice()
-    let newResourcesCategory = state.resourcesCategory.slice()
-    let newResourcesQuantity = state.resourcesQuantity.slice()
-    let newResourcesIsUnique = state.resourcesIsUnique.slice()
-    let newWitchTab = state.whichTab
+  let newTurnNumber = state.turnNumber
+  let newPreoccupationPoints = state.preoccupationPoints
+  let newPreoccupationPointsMax = state.preoccupationPointsMax
+  let newResourcesName = state.resourcesName.slice()
+  let newResourcesCategory = state.resourcesCategory.slice()
+  let newResourcesQuantity = state.resourcesQuantity.slice()
+  let newResourcesIsUnique = state.resourcesIsUnique.slice()
+  let newWitchTab = state.whichTab
 
-    if (Number.isInteger(action.tab)) {
-      newWitchTab = action.tab
-    } else if (action.type === 'addPoints') {
-      newPreoccupationPoints += action.range
-    } else if (action.type === 'removePoints') {
-      newPreoccupationPoints -= action.range
-    } else if (action.type === 'resetPoints') {
-     newPreoccupationPoints = newPreoccupationPointsMax
-   } else if (action.type === 'increaseRes') {
-     newResourcesQuantity[action.index] += action.range
-   } else if (action.type === 'decreaseRes') {
-     newResourcesQuantity[action.index] -= action.range
-   } else {
-      throw new Error(`Unhandled action type: ${action.type}`);
-    }
-    return {
-      preoccupationPoints: newPreoccupationPoints,
-      preoccupationPointsMax: newPreoccupationPointsMax,
-      resourcesName: newResourcesName,
-      resourcesCategory: newResourcesCategory,
-      resourcesQuantity: newResourcesQuantity,
-      resourcesIsUnique: newResourcesIsUnique,
-      whichTab: newWitchTab
-    }
+  if (Number.isInteger(action.tab)) {
+    newWitchTab = action.tab
+  } else if (action.type === 'endTurn') {
+    newTurnNumber ++
+    newPreoccupationPoints = state.preoccupationPointsMax
+  } else if (action.type === 'addPoints') {
+    newPreoccupationPoints += action.range
+  } else if (action.type === 'removePoints') {
+    newPreoccupationPoints -= action.range
+  } else if (action.type === 'resetPoints') {
+   newPreoccupationPoints = newPreoccupationPointsMax
+ } else if (action.type === 'increaseRes') {
+   newResourcesQuantity[action.index] += action.range
+ } else if (action.type === 'decreaseRes') {
+   newResourcesQuantity[action.index] -= action.range
+ } else {
+    throw new Error(`Unhandled action type: ${action.type}`);
+  }
+  return {
+    turnNumber: newTurnNumber,
+    preoccupationPoints: newPreoccupationPoints,
+    preoccupationPointsMax: newPreoccupationPointsMax,
+    resourcesName: newResourcesName,
+    resourcesCategory: newResourcesCategory,
+    resourcesQuantity: newResourcesQuantity,
+    resourcesIsUnique: newResourcesIsUnique,
+    whichTab: newWitchTab
+  }
 }
 
 export const PlayerProvider = ({ children }) => {

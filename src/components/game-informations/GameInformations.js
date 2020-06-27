@@ -1,28 +1,25 @@
 import React from 'react';
+import { useRegionsStore } from '../regions/regions-store.js';
 
 
-class GameInformations extends React.Component {
+function GameInformations() {
+  const { state, dispatch } = useRegionsStore();
 
-  constructor(props) {
-
-    super(props)
-    this.state = {
-      header: this.props.header,
-      text: this.props.text,
-      button: this.props.button,
-    }
-
-  }
-
-  render () {
-    return (
-        <div id='game-informations-div'>
-            <h1>Header : { this.state.header }</h1>
-            <p>Text : { this.state.text }</p>
-            <p><button>{ this.state.button }</button></p>
-        </div>
+  function specificButton(){
+    return(
+      <button>{ state.regionType[state.clicked[0]][state.clicked[1]].startsWith('region') ? 'Explorer' : 'Franchir' }</button>
     )
   }
+
+  return(
+    <div id='game-informations-div'>
+      <h1>Header</h1>
+      <p>Coordonnées : { state.clicked[0] };{ state.clicked[1] }<br/>
+      Type : { state.regionType[state.clicked[0]][state.clicked[1]] }<br/>
+      Zone Max : { state.regionZoneMax[state.clicked[0]][state.clicked[1]] }</p>
+      { specificButton() }
+    </div>
+  )
 }
 
 export default GameInformations;

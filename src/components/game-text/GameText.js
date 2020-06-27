@@ -20,7 +20,7 @@ function GameText() {
   } else if (state.whichTab === 3){
     return (<div id='game-text-div'><Politic /></div>)
   } else if (state.whichTab === 4){
-    return (<div id='game-text-div'><h1>Fin de cycle</h1></div>)
+    return (<div id='game-text-div'><h1>Fin de cycle</h1><button onClick={() => dispatch({type: 'endTurn'})}>S'endormir</button></div>)
   } else if (state.whichTab === 5){//cheat
     return (
       <div id='game-text-div'>

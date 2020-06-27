@@ -17,8 +17,10 @@ function App() {
       <PlayerProvider>
         <ResourcesView />
         <Tabs />
-        <RegionsProvider><GameText /></RegionsProvider>
-        <GameInformations />
+        <RegionsProvider>
+          <GameText />
+          <GameInformations />
+        </RegionsProvider>
         <footer>Footer de merde</footer>
       </PlayerProvider>
     </div>

@@ -5,6 +5,7 @@ const NB_ROW = 3;
 const NB_COLUMN = 3;
 const INIT_COMPACT = init();
 const INITIAL_STATE = {
+  clicked: [0,0],
   regionIsDiscovered: INIT_COMPACT[0],
   regionType: INIT_COMPACT[1],
   regionZoneMax: INIT_COMPACT[2],
@@ -30,10 +31,15 @@ function init(varName){
   for(let row = 0; row < NB_ROW; row++){
     for(let col = 0; col < NB_COLUMN; col++){
       //rIO
-      if(row%2 === 0 && col%2 === 0){rT[row][col] = "region-discovered"}
-      else if(row%2 === 0 && col%2 === 1){rT[row][col] = "obstacle"}
-      else if(row%2 === 1 && col%2 === 0){rT[row][col] = "obstacle"}
-      else{rT[row][col] = "region-discovered"}
+      let allRegionsType = ['region-pineForest', 'region-pineLake']
+      if(row%2 === 0 && col%2 === 0){
+        rT[row][col] = allRegionsType[parseInt(Math.random()*allRegionsType.length)]
+      }
+      else if(row%2 === 0 && col%2 === 1){rT[row][col] = 'obstacle'}
+      else if(row%2 === 1 && col%2 === 0){rT[row][col] = 'obstacle'}
+      else{
+        rT[row][col] = allRegionsType[parseInt(Math.random()*allRegionsType.length)]
+      }
       //rZM
       rZM[row][col] = parseInt(Math.random()*7)+6
     }
@@ -44,7 +50,28 @@ function init(varName){
 
 
 const regionsReducer = (state, action) => {
-  //
+  let newClicked = state.clicked
+  let newRID = state.regionIsDiscovered
+  let newRT = []
+  for(let row = 0; row < state.regionType.length; row++){
+    newRT[row] = state.regionType[row].slice()
+  }
+  let newRZM = state.regionZoneMax
+  let newRZT = state.regionZoneType
+  let newRZV = state.regionZoneValue
+  let newRZID = state.regionZoneIsDiscoverd
+
+  newClicked = action.key
+
+  return{
+    clicked: newClicked,
+    regionIsDiscovered: newRID,
+    regionType: newRT,
+    regionZoneMax: newRZM,
+    regionZoneType: newRZT,
+    regionZoneValue: newRZV,
+    regionZoneIsDiscoverd: newRZID
+  }
 }
 
 export const RegionsProvider = ({ children }) => {

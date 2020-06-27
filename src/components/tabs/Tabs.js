@@ -10,7 +10,7 @@ function Tabs() {
 
   let isDisplayed = [false, false, false, false, false, false, false]
   isDisplayed[state.whichTab] = true
-  let isClickable = [true, true, false, true, true, true, true]
+  let isClickable = [true, true, true, false, true, true, true]
 
   function buttonsRender(){
     let buttons = []

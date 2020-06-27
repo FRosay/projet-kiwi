@@ -1,6 +1,7 @@
 import React from 'react';
 import { useRegionsStore } from '../regions/regions-store.js';
 
+
 function Map() {
   const { state, dispatch } = useRegionsStore();
 
@@ -16,7 +17,11 @@ function Map() {
     let rowObject = []
     for(let col = 0; col < state.regionIsDiscovered[row].length; col++){
       if(state.regionIsDiscovered[row][col]){
-        rowObject.push(<td key={[row,col]}><img alt='img of region discovered' src={require('../../assets/images/regions/'+state.regionType[row][col]+'.png')} /></td>)
+        rowObject.push(<td key={[row,col]}><img alt='img of region discovered'
+        onClick={() => dispatch({key:[row,col]})}
+        src={require('../../assets/images/regions/'+state.regionType[row][col]+'.png')}
+        style={{cursor:'pointer'}}
+        /></td>)
       }else{
         rowObject.push(<td key={[row,col]}><img alt='img of region undiscovered' src={require('../../assets/images/regions/region-undiscovered.png')} /></td>)
       }
