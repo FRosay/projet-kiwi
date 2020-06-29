@@ -19,11 +19,11 @@ function Map() {
       if(state.regionIsDiscovered[row][col]){
         rowObject.push(<td key={[row,col]}><img alt='img of region discovered'
         onClick={() => dispatch({key:[row,col]})}
-        src={require('../../assets/images/regions/'+state.regionType[row][col]+'.png')}
+        src={require('../../assets/images/'+state.regionType[row][col]+'s/'+state.regionName[row][col]+'.png')}
         style={{cursor:'pointer'}}
         /></td>)
       }else{
-        rowObject.push(<td key={[row,col]}><img alt='img of region undiscovered' src={require('../../assets/images/regions/region-undiscovered.png')} /></td>)
+        rowObject.push(<td key={[row,col]}><img alt='img of region undiscovered' src={require('../../assets/images/regions/undiscovered.png')} /></td>)
       }
     }
     return rowObject

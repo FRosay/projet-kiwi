@@ -7,7 +7,7 @@ function GameInformations() {
 
   function specificButton(){
     return(
-      <button>{ state.regionType[state.clicked[0]][state.clicked[1]].startsWith('region') ? 'Explorer' : 'Franchir' }</button>
+      <button>{ state.regionType[state.clicked[0]][state.clicked[1]] === 'region' ? 'Explorer' : 'Franchir' }</button>
     )
   }
 
@@ -15,7 +15,7 @@ function GameInformations() {
     <div id='game-informations-div'>
       <h1>Header</h1>
       <p>Coordonnées : { state.clicked[0] };{ state.clicked[1] }<br/>
-      Type : { state.regionType[state.clicked[0]][state.clicked[1]] }<br/>
+      Type : { state.regionName[state.clicked[0]][state.clicked[1]] }<br/>
       Zone Max : { state.regionZoneMax[state.clicked[0]][state.clicked[1]] }</p>
       { specificButton() }
     </div>

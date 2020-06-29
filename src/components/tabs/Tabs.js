@@ -22,6 +22,8 @@ function Tabs() {
 
   return (
     <div id='tabs-div'>
+      <div>-- Cycle {state.turnNumber} --</div>
+      <div>{state.preoccupationPoints}/{state.preoccupationPointsMax} PP</div>
       { buttonsRender() }
     </div>
   )

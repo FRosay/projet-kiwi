@@ -16,8 +16,6 @@ function ResourcesView() {
 
   return (
       <div id='resources-view-div'>
-        <div>[Tour {state.turnNumber}]</div>
-        <div>[{state.preoccupationPoints}/{state.preoccupationPointsMax} PP]</div>
         {res}
       </div>
   )

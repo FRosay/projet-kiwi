@@ -8,20 +8,21 @@ const INITIAL_STATE = {
   clicked: [0,0],
   regionIsDiscovered: INIT_COMPACT[0],
   regionType: INIT_COMPACT[1],
-  regionZoneMax: INIT_COMPACT[2],
+  regionName: INIT_COMPACT[2],
+  regionZoneMax: INIT_COMPACT[3],
   //
-  regionZoneType: INIT_COMPACT[3],
-  regionZoneOwnership: INIT_COMPACT[4],
-  regionZoneValue: INIT_COMPACT[5],
-  regionZoneIsDiscoverd: INIT_COMPACT[6]
+  regionZoneType: INIT_COMPACT[4],
+  regionZoneOwnership: INIT_COMPACT[5],
+  regionZoneValue: INIT_COMPACT[6],
+  regionZoneIsDiscoverd: INIT_COMPACT[7]
 };
 
 
 function init(varName){
   let rID = [[false,true,false], [true,true,true], [false,true,false]]
 
-  let rT = []; let rZM = [];
-  for(let i = 0; i < NB_ROW; i++){rT[i] = []; rZM[i] = []}
+  let rT = []; let rN = []; let rZM = [];
+  for(let i = 0; i < NB_ROW; i++){rT[i] = []; rN[i] = []; rZM[i] = []}
 
   let rZT = []; for(let i = 0; i < NB_ROW; i++){rZT[i] = []}
   let rZO = []; for(let i = 0; i < NB_ROW; i++){rZO[i] = []}
@@ -30,22 +31,22 @@ function init(varName){
 
   for(let row = 0; row < NB_ROW; row++){
     for(let col = 0; col < NB_COLUMN; col++){
-      //rIO
-      let allRegionsType = ['region-pineForest', 'region-pineLake']
-      if(row%2 === 0 && col%2 === 0){
-        rT[row][col] = allRegionsType[parseInt(Math.random()*allRegionsType.length)]
-      }
-      else if(row%2 === 0 && col%2 === 1){rT[row][col] = 'obstacle'}
-      else if(row%2 === 1 && col%2 === 0){rT[row][col] = 'obstacle'}
-      else{
-        rT[row][col] = allRegionsType[parseInt(Math.random()*allRegionsType.length)]
+      //rT & rN
+      let allRegionsName = ['pineForest', 'pineLake']
+      let allObstaclesName = ['sea', 'mountains', 'bridge']
+      if((row%2 === 0 && col%2 === 0) || (row%2 === 1 && col%2 === 1)){
+        rT[row][col] = 'region'
+        rN[row][col] = allRegionsName[parseInt(Math.random()*allRegionsName.length)]
+      } else {
+        rT[row][col] = 'obstacle'
+        rN[row][col] = allObstaclesName[parseInt(Math.random()*allObstaclesName.length)]
       }
       //rZM
       rZM[row][col] = parseInt(Math.random()*7)+6
     }
   }
 
-  return [rID, rT, rZM, rZT, rZO, rZV, rZID]
+  return [rID, rT, rN, rZM, rZT, rZO, rZV, rZID]
 }
 
 
@@ -55,6 +56,10 @@ const regionsReducer = (state, action) => {
   let newRT = []
   for(let row = 0; row < state.regionType.length; row++){
     newRT[row] = state.regionType[row].slice()
+  }
+  let newRN = []
+  for(let row = 0; row < state.regionName.length; row++){
+    newRN[row] = state.regionName[row].slice()
   }
   let newRZM = state.regionZoneMax
   let newRZT = state.regionZoneType
@@ -67,6 +72,7 @@ const regionsReducer = (state, action) => {
     clicked: newClicked,
     regionIsDiscovered: newRID,
     regionType: newRT,
+    regionName: newRN,
     regionZoneMax: newRZM,
     regionZoneType: newRZT,
     regionZoneValue: newRZV,
