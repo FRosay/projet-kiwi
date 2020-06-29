@@ -3,9 +3,11 @@ import React, { createContext, useContext, useReducer } from 'react';
 const RegionsContext = createContext();
 const NB_ROW = 3;
 const NB_COLUMN = 3;
+const REGIONS_NAMES = ['pineForest', 'pineLake']
+const OBSTACLES_NAMES = ['sea', 'mountains', 'bridge']
 const INIT_COMPACT = init();
 const INITIAL_STATE = {
-  clicked: [0,0],
+  clicked: false,
   regionIsDiscovered: INIT_COMPACT[0],
   regionType: INIT_COMPACT[1],
   regionName: INIT_COMPACT[2],
@@ -32,14 +34,12 @@ function init(varName){
   for(let row = 0; row < NB_ROW; row++){
     for(let col = 0; col < NB_COLUMN; col++){
       //rT & rN
-      let allRegionsName = ['pineForest', 'pineLake']
-      let allObstaclesName = ['sea', 'mountains', 'bridge']
       if((row%2 === 0 && col%2 === 0) || (row%2 === 1 && col%2 === 1)){
         rT[row][col] = 'region'
-        rN[row][col] = allRegionsName[parseInt(Math.random()*allRegionsName.length)]
+        rN[row][col] = REGIONS_NAMES[parseInt(Math.random()*REGIONS_NAMES.length)]
       } else {
         rT[row][col] = 'obstacle'
-        rN[row][col] = allObstaclesName[parseInt(Math.random()*allObstaclesName.length)]
+        rN[row][col] = OBSTACLES_NAMES[parseInt(Math.random()*OBSTACLES_NAMES.length)]
       }
       //rZM
       rZM[row][col] = parseInt(Math.random()*7)+6
@@ -81,10 +81,10 @@ const regionsReducer = (state, action) => {
 }
 
 export const RegionsProvider = ({ children }) => {
-    const [state, dispatch] = useReducer(regionsReducer, INITIAL_STATE);
+    const [stateOfRegions, dispatchInRegions] = useReducer(regionsReducer, INITIAL_STATE);
 
     return (
-        <RegionsContext.Provider value= {{ state, dispatch }}>
+        <RegionsContext.Provider value= {{ stateOfRegions, dispatchInRegions }}>
             { children }
         </RegionsContext.Provider>
     )

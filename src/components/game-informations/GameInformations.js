@@ -1,24 +1,44 @@
 import React from 'react';
+import { usePlayerStore } from '../player/player-store.js';
 import { useRegionsStore } from '../regions/regions-store.js';
 
 
 function GameInformations() {
-  const { state, dispatch } = useRegionsStore();
+  const { state, dispatch } = usePlayerStore();
+  const { stateOfRegions, dispatchInRegions } = useRegionsStore();
 
-  function specificButton(){
+  function specificMapButton(){
+    if(stateOfRegions.regionType[stateOfRegions.clicked[0]][stateOfRegions.clicked[1]] === 'region'){
+      return(
+        <button
+        disabled={ state.preoccupationPoints > 0 ? false : true }
+        onClick={() => dispatch({ type:'exploration', value:[stateOfRegions.clicked[0],stateOfRegions.clicked[1]] })}
+        >Explorer</button>
+      )
+    } else {
+      return(
+        <button
+        disabled={ state.preoccupationPoints > 0 ? false : true }
+        onClick={() => dispatch({ type:'cross', value:[stateOfRegions.clicked[0],stateOfRegions.clicked[1]] })}
+        >Franchir</button>
+      )
+    }
+  }
+
+  function insideMap(){
     return(
-      <button>{ state.regionType[state.clicked[0]][state.clicked[1]] === 'region' ? 'Explorer' : 'Franchir' }</button>
+      <div>
+        <h1>Header</h1>
+        <p>Coordonnées : { stateOfRegions.clicked[0] };{ stateOfRegions.clicked[1] }<br/>
+        Type : { stateOfRegions.regionName[stateOfRegions.clicked[0]][stateOfRegions.clicked[1]] }<br/>
+        Zone Max : { stateOfRegions.regionZoneMax[stateOfRegions.clicked[0]][stateOfRegions.clicked[1]] }</p>
+        { specificMapButton() }
+      </div>
     )
   }
 
   return(
-    <div id='game-informations-div'>
-      <h1>Header</h1>
-      <p>Coordonnées : { state.clicked[0] };{ state.clicked[1] }<br/>
-      Type : { state.regionName[state.clicked[0]][state.clicked[1]] }<br/>
-      Zone Max : { state.regionZoneMax[state.clicked[0]][state.clicked[1]] }</p>
-      { specificButton() }
-    </div>
+    <div id='game-informations-div'>{ stateOfRegions.clicked !== false ? insideMap() : '' }</div>
   )
 }
 

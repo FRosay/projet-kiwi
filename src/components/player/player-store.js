@@ -2,6 +2,8 @@ import React, { createContext, useContext, useReducer } from 'react';
 
 const PlayerContext = createContext();
 const INITIAL_STATE = {
+  cross: [],
+  exploration: [],
   turnNumber: 0,
   preoccupationPoints: 3,
   preoccupationPointsMax: 5,
@@ -12,6 +14,8 @@ const INITIAL_STATE = {
   whichTab: 6 };
 
 const playerReducer = (state, action) => {
+  let newCross = state.cross.slice()
+  let newExploration = state.exploration.slice()
   let newTurnNumber = state.turnNumber
   let newPreoccupationPoints = state.preoccupationPoints
   let newPreoccupationPointsMax = state.preoccupationPointsMax
@@ -26,6 +30,9 @@ const playerReducer = (state, action) => {
   } else if (action.type === 'endTurn') {
     newTurnNumber ++
     newPreoccupationPoints = state.preoccupationPointsMax
+    newExploration = []
+    newCross = []
+    newWitchTab = 0
   } else if (action.type === 'addPoints') {
     newPreoccupationPoints += action.range
   } else if (action.type === 'removePoints') {
@@ -36,10 +43,18 @@ const playerReducer = (state, action) => {
    newResourcesQuantity[action.index] += action.range
  } else if (action.type === 'decreaseRes') {
    newResourcesQuantity[action.index] -= action.range
+ } else if (action.type === 'exploration') {
+   newExploration.push(action.value)
+   newPreoccupationPoints --
+ } else if (action.type === 'cross') {
+   newCross.push(action.value)
+   newPreoccupationPoints --
  } else {
     throw new Error(`Unhandled action type: ${action.type}`);
   }
   return {
+    cross: newCross,
+    exploration: newExploration,
     turnNumber: newTurnNumber,
     preoccupationPoints: newPreoccupationPoints,
     preoccupationPointsMax: newPreoccupationPointsMax,

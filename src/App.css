@@ -19,6 +19,9 @@
 [title]{
   cursor: help;
 }
+[disabled]{
+  cursor: not-allowed;
+}
 
 html, body, #root, .App{
   height: 100%;
@@ -61,4 +64,10 @@ footer{
 
 #tabs-div button{
   width: 100%;
+}
+
+.pp-map{
+  position: relative;
+  left: 50%;
+  top: -20%;
 }
