@@ -1,5 +1,5 @@
 import React from 'react';
-
+import GetImage from '../GraphicResources.js'
 
 function SingleResource(props) {
 
@@ -7,7 +7,7 @@ function SingleResource(props) {
     if(props.quantity > 0){
       return (
         <div id="resource-div">
-          { props.quantity } <img alt={ props.name } src= { require('../../assets/images/resources/'+props.name+'.png') }></img>
+          { props.quantity } <img alt={ props.name } src= { GetImage(props.name) }></img>
         </div>
       )
     } else {

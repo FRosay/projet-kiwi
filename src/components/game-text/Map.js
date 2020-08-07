@@ -1,6 +1,7 @@
 import React from 'react';
 import { usePlayerStore } from '../player/player-store.js';
 import { useRegionsStore } from '../regions/regions-store.js';
+import GetImage from '../GraphicResources.js'
 
 
 function Map() {
@@ -34,18 +35,18 @@ function Map() {
           <td key={[row,col]}>
           {ppSpendedHere > 0 && <img alt='img of pp'
           className={'pp-map'}
-          src={require('../../assets/images/preoccupation-point.png')}
+          src={GetImage('preoccupationPoint')}
           />}
           <img alt='img of region discovered'
           onClick={() => dispatchInRegions({key:[row,col]})}
-          src={require('../../assets/images/'+stateOfRegions.regionType[row][col]+'s/'+stateOfRegions.regionName[row][col]+'.png')}
+          src={GetImage(stateOfRegions.regionName[row][col])}
           style={{cursor:'pointer'}}
           />
           </td>
       )
       }else{
         rowObject.push(
-          <td key={[row,col]}><img alt='img of region undiscovered' src={require('../../assets/images/regions/undiscovered.png')} /></td>
+          <td key={[row,col]}><img alt='img of region undiscovered' src={GetImage('undiscovered')} /></td>
         )
       }
     }
