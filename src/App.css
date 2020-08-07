@@ -6,6 +6,12 @@
   --color-hightlight: orange;
 }
 
+
+@font-face{
+  font-family: "FontFamilyChoosed";
+  src: url(assets/font/Jura-Regular.otf) format("opentype");
+}
+
 .App {
   background-color: black;
   display: flex;
@@ -14,6 +20,7 @@
   flex-wrap: wrap;
   justify-content: space-between;
   text-align: center;
+  font-family: "FontFamilyChoosed", serif;
 }
 
 [title]{
@@ -25,6 +32,14 @@
 
 html, body, #root, .App{
   height: 100%;
+}
+
+button{
+  font-family: "FontFamilyChoosed", serif;
+}
+
+img{
+  image-rendering: crisp-edges;
 }
 
 footer{
