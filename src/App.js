@@ -18,7 +18,9 @@ function App() {
         <ResourcesView />
         <Tabs />
         <RegionsProvider>
-          <GameText />
+          <div id='game-text-div'>
+            <GameText />
+          </div>
           <GameInformations />
         </RegionsProvider>
         <footer>Footer de merde</footer>

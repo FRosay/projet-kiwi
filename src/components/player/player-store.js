@@ -11,7 +11,7 @@ const INITIAL_STATE = {
   resourcesCategory: ['resource', 'resource'],
   resourcesQuantity: [0,0],
   resourcesIsUnique: [false, false],
-  whichTab: 6 };
+  whichTab: 5 };
 
 const playerReducer = (state, action) => {
   let newCross = state.cross.slice()
@@ -23,16 +23,16 @@ const playerReducer = (state, action) => {
   let newResourcesCategory = state.resourcesCategory.slice()
   let newResourcesQuantity = state.resourcesQuantity.slice()
   let newResourcesIsUnique = state.resourcesIsUnique.slice()
-  let newWitchTab = state.whichTab
+  let newWhichTab = state.whichTab
 
   if (Number.isInteger(action.tab)) {
-    newWitchTab = action.tab
+    newWhichTab = action.tab
   } else if (action.type === 'endTurn') {
     newTurnNumber ++
     newPreoccupationPoints = state.preoccupationPointsMax
     newExploration = []
     newCross = []
-    newWitchTab = 0
+    newWhichTab = 0
   } else if (action.type === 'addPoints') {
     newPreoccupationPoints += action.range
   } else if (action.type === 'removePoints') {
@@ -62,7 +62,7 @@ const playerReducer = (state, action) => {
     resourcesCategory: newResourcesCategory,
     resourcesQuantity: newResourcesQuantity,
     resourcesIsUnique: newResourcesIsUnique,
-    whichTab: newWitchTab
+    whichTab: newWhichTab
   }
 }
 

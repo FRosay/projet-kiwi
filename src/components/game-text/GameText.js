@@ -12,42 +12,35 @@ function GameText() {
   const [range, setRange] = useState(1);
 
   if(state.whichTab === 0){
-    return (<div id='game-text-div'><Report /></div>)
+    return (<Report />)
   } else if (state.whichTab === 1){
-    return (<div id='game-text-div'><Map /></div>)
+    return (<Map />)
   } else if (state.whichTab === 2){
-    return (<div id='game-text-div'><Technologies /></div>)
+    return (<Technologies />)
   } else if (state.whichTab === 3){
-    return (<div id='game-text-div'><Politic /></div>)
+    return (<Politic />)
   } else if (state.whichTab === 4){
-    return (<div id='game-text-div'><h1>Fin de cycle</h1><button onClick={() => dispatch({type: 'endTurn'})}>S'endormir</button></div>)
-  } else if (state.whichTab === 5){//cheat
+    return (<div><h1>Fin de cycle</h1><button onClick={() => dispatch({type: 'endTurn'})}>S'endormir</button></div>)
+  } else if (state.whichTab === 5){ //rough code, for testing
     return (
-      <div id='game-text-div'>
-        <h1>Triche</h1>
-          <ul>
-            <li>{ state.preoccupationPoints } PP : <button onClick={() => dispatch({ type: 'addPoints', range:1}) }>+</button><button onClick={() => dispatch({ type: 'removePoints', range:1}) }>-</button></li>
-            <li>{ state.resourcesQuantity[0] } { state.resourcesName[0] } : <button onClick={() => dispatch({ type: 'increaseRes', index:0, range:1}) }>+</button><button onClick={() => dispatch({ type: 'decreaseRes', index:0, range:1}) }>-</button></li>
-            <li>{ state.resourcesQuantity[1] } { state.resourcesName[1] } : <button onClick={() => dispatch({ type: 'increaseRes', index:1, range:1}) }>+</button><button onClick={() => dispatch({ type: 'decreaseRes', index:1, range:1}) }>-</button></li>
-          </ul>
-      </div>
-    )
-  } else {//rought code, for testing
-    return (
-      <div id='game-text-div'>
+      <div>
         <p>
           <button onClick={() => dispatch({ type: 'removePoints', range: range })}>Diminuer</button>
           Points de préoccupation actuels: { state.preoccupationPoints }
           <button onClick={() => dispatch({ type: 'addPoints', range: range })}>Augmenter</button>
         </p>
-        <p>
-          Valeur d'augmentation ou de diminution des PPs :
+        <p>Valeur d'augmentation ou de diminution des PPs :
           <button onClick={() => setRange(range - 1)}>-</button>
           { range }
           <button onClick={() => setRange(range + 1)}>+</button>
         </p>
-        <br /><br />
+        <br />
         <button onClick={() => dispatch({ type: 'resetPoints' })}>Réinitialiser</button>
+        <br /><br />
+        <ul>
+          <li>{ state.resourcesQuantity[0] } { state.resourcesName[0] } : <button onClick={() => dispatch({ type: 'increaseRes', index:0, range:1}) }>+</button><button onClick={() => dispatch({ type: 'decreaseRes', index:0, range:1}) }>-</button></li>
+          <li>{ state.resourcesQuantity[1] } { state.resourcesName[1] } : <button onClick={() => dispatch({ type: 'increaseRes', index:1, range:1}) }>+</button><button onClick={() => dispatch({ type: 'decreaseRes', index:1, range:1}) }>-</button></li>
+        </ul>
       </div>
     )
   }
