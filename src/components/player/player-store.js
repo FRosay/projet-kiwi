@@ -11,7 +11,8 @@ const INITIAL_STATE = {
   resourcesCategory: ['resource', 'resource'],
   resourcesQuantity: [0,0],
   resourcesIsUnique: [false, false],
-  whichTab: 5 };
+  whichTab: -1 
+};
 
 const playerReducer = (state, action) => {
   let newCross = state.cross.slice()
@@ -67,10 +68,10 @@ const playerReducer = (state, action) => {
 }
 
 export const PlayerProvider = ({ children }) => {
-    const [state, dispatch] = useReducer(playerReducer, INITIAL_STATE);
+    const [playerState, playerDispatch] = useReducer(playerReducer, INITIAL_STATE);
 
     return (
-        <PlayerContext.Provider value= {{ state, dispatch }}>
+        <PlayerContext.Provider value= {{ playerState, playerDispatch }}>
             { children }
         </PlayerContext.Provider>
     )

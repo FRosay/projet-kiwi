@@ -4,22 +4,22 @@ import { useRegionsStore } from '../regions/regions-store.js';
 
 
 function GameInformations() {
-  const { state, dispatch } = usePlayerStore();
+  const { playerState, playerDispatch } = usePlayerStore();
   const { stateOfRegions, dispatchInRegions } = useRegionsStore();
 
   function specificMapButton(){
     if(stateOfRegions.regionType[stateOfRegions.clicked[0]][stateOfRegions.clicked[1]] === 'region'){
       return(
         <button
-        disabled={ state.preoccupationPoints > 0 ? false : true }
-        onClick={() => dispatch({ type:'exploration', value:[stateOfRegions.clicked[0],stateOfRegions.clicked[1]] })}
+        disabled={ playerState.preoccupationPoints > 0 ? false : true }
+        onClick={() => playerDispatch({ type:'exploration', value:[stateOfRegions.clicked[0],stateOfRegions.clicked[1]] })}
         >Explorer</button>
       )
     } else {
       return(
         <button
-        disabled={ state.preoccupationPoints > 0 ? false : true }
-        onClick={() => dispatch({ type:'cross', value:[stateOfRegions.clicked[0],stateOfRegions.clicked[1]] })}
+        disabled={ playerState.preoccupationPoints > 0 ? false : true }
+        onClick={() => playerDispatch({ type:'cross', value:[stateOfRegions.clicked[0],stateOfRegions.clicked[1]] })}
         >Franchir</button>
       )
     }
