@@ -5,7 +5,6 @@ import Report from './Report.js'
 import Map from './Map.js'
 import Technologies from './Technologies.js'
 import Politic from './Politic.js'
-import Introduction from './Introduction.js'
 
 
 function GameText() {
@@ -44,10 +43,7 @@ function GameText() {
         </ul>
       </div>
     )
-  } else { 
-    return (<Introduction />)
   }
-
 }
 
 export default GameText;

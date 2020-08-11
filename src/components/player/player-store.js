@@ -11,7 +11,7 @@ const INITIAL_STATE = {
   resourcesCategory: ['resource', 'resource'],
   resourcesQuantity: [0,0],
   resourcesIsUnique: [false, false],
-  whichTab: -1 
+  whichTab: 5 
 };
 
 const playerReducer = (state, action) => {
