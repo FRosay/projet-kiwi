@@ -28,31 +28,43 @@ const playerReducer = (state, action) => {
 
   if (Number.isInteger(action.tab)) {
     newWhichTab = action.tab
-  } else if (action.type === 'endTurn') {
-    newTurnNumber ++
-    newPreoccupationPoints = state.preoccupationPointsMax
-    newExploration = []
-    newCross = []
-    newWhichTab = 0
-  } else if (action.type === 'addPoints') {
-    newPreoccupationPoints += action.range
-  } else if (action.type === 'removePoints') {
-    newPreoccupationPoints -= action.range
-  } else if (action.type === 'resetPoints') {
-   newPreoccupationPoints = newPreoccupationPointsMax
- } else if (action.type === 'increaseRes') {
-   newResourcesQuantity[action.index] += action.range
- } else if (action.type === 'decreaseRes') {
-   newResourcesQuantity[action.index] -= action.range
- } else if (action.type === 'exploration') {
-   newExploration.push(action.value)
-   newPreoccupationPoints --
- } else if (action.type === 'cross') {
-   newCross.push(action.value)
-   newPreoccupationPoints --
- } else {
-    throw new Error(`Unhandled action type: ${action.type}`);
+  } else {
+    switch (action.type) {
+      case 'endTurn':
+        newTurnNumber ++
+        newPreoccupationPoints = state.preoccupationPointsMax
+        newExploration = []
+        newCross = []
+        newWhichTab = 0
+        break;
+      case 'addPoints':
+        newPreoccupationPoints += action.range
+        break;
+      case 'removePoints':
+        newPreoccupationPoints -= action.range
+        break;
+      case 'resetPoints':
+        newPreoccupationPoints = newPreoccupationPointsMax
+        break;
+      case 'increaseRes':
+        newResourcesQuantity[action.index] += action.range
+        break;
+      case 'decreaseRes':
+        newResourcesQuantity[action.index] -= action.range
+        break;
+      case 'exploration':
+        newExploration.push(action.value)
+        newPreoccupationPoints --
+        break;
+      case 'cross':
+        newCross.push(action.value)
+        newPreoccupationPoints --
+        break;
+      default:
+        throw new Error(`Unhandled action type: ${action.type}`);
+    }
   }
+  
   return {
     cross: newCross,
     exploration: newExploration,
