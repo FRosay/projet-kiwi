@@ -41,9 +41,13 @@ function GameText() {
         <ul>
           <li>{ playerState.resourcesQuantity[0] } { playerState.resourcesName[0] } : <button onClick={() => playerDispatch({ type: 'increaseRes', index:0, range:1}) }>+</button><button onClick={() => playerDispatch({ type: 'decreaseRes', index:0, range:1}) }>-</button></li>
           <li>{ playerState.resourcesQuantity[1] } { playerState.resourcesName[1] } : <button onClick={() => playerDispatch({ type: 'increaseRes', index:1, range:1}) }>+</button><button onClick={() => playerDispatch({ type: 'decreaseRes', index:1, range:1}) }>-</button></li>
+          <li>{ playerState.resourcesQuantity[2] } { playerState.resourcesName[2] } : <button onClick={() => playerDispatch({ type: 'increaseRes', index:2, range:1}) }>+</button><button onClick={() => playerDispatch({ type: 'decreaseRes', index:2, range:1}) }>-</button></li>
+          <li>{ playerState.resourcesQuantity[3] } { playerState.resourcesName[3] } : <button onClick={() => playerDispatch({ type: 'increaseRes', index:3, range:1}) }>+</button><button onClick={() => playerDispatch({ type: 'decreaseRes', index:3, range:1}) }>-</button></li>
         </ul>
       </div>
     )
+  } else {
+    return (<Introduction />)
   }
 }
 

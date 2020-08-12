@@ -1,5 +1,7 @@
 import stone                from '../assets/images/resources/stone.png';
 import wood                 from '../assets/images/resources/wood.png';
+import minerals             from '../assets/images/resources/minerals.png';
+import food                 from '../assets/images/resources/food.png';
 
 import pineForest           from '../assets/images/regions/pineForest.png';
 import pineLake             from '../assets/images/regions/pineLake.png';
@@ -14,7 +16,7 @@ import tree                 from '../assets/images/zones/trees.png';
 
 import preoccupationPoint   from '../assets/images/preoccupation-point.png';
 
-const IMAGES = [[stone, wood], [pineForest, pineLake, undiscovered], [bridge, mountains, sea], [rocks, tree], [preoccupationPoint]]
+const IMAGES = [[stone, wood, minerals, food], [pineForest, pineLake, undiscovered], [bridge, mountains, sea], [rocks, tree], [preoccupationPoint]]
 
 function GetImage(imageName) {
 
@@ -29,7 +31,15 @@ function GetImage(imageName) {
         case 'wood':
             category = 0
             imageNumber = 1
-            break; 
+            break;
+        case 'minerals':
+            category = 0
+            imageNumber = 2
+            break;
+        case 'food':
+            category = 0
+            imageNumber = 3
+            break;
         case 'pineForest':
             category = 1
             imageNumber = 0

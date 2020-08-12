@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+import { usePlayerStore } from '../../player/player-store.js';
 
 function StartingLocation() {
+
+    const { playerState, playerDispatch } = usePlayerStore();
 
     const [environmentChoice, setEnvironment] = useState(0)
     const [populationChoice, setPopulation] = useState(0)
@@ -13,10 +16,10 @@ function StartingLocation() {
     const environment = ['Montagneux', 'Forestier', 'Océanique', 'Plaines']
     const population = ['Inexistante', 'Faible', 'Modérée', 'Importante']
     
-    const woodPresence = ['Inexistante', 'Incertaine', 'Probable', 'Très probable' ,'Certaine']
-    const stonePresence = ['Inexistante', 'Incertaine', 'Probable', 'Très probable' ,'Certaine']
-    const mineralsPresence = ['Inexistante', 'Incertaine', 'Probable', 'Très probable' ,'Certaine']
-    const foodPresence = ['Faible quantité', 'Quantité acceptable', 'Grande quantité', 'Abondance']
+    const woodPresence = ['Incertaine', 'Probable', 'Certaine' ,'Abondante']
+    const stonePresence = ['Incertaine', 'Probable', 'Certaine' ,'Abondante']
+    const mineralsPresence = ['Incertaine', 'Probable', 'Certaine' ,'Abondante']
+    const foodPresence = ['Faible quantité', 'Quantité acceptable', 'Grande quantité', 'Abondante']
 
     function changeEnvironment(wayToGo) {
         if (wayToGo === -1 && environmentChoice === 0) {
@@ -78,6 +81,13 @@ function StartingLocation() {
         }
     }
 
+    function validateStartingLocation() {
+        playerDispatch({ type: 'setRes', index: 0, value: woodChoice })
+        playerDispatch({ type: 'setRes', index: 1, value: stoneChoice })
+        playerDispatch({ type: 'setRes', index: 2, value: mineralsChoice })
+        playerDispatch({ type: 'setRes', index: 3, value: foodChoice+1 })
+    }
+
     return (
         <div>
             <p>
@@ -91,7 +101,7 @@ function StartingLocation() {
                 Source de nourriture : <button onClick={() => changeFoodPresence(-1)}>&lt;</button> { foodPresence[foodChoice] } <button onClick={() => changeFoodPresence(1)}>&gt;</button> <br />
             </p>
             <br /><br />
-            <button>Valider</button>
+            <button onClick={() => validateStartingLocation()}>Valider</button>
         </div>
     )
 }

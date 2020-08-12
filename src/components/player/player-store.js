@@ -6,12 +6,12 @@ const INITIAL_STATE = {
   exploration: [],
   turnNumber: 0,
   preoccupationPoints: 3,
-  preoccupationPointsMax: 5,
-  resourcesName: ['wood', 'stone'],
-  resourcesCategory: ['resource', 'resource'],
-  resourcesQuantity: [0,0],
-  resourcesIsUnique: [false, false],
-  whichTab: 5 
+  preoccupationPointsMax: 3,
+  resourcesName: ['wood', 'stone', 'minerals', 'food'],
+  resourcesCategory: ['resource', 'resource', 'resource', 'resource'],
+  resourcesQuantity: [0,0,0,0],
+  resourcesIsUnique: [false, false, false, false],
+  whichTab: -1 
 };
 
 const playerReducer = (state, action) => {
@@ -45,6 +45,9 @@ const playerReducer = (state, action) => {
         break;
       case 'resetPoints':
         newPreoccupationPoints = newPreoccupationPointsMax
+        break;
+      case 'setRes':
+        newResourcesQuantity[action.index] = action.value
         break;
       case 'increaseRes':
         newResourcesQuantity[action.index] += action.range
