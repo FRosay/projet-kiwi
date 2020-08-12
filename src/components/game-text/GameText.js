@@ -5,7 +5,7 @@ import Report from './Report.js'
 import Map from './Map.js'
 import Technologies from './Technologies.js'
 import Politic from './Politic.js'
-import Introduction from './Introduction.js'
+import Introduction from './Introduction/Introduction.js'
 
 
 function GameText() {
