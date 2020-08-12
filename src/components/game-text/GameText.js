@@ -44,10 +44,7 @@ function GameText() {
         </ul>
       </div>
     )
-  } else { 
-    return (<Introduction />)
   }
-
 }
 
 export default GameText;
