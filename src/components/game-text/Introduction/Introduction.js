@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import StartingLocation from './StartingLocation.js'
+import Tooltip from '../../tooltip/tooltip.js'
 
 
 function Introduction() {
@@ -41,9 +42,9 @@ function Introduction() {
                 <div>
                     <p>Planète en approche rapide. Probabilité de survie des colons en baisse.</p> 
         
-                    <p>Possibilité d'influer légèrement la trajectoire grâce aux systèmes de vol intra-planétaires. 
-                    <br />
-                    Détermination d'un point de chute nécessaire.</p>
+                    <div>Possibilité d'influer légèrement la trajectoire grâce aux systèmes de <Tooltip tooltip='VIP.' tooltipText='Vol Intra-Planétaires' /></div>
+
+                    <p>Détermination d'un point de chute nécessaire.</p>
                     
                     <p>Analyse rapide de la planète. Points de chute atteignables listés. Avantages respectifs déterminés.</p> 
                     
