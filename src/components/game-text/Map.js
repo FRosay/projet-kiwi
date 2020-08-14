@@ -5,7 +5,7 @@ import GetImage from '../GraphicResources.js'
 
 
 function Map() {
-  const { playerState, playerDispatch } = usePlayerStore();
+  const { playerState } = usePlayerStore();
   const { stateOfRegions, dispatchInRegions } = useRegionsStore();
 
   function tilesPlacement(){
@@ -53,7 +53,7 @@ function Map() {
         )
       }
     }
-    
+
     return rowObject
   }
 

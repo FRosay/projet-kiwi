@@ -1,4 +1,5 @@
 import React from 'react';
+import { useOptionsStore } from '../options/options-store.js';
 import { usePlayerStore } from '../player/player-store.js';
 import './Tabs.css';
 
@@ -6,6 +7,7 @@ const NAMES_TABS = ['Rapport', 'Carte', 'Technologie', 'Politique', 'Fin de cycl
 
 function Tabs() {
 
+  const { stateOfOptions } = useOptionsStore();
   const { playerState, playerDispatch } = usePlayerStore();
 
   let isDisplayed = [false, false, false, false, false, false]
@@ -21,13 +23,17 @@ function Tabs() {
     return buttons
   }
 
-  return (
-    <div id='tabs-div'>
-      <div>-- Cycle {playerState.turnNumber} --</div>
-      <div>{playerState.preoccupationPoints}/{playerState.preoccupationPointsMax} PP</div>
-      { buttonsRender() }
-    </div>
-  )
+  if(stateOfOptions.display !== 'full'){
+    return (
+      <div id='tabs-div'>
+        <div>-- Cycle {playerState.turnNumber} --</div>
+        <div>{playerState.preoccupationPoints}/{playerState.preoccupationPointsMax} PP</div>
+        { buttonsRender() }
+      </div>
+    )
+  } else {
+    return (<div></div>)
+  }
 }
 
 export default Tabs;

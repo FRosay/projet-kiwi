@@ -1,11 +1,13 @@
 import React from 'react';
+import { useOptionsStore } from '../options/options-store.js';
 import { usePlayerStore } from '../player/player-store.js';
 import { useRegionsStore } from '../regions/regions-store.js';
 
 
 function GameInformations() {
+  const { stateOfOptions } = useOptionsStore();
   const { playerState, playerDispatch } = usePlayerStore();
-  const { stateOfRegions, dispatchInRegions } = useRegionsStore();
+  const { stateOfRegions } = useRegionsStore();
 
   function specificMapButton(){
     if(stateOfRegions.regionType[stateOfRegions.clicked[0]][stateOfRegions.clicked[1]] === 'region'){
@@ -37,9 +39,13 @@ function GameInformations() {
     )
   }
 
-  return(
-    <div id='game-informations-div'>{ stateOfRegions.clicked !== false ? insideMap() : '' }</div>
-  )
+  if(stateOfOptions.display !== 'full'){
+    return(
+      <div id='game-informations-div'>{ stateOfRegions.clicked !== false ? insideMap() : '' }</div>
+    )
+  } else {
+    return(<div></div>)
+  }
 }
 
 export default GameInformations;
