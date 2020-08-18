@@ -1,17 +1,31 @@
 import React, { useState } from 'react';
 import StartingLocation from './StartingLocation.js'
-import Tooltip from '../../tooltip/tooltip.js'
+import Tooltip from '../../misc-tools/tooltip/tooltip.js'
+import { useOptionsStore } from '../../options/options-store.js';
+import { usePlayerStore } from '../../player/player-store.js';
 
 function Introduction() {
 
+    const { dispatchInOptions } = useOptionsStore();
+    const { playerDispatch } = usePlayerStore();
+
     const [page, setPage] = useState(0)
+
+    function skipIntro() {
+        playerDispatch({ tab: 0 })
+        dispatchInOptions({ category: 'display', value: 'framed'})
+    }
 
     switch (page) {
         case 0:
             return(
               <div>
-                <h1>[Insert game name]</h1>
+                <h1>[Insert game name]</h1> 
                 <button onClick={() => setPage(page+1)}>Nouvel atterrissage</button>
+
+                <br /><br />
+
+                <button onClick={() => skipIntro()}>Passer l'introduction</button>
               </div>
             )
         case 1:
