@@ -2,6 +2,8 @@ import React, { createContext, useContext, useReducer } from 'react';
 
 const PlayerContext = createContext();
 const INITIAL_STATE = {
+  technologiesMastered: [],
+  technologiesDiscovered: [],
   cross: [],
   exploration: [],
   turnNumber: 0,
@@ -15,6 +17,8 @@ const INITIAL_STATE = {
 };
 
 const playerReducer = (state, action) => {
+  let newTechnologiesMastered = state.technologiesMastered.slice()
+  let newTechnologiesDiscovered = state.technologiesDiscovered.slice()
   let newCross = state.cross.slice()
   let newExploration = state.exploration.slice()
   let newTurnNumber = state.turnNumber
@@ -30,6 +34,12 @@ const playerReducer = (state, action) => {
     newWhichTab = action.tab
   } else {
     switch (action.type) {
+      case 'addDiscoveredTech':
+        newTechnologiesDiscovered.push(action.newTech)
+        break;
+      case 'addMasteredTech':
+        newTechnologiesMastered.push(action.newTech)
+        break;
       case 'endTurn':
         newTurnNumber ++
         newPreoccupationPoints = state.preoccupationPointsMax
@@ -69,6 +79,8 @@ const playerReducer = (state, action) => {
   }
   
   return {
+    technologiesMastered: newTechnologiesMastered,
+    technologiesDiscovered: newTechnologiesDiscovered,
     cross: newCross,
     exploration: newExploration,
     turnNumber: newTurnNumber,

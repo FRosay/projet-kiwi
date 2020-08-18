@@ -3,7 +3,7 @@ import { usePlayerStore } from '../player/player-store.js';
 
 import Report from './Report.js'
 import Map from './Map.js'
-import Technologies from './Technologies.js'
+import Technologies from './Technology/Technologies.js'
 import Politic from './Politic.js'
 import Introduction from './Introduction/Introduction.js'
 

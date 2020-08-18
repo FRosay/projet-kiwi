@@ -11,7 +11,7 @@ function Introduction() {
         case 1:
             return(
                 <div>
-                    <p>Faille dans le système des moteurs. Etat critique.</p> 
+                    <p>Faille dans le système des moteurs. État critique.</p> 
         
                     <p>Annulation de l’ordre de mission CNP-006. Nouvelle priorité : sauvegarder les vies humaines à bord.</p>
                     
@@ -42,7 +42,7 @@ function Introduction() {
                 <div>
                     <p>Planète en approche rapide. Probabilité de survie des colons en baisse.</p> 
         
-                    <div>Possibilité d'influer légèrement la trajectoire grâce aux systèmes de <Tooltip tooltip='VIP.' tooltipText='Vol Intra-Planétaires' /></div>
+                    <div>Possibilité d'influer légèrement la trajectoire grâce aux systèmes de <Tooltip tooltip='VIP' tooltipText='Vol Intra-Planétaires' />.</div>
 
                     <p>Détermination d'un point de chute nécessaire.</p>
                     
