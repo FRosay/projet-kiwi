@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { useOptionsStore } from '../../options/options-store.js';
 import { usePlayerStore } from '../../player/player-store.js';
 
 function StartingLocation() {
 
-    const { playerState, playerDispatch } = usePlayerStore();
+    const { dispatchInOptions } = useOptionsStore();
+    const { playerDispatch } = usePlayerStore();
 
     const [environmentChoice, setEnvironment] = useState(0)
     const [populationChoice, setPopulation] = useState(0)
@@ -15,7 +17,7 @@ function StartingLocation() {
 
     const environment = ['Montagneux', 'Forestier', 'Océanique', 'Plaines']
     const population = ['Inexistante', 'Faible', 'Modérée', 'Importante']
-    
+
     const woodPresence = ['Incertaine', 'Probable', 'Certaine' ,'Abondante']
     const stonePresence = ['Incertaine', 'Probable', 'Certaine' ,'Abondante']
     const mineralsPresence = ['Incertaine', 'Probable', 'Certaine' ,'Abondante']
@@ -86,6 +88,8 @@ function StartingLocation() {
         playerDispatch({ type: 'setRes', index: 1, value: stoneChoice })
         playerDispatch({ type: 'setRes', index: 2, value: mineralsChoice })
         playerDispatch({ type: 'setRes', index: 3, value: foodChoice+1 })
+        playerDispatch({ tab: 0 })
+        dispatchInOptions({ category: 'display', value: 'framed'})
     }
 
     return (
