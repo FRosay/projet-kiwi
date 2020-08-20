@@ -9,11 +9,12 @@ function Testing() {
     const [nameLengthRange, setNameLengthRange] = useState([3,8])
     const [randomName, setRandomName]           = useState('')
     const [titleIsSelected, setTitleIsSelected] = useState(false)
+    const [apostrophyIsSelected, setApostrophyIsSelected] = useState(false)
 
     function generateRandomName(minLength, maxLength) {
         let generatedName = ''
 
-        generatedName = NameGenerator(minLength, maxLength, titleIsSelected)
+        generatedName = NameGenerator(minLength, maxLength, titleIsSelected, apostrophyIsSelected)
 
         setRandomName(generatedName)
     }
@@ -58,6 +59,17 @@ function Testing() {
                 />
                 Ajouter un titre ?
                 </label>
+                <br />
+                <label>
+                <input
+                    type="checkbox"
+                    name='Apostrophe dans le nom ?'
+                    checked={apostrophyIsSelected}
+                    onChange={() => setApostrophyIsSelected(!apostrophyIsSelected)}
+                    className="form-check-input"
+                />
+                Apostrophe dans le nom ?
+                </label> 
             </p>
         </div>
     )

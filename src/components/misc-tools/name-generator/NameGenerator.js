@@ -10,13 +10,14 @@ const lettersConsonents         = ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 
 const pickChanceConsonents      = [ 5,   5,   8,   2,   3,   3,   3,   3,   11,  3,   8,   10,  3,   6,  12,   11,  1,   1,   1,   1 ] 
 const pickChanceConsonentsFinal = []
 
-function NameGenerator(minLength, maxLength, titleRequired = false, titleGender = '') {
+function NameGenerator(minLength, maxLength, titleRequired = false, apostrophyRequired = false, titleGender = '') {
 
     let result
     let generatedName = ['', '']
     let rng = Math.floor(Math.random() * 26)
-    let nameLength = Math.random() * (maxLength - minLength) + minLength
+    let nameLength = Math.floor(Math.random() * (maxLength - minLength) + minLength)
     let pickChance = 0
+    let apostrophyPosition = Math.floor(Math.random() * ((nameLength-1) - 1) + 1)
 
     for (let i=0; i < pickChanceAll.length; i++) {
         pickChance += pickChanceAll[i]
@@ -80,9 +81,13 @@ function NameGenerator(minLength, maxLength, titleRequired = false, titleGender 
         let secondToLastLetter  = generatedName[generatedName.length-2]
         let thirdToLastLetter   = generatedName[generatedName.length-3]
 
+        
+
         rng = Math.floor(Math.random() * (100 - 1) + 1)
 
-        if (lastLetter === secondToLastLetter) { 
+        if (apostrophyRequired && i === apostrophyPosition) {
+            generatedName.push("'")
+        } else if (lastLetter === secondToLastLetter) { 
             // Après une lettre doublée, on force le changement
             pickAnyLetter([lastLetter])
 
