@@ -14,11 +14,12 @@ function GameText() {
   const [range, setRange]                     = useState(1);
   const [nameLengthRange, setNameLengthRange] = useState([3,8])
   const [randomName, setRandomName]           = useState('')
+  const [titleIsSelected, setTitleIsSelected] = useState(false)
   
   function generateRandomName(minLength, maxLength) {
     let generatedName = ''
 
-    generatedName = NameGenerator(minLength, maxLength)
+    generatedName = NameGenerator(minLength, maxLength, titleIsSelected)
 
     setRandomName(generatedName)
   }
@@ -63,6 +64,17 @@ function GameText() {
           <br />
           Minimum de lettres : <button onClick={() => setNameLengthRange([(nameLengthRange[0]-1),nameLengthRange[1]])}>-</button><button onClick={() => setNameLengthRange([(nameLengthRange[0]+1),nameLengthRange[1]])}>+</button>
           Maximum de lettres : <button onClick={() => setNameLengthRange([nameLengthRange[0],(nameLengthRange[1]-1)])}>-</button><button onClick={() => setNameLengthRange([nameLengthRange[0],(nameLengthRange[1]+1)])}>+</button>
+          <br />
+          <label>
+            <input
+              type="checkbox"
+              name='Ajouter un titre ?'
+              checked={titleIsSelected}
+              onChange={() => setTitleIsSelected(!titleIsSelected)}
+              className="form-check-input"
+            />
+            Ajouter un titre ?
+          </label>
         </p>
       </div>
     )

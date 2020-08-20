@@ -1,25 +1,53 @@
-const lettersAll = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'] // 26
-const pickChanceAll = [10, 12, 15, 19, 33, 34, 36, 37, 45, 46, 48, 54, 58, 62, 67, 72, 74, 79, 85, 90, 95, 96, 97, 98, 99, 100] // as %
-const lettersVoyels = ['a', 'e', 'i', 'o', 'u', 'y'] // 6
-const pickChanceVoyels = [30, 65, 80, 88, 96, 100] // as %
-const lettersConsonents = ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'z'] // 20
-const pickChanceConsonents = [5, 9, 16, 18, 21, 23, 25, 29, 40, 43, 51, 61, 66, 72, 83, 92, 94, 96, 98, 100] // as %
+import AddAdjective from './AddAdjective.js'
 
-function NameGenerator(minLength, maxLength) {
+const lettersAll                = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'] 
+const pickChanceAll             = [10,   2,   3,   4,   14,  1,   2,   1,   8,   1,   2,   6,   4,   4,   5,   5,   2,   5,   6,   5,   5,   1,   1,   1,   1,   1] // en %
+const pickChanceAllFinal        = [] // cumul des % pour arriver à 100
+const lettersVoyels             = ['a', 'e', 'i', 'o', 'u', 'y']
+const pickChanceVoyels          = [ 30,  35,  15,  8,   8,   4 ] 
+const pickChanceVoyelsFinal     = [] 
+const lettersConsonents         = ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'z']
+const pickChanceConsonents      = [ 5,   5,   8,   2,   3,   3,   3,   3,   11,  3,   8,   10,  3,   6,  12,   11,  1,   1,   1,   1 ] 
+const pickChanceConsonentsFinal = []
 
+function NameGenerator(minLength, maxLength, titleRequired = false, titleGender = '') {
+
+    let result
     let generatedName = ['', '']
     let rng = Math.floor(Math.random() * 26)
     let nameLength = Math.random() * (maxLength - minLength) + minLength
-    let result
+    let pickChance = 0
 
-    function pickAnyLetter(letterToAvoid) {
+    for (let i=0; i < pickChanceAll.length; i++) {
+        pickChance += pickChanceAll[i]
+        pickChanceAllFinal.push(pickChance)
+    }
+    pickChance = 0
+    for (let i=0; i < pickChanceVoyels.length; i++) {
+        pickChance += pickChanceVoyels[i]
+        pickChanceVoyelsFinal.push(pickChance)
+    }
+    pickChance = 0
+    for (let i=0; i < pickChanceConsonents.length; i++) {
+        pickChance += pickChanceConsonents[i]
+        pickChanceConsonentsFinal.push(pickChance)
+    }
+
+    function addTitle(requiredGender = titleGender) {
+        let title
+
+        title = AddAdjective(requiredGender)
+
+        return title
+    }
+
+    function pickAnyLetter(lettersToAvoid = ['']) {
         let newLetter = ''
         let iteration = 0
-
-        while ((rng >= pickChanceAll[iteration]) && (lettersAll[iteration] !== letterToAvoid)) {
+        
+        while ((rng >= pickChanceAllFinal[iteration]) || (lettersToAvoid.includes(lettersAll[iteration]))) {
             iteration++
         }
-
         newLetter = lettersAll[iteration]
         generatedName.push(newLetter)
     }
@@ -28,10 +56,9 @@ function NameGenerator(minLength, maxLength) {
         let consonent = ''
         let iteration = 0
 
-        while (rng >= pickChanceConsonents[iteration]) {
+        while (rng >= pickChanceConsonentsFinal[iteration]) {
             iteration++
         }
-
         consonent = lettersConsonents[iteration]
         generatedName.push(consonent)
     }
@@ -40,10 +67,9 @@ function NameGenerator(minLength, maxLength) {
         let voyel = ''
         let iteration = 0
 
-        while (rng > pickChanceVoyels[iteration]) {
+        while (rng > pickChanceVoyelsFinal[iteration]) {
             iteration++
         }
-
         voyel = lettersVoyels[iteration]
         generatedName.push(voyel)
     }
@@ -58,7 +84,7 @@ function NameGenerator(minLength, maxLength) {
 
         if (lastLetter === secondToLastLetter) { 
             // Après une lettre doublée, on force le changement
-            pickAnyLetter(lastLetter)
+            pickAnyLetter([lastLetter])
 
         } else if (lettersVoyels.includes(lastLetter)) { 
             // Après une voyelle, on met une consonne
@@ -69,11 +95,14 @@ function NameGenerator(minLength, maxLength) {
             pickVoyel()
 
         } else {
-            pickAnyLetter('')
+            pickAnyLetter()
         }
     }
 
-    result = generatedName.slice(2)
+    generatedName = generatedName.slice(2)
+    generatedName[0] = generatedName[0].toUpperCase()
+    
+    titleRequired ? result = generatedName.toString().replace(/,/g, '') + ' ' + addTitle() : result = generatedName.toString().replace(/,/g, '')
 
     return result
 }
