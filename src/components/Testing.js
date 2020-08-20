@@ -10,7 +10,7 @@ function Testing() {
     const [randomName, setRandomName]           = useState('')
     const [titleIsSelected, setTitleIsSelected] = useState(false)
     const [apostrophyIsSelected, setApostrophyIsSelected] = useState(false)
-    const [manuallyAddedLetters, setManuallyAddedLetters] = useState('')
+    const [manuallyAddedLetters, setManuallyAddedLetters] = useState([''])
 
     function generateRandomName(minLength, maxLength) {
         let generatedName = ''
@@ -18,6 +18,14 @@ function Testing() {
         generatedName = NameGenerator(minLength, maxLength, titleIsSelected, apostrophyIsSelected, manuallyAddedLetters)
 
         setRandomName(generatedName)
+    }
+
+    function handleChange(newValue) {
+        let newLetters = []
+
+        newValue.length > 1 ? newLetters = newValue.split('') : newLetters.push(newValue)
+
+        setManuallyAddedLetters(newLetters)
     }
 
     return (
@@ -62,7 +70,7 @@ function Testing() {
                 <br />
                 <label>
                     Ajouter  
-                    <input onChange={(event) => setManuallyAddedLetters(event.target.value)} style={{ textAlign: 'center', width: '10%' }} />
+                    <input onChange={(event) => handleChange(event.target.value)} style={{ textAlign: 'center', width: '10%' }} />
                     dans le nom
                 </label> 
             </p>

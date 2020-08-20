@@ -10,7 +10,7 @@ const lettersConsonents         = ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 
 const pickChanceConsonents      = [ 5,   5,   8,   2,   3,   3,   3,   3,   11,  3,   8,   10,  3,   6,  12,   11,  1,   1,   1,   1 ] 
 const pickChanceConsonentsFinal = []
 
-function NameGenerator(minLength, maxLength, titleRequired = false, apostrophyRequired = false, manuallyAddedLetters = '', titleGender = '') {
+function NameGenerator(minLength, maxLength, titleRequired = false, apostrophyRequired = false, manuallyAddedLetters = [], titleGender = '') {
 
     let result
     let generatedName = ['', '']
@@ -88,8 +88,9 @@ function NameGenerator(minLength, maxLength, titleRequired = false, apostrophyRe
 
         if (apostrophyRequired && i === apostrophyPosition) {
             generatedName.push("'")
-        } else if (manuallyAddedLetters !== '' && i === forcedLettersPosition) {
-            generatedName.push(manuallyAddedLetters)
+        } else if (manuallyAddedLetters[0] !== '' && i === forcedLettersPosition) {
+            manuallyAddedLetters.forEach(letter => generatedName.push(letter))
+            manuallyAddedLetters.forEach(letter => i++)
         } else if (lastLetter === secondToLastLetter) { 
             // Après une lettre doublée, on force le changement
             pickAnyLetter([lastLetter])
