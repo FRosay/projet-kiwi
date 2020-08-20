@@ -10,11 +10,12 @@ function Testing() {
     const [randomName, setRandomName]           = useState('')
     const [titleIsSelected, setTitleIsSelected] = useState(false)
     const [apostrophyIsSelected, setApostrophyIsSelected] = useState(false)
+    const [manuallyAddedLetters, setManuallyAddedLetters] = useState('')
 
     function generateRandomName(minLength, maxLength) {
         let generatedName = ''
 
-        generatedName = NameGenerator(minLength, maxLength, titleIsSelected, apostrophyIsSelected)
+        generatedName = NameGenerator(minLength, maxLength, titleIsSelected, apostrophyIsSelected, manuallyAddedLetters)
 
         setRandomName(generatedName)
     }
@@ -50,25 +51,19 @@ function Testing() {
                 Maximum de lettres : <button onClick={() => setNameLengthRange([nameLengthRange[0],(nameLengthRange[1]-1)])}>-</button><button onClick={() => setNameLengthRange([nameLengthRange[0],(nameLengthRange[1]+1)])}>+</button>
                 <br />
                 <label>
-                <input
-                    type="checkbox"
-                    name='Ajouter un titre ?'
-                    checked={titleIsSelected}
-                    onChange={() => setTitleIsSelected(!titleIsSelected)}
-                    className="form-check-input"
-                />
-                Ajouter un titre ?
+                    Ajouter un titre
+                    <input type='checkbox' checked={titleIsSelected} onChange={() => setTitleIsSelected(!titleIsSelected)} />
                 </label>
                 <br />
                 <label>
-                <input
-                    type="checkbox"
-                    name='Apostrophe dans le nom ?'
-                    checked={apostrophyIsSelected}
-                    onChange={() => setApostrophyIsSelected(!apostrophyIsSelected)}
-                    className="form-check-input"
-                />
-                Apostrophe dans le nom ?
+                    Ajouter une apostrophe
+                    <input type='checkbox' checked={apostrophyIsSelected} onChange={() => setApostrophyIsSelected(!apostrophyIsSelected)} />
+                </label>
+                <br />
+                <label>
+                    Ajouter  
+                    <input onChange={(event) => setManuallyAddedLetters(event.target.value)} style={{ textAlign: 'center', width: '10%' }} />
+                    dans le nom
                 </label> 
             </p>
         </div>

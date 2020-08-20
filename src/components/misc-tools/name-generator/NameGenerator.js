@@ -10,7 +10,7 @@ const lettersConsonents         = ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 
 const pickChanceConsonents      = [ 5,   5,   8,   2,   3,   3,   3,   3,   11,  3,   8,   10,  3,   6,  12,   11,  1,   1,   1,   1 ] 
 const pickChanceConsonentsFinal = []
 
-function NameGenerator(minLength, maxLength, titleRequired = false, apostrophyRequired = false, titleGender = '') {
+function NameGenerator(minLength, maxLength, titleRequired = false, apostrophyRequired = false, manuallyAddedLetters = '', titleGender = '') {
 
     let result
     let generatedName = ['', '']
@@ -18,6 +18,11 @@ function NameGenerator(minLength, maxLength, titleRequired = false, apostrophyRe
     let nameLength = Math.floor(Math.random() * (maxLength - minLength) + minLength)
     let pickChance = 0
     let apostrophyPosition = Math.floor(Math.random() * ((nameLength-1) - 1) + 1)
+    let forcedLettersPosition = Math.floor(Math.random() * nameLength)
+
+    while (forcedLettersPosition === apostrophyPosition) {
+        forcedLettersPosition = Math.floor(Math.random() * nameLength)
+    }
 
     for (let i=0; i < pickChanceAll.length; i++) {
         pickChance += pickChanceAll[i]
@@ -36,9 +41,7 @@ function NameGenerator(minLength, maxLength, titleRequired = false, apostrophyRe
 
     function addTitle(requiredGender = titleGender) {
         let title
-
         title = AddAdjective(requiredGender)
-
         return title
     }
 
@@ -81,12 +84,12 @@ function NameGenerator(minLength, maxLength, titleRequired = false, apostrophyRe
         let secondToLastLetter  = generatedName[generatedName.length-2]
         let thirdToLastLetter   = generatedName[generatedName.length-3]
 
-        
-
         rng = Math.floor(Math.random() * (100 - 1) + 1)
 
         if (apostrophyRequired && i === apostrophyPosition) {
             generatedName.push("'")
+        } else if (manuallyAddedLetters !== '' && i === forcedLettersPosition) {
+            generatedName.push(manuallyAddedLetters)
         } else if (lastLetter === secondToLastLetter) { 
             // Après une lettre doublée, on force le changement
             pickAnyLetter([lastLetter])
