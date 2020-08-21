@@ -8,9 +8,12 @@ function NameGenerator(minLength, maxLength, requiredTitle, forcedLetters = [], 
 
     let result
     let generatedName                   = []
-    let nameLength                      = Math.floor(Math.random() * (maxLength - minLength) + minLength)
+    let nameLength                      = Math.floor(Math.random() * (Math.floor(maxLength) - Math.ceil(minLength) + 1) + Math.ceil(minLength))
     let firstForcedLettersPositioning
     let secondForcedLettersPositioning
+
+    console.log(minLength + ' ' + maxLength)
+    console.log(nameLength)
 
     function addTitle() {
         let title
