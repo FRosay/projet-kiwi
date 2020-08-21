@@ -74,7 +74,8 @@ function Testing() {
                 <br />
                 qui a entre <input type='number' onChange={(event) => setNameLengthRange([event.target.value,nameLengthRange[1]])} min='1' max={nameLengthRange[1]} style={{ textAlign: 'center', width: '8%' }} /> 
                 et <input type='number' onChange={(event) => setNameLengthRange([nameLengthRange[0],event.target.value])} min={nameLengthRange[0]} max='100' style={{ textAlign: 'center', width: '8%' }} /> lettres
-                
+                <br /><br />
+                \/ Facultatif \/
                 <br />
                 Ajouter un titre masculin <input type='checkbox' checked={titleIsSelected[0]} onChange={() => setTitleIsSelected([!titleIsSelected[0], false, false, false])} />,
                 féminin <input type='checkbox' checked={titleIsSelected[1]} onChange={() => setTitleIsSelected([false, !titleIsSelected[1], false, false])} />,
@@ -83,11 +84,10 @@ function Testing() {
                 <br />
 
                 Ajouter <input onChange={(event) => handleChange('one', event.target.value)} style={{ textAlign: 'center', width: '12%', height:'0.8em' }} />
-                et      <input onChange={(event) => handleChange('two', event.target.value)} style={{ textAlign: 'center', width: '12%', height:'0.8em' }} />
-                dans le nom, à la
-                <input type='number' onChange={(event) => setAddedLettersPosition([event.target.value, addedLettersPosition[1]])} min='1' max={nameLengthRange[1]} style={{ textAlign:'center', width:'8%', height:'0.8em' }} />
-                {parseInt(addedLettersPosition[0], 10) === 1 ? 'ère' : 'ème'} et à la 
-                <input type='number' onChange={(event) => setAddedLettersPosition([addedLettersPosition[0], event.target.value])} min='1' max={nameLengthRange[1]} style={{ textAlign:'center', width:'8%', height:'0.8em' }} />
+                à la <input type='number' onChange={(event) => setAddedLettersPosition([event.target.value, addedLettersPosition[1]])} min='1' max={nameLengthRange[1]} style={{ textAlign:'center', width:'8%', height:'0.8em' }} />
+                {parseInt(addedLettersPosition[0], 10) === 1 ? 'ère' : 'ème'} position
+                et / ou <input onChange={(event) => handleChange('two', event.target.value)} style={{ textAlign: 'center', width: '12%', height:'0.8em' }} />
+                à la <input type='number' onChange={(event) => setAddedLettersPosition([addedLettersPosition[0], event.target.value])} min='1' max={nameLengthRange[1]} style={{ textAlign:'center', width:'8%', height:'0.8em' }} />
                 {parseInt(addedLettersPosition[1], 10) === 1 ? 'ère' : 'ème'} position
             </p>
         </div>
