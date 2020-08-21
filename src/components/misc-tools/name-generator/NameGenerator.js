@@ -10,19 +10,13 @@ const lettersConsonents         = ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 
 const pickChanceConsonents      = [ 5,   5,   8,   2,   3,   3,   3,   3,   11,  3,   8,   10,  3,   6,  12,   11,  1,   1,   1,   1 ] 
 const pickChanceConsonentsFinal = []
 
-function NameGenerator(minLength, maxLength, titleRequired = false, apostrophyRequired = false, manuallyAddedLetters = [], titleGender = '') {
+function NameGenerator(minLength, maxLength, requiredTitle, forcedLetters = [], forcedLettersPosition = [-1,-1]) {
 
     let result
     let generatedName = ['', '']
     let rng = Math.floor(Math.random() * 26)
     let nameLength = Math.floor(Math.random() * (maxLength - minLength) + minLength)
     let pickChance = 0
-    let apostrophyPosition = Math.floor(Math.random() * ((nameLength-1) - 1) + 1)
-    let forcedLettersPosition = Math.floor(Math.random() * nameLength)
-
-    while (forcedLettersPosition === apostrophyPosition) {
-        forcedLettersPosition = Math.floor(Math.random() * nameLength)
-    }
 
     for (let i=0; i < pickChanceAll.length; i++) {
         pickChance += pickChanceAll[i]
@@ -39,8 +33,18 @@ function NameGenerator(minLength, maxLength, titleRequired = false, apostrophyRe
         pickChanceConsonentsFinal.push(pickChance)
     }
 
-    function addTitle(requiredGender = titleGender) {
+    function addTitle() {
         let title
+        let requiredGender = ''
+        
+        if (requiredTitle[0] === true) {
+            requiredGender= 'masculine'
+        } else if (requiredTitle[1] === true) {
+            requiredGender= 'feminine'
+        } else if (requiredTitle[2] === true) {
+            requiredGender= 'neutral'
+        }
+        
         title = AddAdjective(requiredGender)
         return title
     }
@@ -83,14 +87,16 @@ function NameGenerator(minLength, maxLength, titleRequired = false, apostrophyRe
         let lastLetter          = generatedName[generatedName.length-1]
         let secondToLastLetter  = generatedName[generatedName.length-2]
         let thirdToLastLetter   = generatedName[generatedName.length-3]
-
+        
         rng = Math.floor(Math.random() * (100 - 1) + 1)
-
-        if (apostrophyRequired && i === apostrophyPosition) {
-            generatedName.push("'")
-        } else if (manuallyAddedLetters[0] !== '' && i === forcedLettersPosition) {
-            manuallyAddedLetters.forEach(letter => generatedName.push(letter))
-            manuallyAddedLetters.forEach(letter => i++)
+        
+        // On met -1 car le choix de la position commence à 1, mais l'array à 0
+        if (i === (parseInt(forcedLettersPosition[0], 10)-1 )) {
+            forcedLetters[0].forEach(letter => generatedName.push(letter))
+            
+        } else if (i === (parseInt(forcedLettersPosition[1], 10)-1)) {
+            forcedLetters[1].forEach(letter => generatedName.push(letter))
+            
         } else if (lastLetter === secondToLastLetter) { 
             // Après une lettre doublée, on force le changement
             pickAnyLetter([lastLetter])
@@ -111,7 +117,7 @@ function NameGenerator(minLength, maxLength, titleRequired = false, apostrophyRe
     generatedName = generatedName.slice(2)
     generatedName[0] = generatedName[0].toUpperCase()
     
-    titleRequired ? result = generatedName.toString().replace(/,/g, '') + ' ' + addTitle() : result = generatedName.toString().replace(/,/g, '')
+    requiredTitle.includes(true) ? result = generatedName.toString().replace(/,/g, '') + ' ' + addTitle() : result = generatedName.toString().replace(/,/g, '')
 
     return result
 }
