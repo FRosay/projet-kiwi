@@ -1,6 +1,6 @@
-const masculineAdjectives = ["le Grand", "le Fier", "l'Invaincu", "l'Ancien", "le Sage", "l'Ordonné", "le Pieux", "le Petit"]
-const feminineAdjectives = ["la Grande", "la Fière", "l'Invaincue", "l'Ancienne", "la Sage", "l'Ordonnée", "la Pieuse", "la Petite"]
-const neutralAdjectives = ["l'Immarcescible", "l'Incommensurable"]
+const masculineAdjectives = ["le Grand", "le Fier", "l'Invaincu", "l'Ancien", "le Sage", "l'Ordonné", "le Pieux", "le Petit", "le Fort", "le Dur", "le Monstrueux", "le Cruel", "l'Approximatif", "le Flamboyant"]
+const feminineAdjectives = ["la Grande", "la Fière", "l'Invaincue", "l'Ancienne", "la Sage", "l'Ordonnée", "la Pieuse", "la Petite", "la Forte", "la Dure", "la Monstrueuse", "la Cruelle", "l'Approximative", "la Flamboyante"]
+const neutralAdjectives = ["l'Immarcescible", "l'Incommensurable", "l'Admirable", "l'Apocalyptique", "l'Insupportable", "l'Honnête", "l'Exemplaire", "l'Équitable", "l'Inique", "l'Intenable", "l'Incrédule"]
 const adjectivesTypes   = ["masculine", "feminine", "neutral"]
 
 function AddAdjective(requiredGender = '') {   
