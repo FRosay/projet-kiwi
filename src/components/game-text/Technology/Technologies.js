@@ -11,21 +11,30 @@ function Technologies() {
   let masteredTechs = playerState.technologiesMastered
   let discoveredTechs = playerState.technologiesDiscovered
   
-  let newTech = GetTechInfos('Canne à pêche')
-  console.log(discoveredTechs)
+  let newTech = GetTechInfos('Random')
+  
+  function addDiscoveredTech() {
+    playerDispatch({type: 'addDiscoveredTech', newTech: newTech})
+    //newTech = GetTechInfos('Random')
+  }
+
   return (
-    <div>
-      <p>Technologies maîtrisées :</p>
+    <div className='container'>
       
-      { masteredTechs.map((tech, index) => { return <Technology key= {index} techName= {tech.techName} techGroup= {tech.techGroup} techCost= {tech.techCost} /> }) }
+        Technologies maîtrisées :
+      <div className='masteredTechs'>
+        { masteredTechs.map((tech, index) => { return <Technology key= {index} techImage= {tech.techImage} techName= {tech.techName} techGroup= {tech.techGroup} techCost= {tech.techCost} /> }) }
+      </div>      
       
-      <p>Technologies découvertes :</p>
+        Technologies découvertes :
+      <div className='discoveredTechs'>
+        { discoveredTechs.map((tech, index) => { return <Technology key= {index} techImage= {tech.techImage} techName= {tech.techName} techGroup= {tech.techGroup} techCost= {tech.techCost} /> }) }
+      </div>
 
-      { discoveredTechs.map((tech, index) => { return <Technology key= {index} techName= {tech.techName} techGroup= {tech.techGroup} techCost= {tech.techCost} /> }) }
-
-      <p>Technologies à découvrir :</p>
-
-      <button onClick={() => playerDispatch({type: 'addDiscoveredTech', newTech: newTech})}>Canne à pêche</button>
+        Technologies à découvrir :
+      <div className='toBeDiscoveredTechs'>
+        <button onClick={() => addDiscoveredTech()}>Découvrir une technologie aléatoire</button>
+      </div>
 
     </div>
   )

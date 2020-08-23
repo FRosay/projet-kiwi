@@ -16,7 +16,12 @@ import tree                 from '../assets/images/zones/trees.png';
 
 import preoccupationPoint   from '../assets/images/preoccupation-point.png';
 
-const IMAGES = [[stone, wood, minerals, food], [pineForest, pineLake, undiscovered], [bridge, mountains, sea], [rocks, tree], [preoccupationPoint]]
+import techFishingCane      from '../assets/images/technologies/fishingCane.png';
+import techFishingNet      from '../assets/images/technologies/fishingNet.png';
+import techFishingBoat      from '../assets/images/technologies/fishingBoat.png';
+
+const IMAGES =  [[stone, wood, minerals, food], [pineForest, pineLake, undiscovered], [bridge, mountains, sea], [rocks, tree], 
+                [preoccupationPoint], [techFishingCane, techFishingNet, techFishingBoat]]
 
 function GetImage(imageName) {
 
@@ -75,6 +80,18 @@ function GetImage(imageName) {
         case 'preoccupationPoint':
             category = 4
             imageNumber = 0
+            break;
+        case 'techFishingCane':
+            category = 5
+            imageNumber = 0
+            break;
+        case 'techFishingNet':
+            category = 5
+            imageNumber = 1
+            break;
+        case 'techFishingBoat':
+            category = 5
+            imageNumber = 2
             break;
         default:
             category = 4
