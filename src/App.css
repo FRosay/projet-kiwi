@@ -1,7 +1,7 @@
 :root
 {
   --height-top: 15%;
-  --height-middle: 75%;
+  --height-middle: 78%;
   --height-bottom: 5%;
   --color-hightlight: orange;
 }
@@ -36,6 +36,13 @@ html, body, #root, .App{
 
 button{
   font-family: "FontFamilyChoosed", serif;
+  font-size: 1.5em;
+}
+button:hover{
+  cursor: pointer;
+}
+button:hover[disabled]{
+  cursor: not-allowed;
 }
 
 img{
@@ -74,6 +81,7 @@ footer{
 #tabs-div{
   background-color: lightgray;
   height: var(--height-middle);
+  overflow: auto;
   width: 20%;
 }
 

@@ -17,7 +17,7 @@ function GameText() {
 
   } else if (playerState.whichTab === 1) {
     return (<Map />)
-    
+
   } else if (playerState.whichTab === 2) {
     return (<Technologies />)
 
@@ -25,7 +25,7 @@ function GameText() {
     return (<Politic />)
 
   } else if (playerState.whichTab === 4) {
-    return (<div><h1>Fin de cycle</h1><button onClick={() => playerDispatch({type: 'endTurn'})}>S'endormir</button></div>)
+    return (<div><h1>Fin de cycle</h1><p>{playerState.preoccupationPoints > 0 ? ' /!\\ Il te reste encore des PP /!\\' : 'Passer au cycle suivant...'}</p><button onClick={() => playerDispatch({type: 'endTurn'})}>S'endormir</button></div>)
 
   } else if (playerState.whichTab === 5) { //rough code, for testing
     return (<Testing />)

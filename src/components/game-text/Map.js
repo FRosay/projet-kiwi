@@ -10,15 +10,49 @@ function Map() {
 
   function tilesPlacement(){
     let tilesObject = []
-
-    for(let row = 0; row < stateOfRegions.regionIsDiscovered.length; row ++){
+    for(let row = Math.max.apply(null, stateOfRegions.coordinatesY); row >= Math.min.apply(null, stateOfRegions.coordinatesY); row--){
       tilesObject.push(<tr key={row}>{rowPlacement(row)}</tr>)
     }
-
     return tilesObject
   }
 
   function rowPlacement(row){
+    let rowObject = []
+    for(let col = Math.min.apply(null, stateOfRegions.coordinatesX); col <= Math.max.apply(null, stateOfRegions.coordinatesX); col++){
+      let index = regionIndex(row,col)
+      if(index === false){
+        rowObject.push(
+          <td key={[row,col]}><img alt='img of region undiscovered'
+          src={GetImage('undiscovered')} /></td>
+        )
+      } else {
+        rowObject.push(
+          <td key={[row,col]}>
+          <img alt='img of region discovered'
+          onClick={() => dispatchInRegions({click:index})}
+          src={GetImage(stateOfRegions.type[index])}
+          style={{cursor:'pointer'}}
+          />
+          </td>
+        )
+      }
+    }
+    return rowObject
+  }
+
+  function regionIndex(row,col){
+    let firstI = [];
+    let ret = false;
+    for(let r = 0; r < stateOfRegions.coordinatesY.length; r++){
+      if(stateOfRegions.coordinatesY[r] === row){firstI.push(r)}
+    }
+    for(let c = 0; c < firstI.length; c++){
+      if(stateOfRegions.coordinatesX[firstI[c]] === col){ret = firstI[c]}
+    }
+    return ret
+  }
+
+  /*function royPlacement(row){
     let rowObject = []
 
     for(let col = 0; col < stateOfRegions.regionIsDiscovered[row].length; col++){
@@ -49,13 +83,15 @@ function Map() {
         )
       } else {
         rowObject.push(
-          <td key={[row,col]}><img alt='img of region undiscovered' src={GetImage('undiscovered')} /></td>
+          <td key={[row,col]}><img alt='img of region undiscovered'
+          onClick={() => dispatchInRegions({newRegion:true})}
+          src={GetImage('undiscovered')} /></td>
         )
       }
     }
 
     return rowObject
-  }
+  }*/
 
   return(
       <div>

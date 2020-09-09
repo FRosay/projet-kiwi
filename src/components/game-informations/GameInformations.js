@@ -1,28 +1,31 @@
 import React from 'react';
+import { useGameTurnStore } from '../game-turn/game-turn-store.js';
 import { useOptionsStore } from '../options/options-store.js';
 import { usePlayerStore } from '../player/player-store.js';
 import { useRegionsStore } from '../regions/regions-store.js';
+import GetImage from '../GraphicResources.js'
 
 
 function GameInformations() {
+  const { gameTurnState, gameTurnDispatch } = useGameTurnStore();
   const { stateOfOptions } = useOptionsStore();
   const { playerState, playerDispatch } = usePlayerStore();
   const { stateOfRegions } = useRegionsStore();
 
   function specificMapButton(){
-    if(stateOfRegions.regionType[stateOfRegions.clicked[0]][stateOfRegions.clicked[1]] === 'region'){
+    if(stateOfRegions.zoneMax[stateOfRegions.clicked] > 0){
       return(
         <button
         disabled={ playerState.preoccupationPoints > 0 ? false : true }
-        onClick={() => playerDispatch({ type:'exploration', value:[stateOfRegions.clicked[0],stateOfRegions.clicked[1]] })}
-        >Explorer</button>
+        onClick={() => gameTurnDispatch({ type:'explore', value:stateOfRegions.clicked }) }
+        ><span role="img" aria-label="compass">🧭</span> Explorer [-1 <img alt='preoccupation Point' src={GetImage('preoccupationPoint')}/>]</button>
       )
     } else {
       return(
         <button
         disabled={ playerState.preoccupationPoints > 0 ? false : true }
-        onClick={() => playerDispatch({ type:'cross', value:[stateOfRegions.clicked[0],stateOfRegions.clicked[1]] })}
-        >Franchir</button>
+        onClick={() => gameTurnDispatch({ type:'cross', value: stateOfRegions.clicked })}
+        ><span role="img" aria-label="crossing">🚸</span> Franchir [-1 <img alt='preoccupation Point' src={GetImage('preoccupationPoint')}/>]</button>
       )
     }
   }
@@ -30,10 +33,13 @@ function GameInformations() {
   function insideMap(){
     return(
       <div>
-        <h1>Header</h1>
-        <p>Coordonnées : { stateOfRegions.clicked[0] };{ stateOfRegions.clicked[1] }<br/>
-        Type : { stateOfRegions.regionName[stateOfRegions.clicked[0]][stateOfRegions.clicked[1]] }<br/>
-        Zone Max : { stateOfRegions.regionZoneMax[stateOfRegions.clicked[0]][stateOfRegions.clicked[1]] }</p>
+        <h1>{ stateOfRegions.name[stateOfRegions.clicked] }</h1>
+        <p><img alt='img of region discovered'
+        src={GetImage(stateOfRegions.type[stateOfRegions.clicked])}
+        /></p>
+        <p>Coordonnées : { stateOfRegions.coordinatesX[stateOfRegions.clicked] };{ stateOfRegions.coordinatesY[stateOfRegions.clicked] }<br/>
+        NB Zone Max : { stateOfRegions.zoneMax[stateOfRegions.clicked] }<br/>
+        Zones : { stateOfRegions.zoneTypes[stateOfRegions.clicked] }</p>
         { specificMapButton() }
       </div>
     )
@@ -41,7 +47,7 @@ function GameInformations() {
 
   if(stateOfOptions.display !== 'full'){
     return(
-      <div id='game-informations-div'>{ stateOfRegions.clicked !== false ? insideMap() : '' }</div>
+      <div id='game-informations-div'>{ stateOfRegions.clicked !== false && playerState.whichTab === 1 ? insideMap() : '' }</div>
     )
   } else {
     return(<div></div>)

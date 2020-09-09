@@ -4,8 +4,6 @@ const PlayerContext = createContext();
 const INITIAL_STATE = {
   technologiesMastered: [],
   technologiesDiscovered: [],
-  cross: [],
-  exploration: [],
   turnNumber: 0,
   preoccupationPoints: 3,
   preoccupationPointsMax: 3,
@@ -13,14 +11,12 @@ const INITIAL_STATE = {
   resourcesCategory: ['resource', 'resource', 'resource', 'resource'],
   resourcesQuantity: [0,0,0,0],
   resourcesIsUnique: [false, false, false, false],
-  whichTab: -1 
+  whichTab: -1
 };
 
 const playerReducer = (state, action) => {
   let newTechnologiesMastered = state.technologiesMastered.slice()
   let newTechnologiesDiscovered = state.technologiesDiscovered.slice()
-  let newCross = state.cross.slice()
-  let newExploration = state.exploration.slice()
   let newTurnNumber = state.turnNumber
   let newPreoccupationPoints = state.preoccupationPoints
   let newPreoccupationPointsMax = state.preoccupationPointsMax
@@ -43,8 +39,6 @@ const playerReducer = (state, action) => {
       case 'endTurn':
         newTurnNumber ++
         newPreoccupationPoints = state.preoccupationPointsMax
-        newExploration = []
-        newCross = []
         newWhichTab = 0
         break;
       case 'addPoints':
@@ -65,24 +59,20 @@ const playerReducer = (state, action) => {
       case 'decreaseRes':
         newResourcesQuantity[action.index] -= action.range
         break;
-      case 'exploration':
-        newExploration.push(action.value)
+      case 'explore':
         newPreoccupationPoints --
         break;
       case 'cross':
-        newCross.push(action.value)
         newPreoccupationPoints --
         break;
       default:
         throw new Error(`Unhandled action type: ${action.type}`);
     }
   }
-  
+
   return {
     technologiesMastered: newTechnologiesMastered,
     technologiesDiscovered: newTechnologiesDiscovered,
-    cross: newCross,
-    exploration: newExploration,
     turnNumber: newTurnNumber,
     preoccupationPoints: newPreoccupationPoints,
     preoccupationPointsMax: newPreoccupationPointsMax,

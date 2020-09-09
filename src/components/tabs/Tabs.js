@@ -2,8 +2,9 @@ import React from 'react';
 import { useOptionsStore } from '../options/options-store.js';
 import { usePlayerStore } from '../player/player-store.js';
 import './Tabs.css';
+import GetImage from '../GraphicResources.js'
 
-const NAMES_TABS = ['Rapport', 'Carte', 'Technologie', 'Politique', 'Fin de cycle', 'Brouillon']
+const NAMES_TABS = ['📝 Rapport', '🗺️ Carte', '⚙️ Technologie', '🗳️ Politique', '🌙 Fin de cycle', 'Brouillon']
 
 function Tabs() {
 
@@ -12,7 +13,7 @@ function Tabs() {
 
   let isDisplayed = [false, false, false, false, false, false]
   isDisplayed[playerState.whichTab] = true
-  let isClickable = [true, true, true, true, true, true]
+  let isClickable = [true, true, true, false, true, true]
   isClickable[playerState.whichTab] = false
 
   function buttonsRender(){
@@ -27,7 +28,7 @@ function Tabs() {
     return (
       <div id='tabs-div'>
         <div>-- Cycle {playerState.turnNumber} --</div>
-        <div>{playerState.preoccupationPoints}/{playerState.preoccupationPointsMax} PP</div>
+        <div>{playerState.preoccupationPoints}/{playerState.preoccupationPointsMax} <img alt='preoccupation Point' src={GetImage('preoccupationPoint')}/></div>
         { buttonsRender() }
       </div>
     )
