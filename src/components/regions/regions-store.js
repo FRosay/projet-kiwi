@@ -21,7 +21,9 @@ const INITIAL_STATE = {
   name: INIT_COMPACT[4],
   zoneMax: INIT_COMPACT[5],
   zoneTypes: INIT_COMPACT[6],
-  values: INIT_COMPACT[7]
+  values: INIT_COMPACT[7],
+  cross: [],
+  explore: []
 };
 
 function init(){
@@ -47,26 +49,42 @@ function init(){
   return [iCoordinatesX, iCoordinatesY, iIsObstacle, iType, iName, iZoneMax, iZoneTypes, iValues];
 }
 
+function cross(position){
+  for(let i = 0; i < position.length; i++){
+    console.log('cest cross')
+  }
+}
 
 const regionsReducer = (state, action) => {
   let newClicked = state.clicked
 
-  let newCX = state.coordinatesX
-  let newCY = state.coordinatesY
-  let newIO = state.isObstacle
-  let newT = state.type
-  let newN = state.name
-  let newZM = state.zoneMax
-  let newZT = []
+  let newCoordinatesX = state.coordinatesX
+  let newCoordinatesY = state.coordinatesY
+  let newIsObstacle = state.isObstacle
+  let newType = state.type
+  let newName = state.name
+  let newZoneMax = state.zoneMax
+  let newZoneTypes = []
   for(let row = 0; row < state.zoneTypes.length; row++){
-    newZT[row] = state.zoneTypes[row].slice()
+    newZoneTypes[row] = state.zoneTypes[row].slice()
   }
-  let newV = state.values
+  let newValues = state.values
 
-  if(action.type === 'cross'){
-    console.log("crosss")
+  let newCross = state.cross
+  let newExplore = state.explore
+
+  if (action.type === 'endTurn') {
+    console.log('endTurn')
+    //CROSS ACTIONS
+    cross(newCross);
+    //newCross = [];
+    //EXPLORE ACTIONS
+    //newExplore = [];
+  } else if(action.type === 'cross'){
+    console.log("crosss > "+newClicked)
+    newCross.push(newClicked)
   } else if(action.type === 'explore'){
-    console.log("xplor")
+    console.log("explore > "+newClicked)
   }
   if (typeof action.click !== 'undefined' && action.click !== null) {
     newClicked = action.click
@@ -74,22 +92,24 @@ const regionsReducer = (state, action) => {
 
   return{
     clicked: newClicked,
-    coordinatesX: newCX,
-    coordinatesY: newCY,
-    isObstacle: newIO,
-    type: newT,
-    name: newN,
-    zoneMax: newZM,
-    zoneTypes: newZT,
-    values: newV
+    coordinatesX: newCoordinatesX,
+    coordinatesY: newCoordinatesY,
+    isObstacle: newIsObstacle,
+    type: newType,
+    name: newName,
+    zoneMax: newZoneMax,
+    zoneTypes: newZoneTypes,
+    values: newValues,
+    cross: newCross,
+    explore: newExplore
   }
 }
 
 export const RegionsProvider = ({ children }) => {
-    const [stateOfRegions, dispatchInRegions] = useReducer(regionsReducer, INITIAL_STATE);
+    const [regionsState, regionsDispatch] = useReducer(regionsReducer, INITIAL_STATE);
 
     return (
-        <RegionsContext.Provider value= {{ stateOfRegions, dispatchInRegions }}>
+        <RegionsContext.Provider value= {{ regionsState, regionsDispatch }}>
             { children }
         </RegionsContext.Provider>
     )

@@ -1,5 +1,6 @@
 import React from 'react';
 import { usePlayerStore } from '../player/player-store.js';
+import { useRegionsStore } from '../regions/regions-store.js';
 
 import Report from './Report.js'
 import Map from './Map.js'
@@ -11,6 +12,7 @@ import Testing from './../Testing.js'
 
 function GameText() {
   const { playerState, playerDispatch } = usePlayerStore();
+  const { regionsDispatch } = useRegionsStore();
 
   if (playerState.whichTab === 0) {
     return (<Report />)
@@ -25,7 +27,11 @@ function GameText() {
     return (<Politic />)
 
   } else if (playerState.whichTab === 4) {
-    return (<div><h1>Fin de cycle</h1><p>{playerState.preoccupationPoints > 0 ? ' /!\\ Il te reste encore des PP /!\\' : 'Passer au cycle suivant...'}</p><button onClick={() => playerDispatch({type: 'endTurn'})}>S'endormir</button></div>)
+    return (<div><h1>Fin de cycle</h1><p>{playerState.preoccupationPoints > 0 ? ' /!\\ Il te reste encore des PP /!\\' : 'Passer au cycle suivant...'}</p>
+    <button onClick={() => {
+    playerDispatch({ type: 'endTurn' });
+    regionsDispatch({ type: 'endTurn' });
+    }}>S'endormir</button></div>)
 
   } else if (playerState.whichTab === 5) { //rough code, for testing
     return (<Testing />)
