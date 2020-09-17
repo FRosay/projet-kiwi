@@ -2,17 +2,17 @@ import React, { useState } from 'react';
 import StartingLocation from './StartingLocation.js'
 import Tooltip from '../../misc-tools/tooltip/tooltip.js'
 import { useOptionsStore } from '../../options/options-store.js';
-import { usePlayerStore } from '../../player/player-store.js';
+import { useGameTurnStore } from '../../game-turn/game-turn-store.js';
 
 function Introduction() {
 
     const { dispatchInOptions } = useOptionsStore();
-    const { playerDispatch } = usePlayerStore();
+    const { gameTurnDispatch } = useGameTurnStore();
 
     const [page, setPage] = useState(0)
 
     function skipIntro() {
-        playerDispatch({ tab: 0 })
+        gameTurnDispatch({ category:'tabs', value:0 })
         dispatchInOptions({ category: 'display', value: 'framed'})
     }
 
@@ -20,7 +20,7 @@ function Introduction() {
         case 0:
             return(
               <div>
-                <h1>[Insert game name]</h1> 
+                <h1>[Insert game name]</h1>
                 <button onClick={() => setPage(page+1)}>Nouvel atterrissage</button>
 
                 <br /><br />
@@ -31,8 +31,8 @@ function Introduction() {
         case 1:
             return(
                 <div>
-                    <p>Faille dans le système des moteurs. État critique.</p> 
-        
+                    <p>Faille dans le système des moteurs. État critique.</p>
+
                     <p>Annulation de l’ordre de mission CNP-006. Nouvelle priorité : sauvegarder les vies humaines à bord.</p>
 
                     <p>Recherche d’un plan de secours. Analyse des planètes les plus proches...

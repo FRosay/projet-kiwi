@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useOptionsStore } from '../../options/options-store.js';
-import { usePlayerStore } from '../../player/player-store.js';
+import { useGameTurnStore } from '../../game-turn/game-turn-store.js';
 
 function StartingLocation() {
 
     const { dispatchInOptions } = useOptionsStore();
-    const { playerDispatch } = usePlayerStore();
+    const { gameTurnDispatch } = useGameTurnStore();
 
     const [environmentChoice, setEnvironment] = useState(0)
     const [populationChoice, setPopulation] = useState(0)
@@ -84,11 +84,11 @@ function StartingLocation() {
     }
 
     function validateStartingLocation() {
-        playerDispatch({ type: 'setRes', index: 0, value: woodChoice })
-        playerDispatch({ type: 'setRes', index: 1, value: stoneChoice })
-        playerDispatch({ type: 'setRes', index: 2, value: mineralsChoice })
-        playerDispatch({ type: 'setRes', index: 3, value: foodChoice+1 })
-        playerDispatch({ tab: 0 })
+        gameTurnDispatch({ category:'player', type: 'setRes', index: 0, value: woodChoice })
+        gameTurnDispatch({ category:'player', type: 'setRes', index: 1, value: stoneChoice })
+        gameTurnDispatch({ category:'player', type: 'setRes', index: 2, value: mineralsChoice })
+        gameTurnDispatch({ category:'player', type: 'setRes', index: 3, value: foodChoice+1 })
+        gameTurnDispatch({ category:'tabs', value: 0 })
         dispatchInOptions({ category: 'display', value: 'framed'})
     }
 

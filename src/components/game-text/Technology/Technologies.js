@@ -2,30 +2,30 @@ import React from 'react';
 
 import Technology from './Technology.js';
 import GetTechInfos from './GetTechInfos.js';
-import { usePlayerStore } from '../../player/player-store.js';
+import { useGameTurnStore } from '../../game-turn/game-turn-store.js';
 
 function Technologies() {
 
-  const { playerState, playerDispatch } = usePlayerStore();
+  const { gameTurnState, gameTurnDispatch } = useGameTurnStore();
 
-  let masteredTechs = playerState.technologiesMastered
-  let discoveredTechs = playerState.technologiesDiscovered
-  
+  let masteredTechs = gameTurnState.technologiesMastered
+  let discoveredTechs = gameTurnState.technologiesDiscovered
+
   let newTech = GetTechInfos('Random')
-  
+
   function addDiscoveredTech() {
-    playerDispatch({type: 'addDiscoveredTech', newTech: newTech})
+    gameTurnDispatch({category:'technologies', type: 'addDiscoveredTech', newTech: newTech})
     //newTech = GetTechInfos('Random')
   }
 
   return (
     <div className='container'>
-      
+
         Technologies maîtrisées :
       <div className='masteredTechs'>
         { masteredTechs.map((tech, index) => { return <Technology key= {index} techImage= {tech.techImage} techName= {tech.techName} techGroup= {tech.techGroup} techCost= {tech.techCost} /> }) }
-      </div>      
-      
+      </div>
+
         Technologies découvertes :
       <div className='discoveredTechs'>
         { discoveredTechs.map((tech, index) => { return <Technology key= {index} techImage= {tech.techImage} techName= {tech.techName} techGroup= {tech.techGroup} techCost= {tech.techCost} /> }) }

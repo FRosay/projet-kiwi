@@ -1,46 +1,42 @@
 import React from 'react';
 import { useOptionsStore } from '../options/options-store.js';
-import { usePlayerStore } from '../player/player-store.js';
-import { useRegionsStore } from '../regions/regions-store.js';
+import { useGameTurnStore } from '../game-turn/game-turn-store.js';
 import GetImage from '../GraphicResources.js'
 
 
 function GameInformations() {
   const { stateOfOptions } = useOptionsStore();
-  const { playerState, playerDispatch } = usePlayerStore();
-  const { regionsState, regionsDispatch } = useRegionsStore();
+  const { gameTurnState, gameTurnDispatch } = useGameTurnStore();
 
   function isCrossing(arrayPosition){
     let i = 0;
     let isIt = false;
-    while(i < regionsState.cross.length && isIt === false){
-      if(regionsState.cross[i] === arrayPosition){
+    while(i < gameTurnState.cross.length && isIt === false){
+      if(gameTurnState.cross[i] === arrayPosition){
         isIt = true;
       }
       i++;
     }
-    console.log('regionsState.cross : '+regionsState.cross)
+    console.log('gameTurnState.cross : '+gameTurnState.cross)
     return isIt;
   }
 
   function specificMapButton(){
-    if(regionsState.isObstacle[regionsState.clicked]){
+    if(gameTurnState.isObstacle[gameTurnState.clicked]){
       return(
         <button
-        disabled={ playerState.preoccupationPoints > 0 && !isCrossing(regionsState.clicked) ? false : true }
+        disabled={ gameTurnState.preoccupationPoints > 0 && !isCrossing(gameTurnState.clicked) ? false : true }
         onClick={() => {
-        playerDispatch({ type:'removePoints', range:1 });
-        regionsDispatch({ type:'cross' });
+        gameTurnDispatch({ category:'regions', type:'cross' });
         }}
         ><span role="img" aria-label="crossing">🚸</span> Franchir [-1 <img alt='preoccupation Point' src={GetImage('preoccupationPoint')}/>]</button>
       )
     } else {
       return(
         <button
-        disabled={ playerState.preoccupationPoints > 0 ? false : true }
+        disabled={ gameTurnState.preoccupationPoints > 0 ? false : true }
         onClick={() => {
-        playerDispatch({ type:'removePoints', range:1 });
-        regionsDispatch({ type:'explore' });
+        gameTurnDispatch({ category:'regions', type:'explore' });
         }}
         ><span role="img" aria-label="compass">🧭</span> Explorer [-1 <img alt='preoccupation Point' src={GetImage('preoccupationPoint')}/>]</button>
       )
@@ -50,13 +46,13 @@ function GameInformations() {
   function insideMap(){
     return(
       <div>
-        <h1>{ regionsState.name[regionsState.clicked].charAt(0).toUpperCase() + regionsState.name[regionsState.clicked].slice(1) }</h1>
+        <h1>{ gameTurnState.name[gameTurnState.clicked].charAt(0).toUpperCase() + gameTurnState.name[gameTurnState.clicked].slice(1) }</h1>
         <p><img alt='img of region discovered'
-        src={GetImage(regionsState.type[regionsState.clicked])}
+        src={GetImage(gameTurnState.type[gameTurnState.clicked])}
         /></p>
-        <p>Coordonnées : { regionsState.coordinatesX[regionsState.clicked] };{ regionsState.coordinatesY[regionsState.clicked] }<br/>
-        NB Zone Max : { regionsState.zoneMax[regionsState.clicked] }<br/>
-        Zones : { regionsState.zoneTypes[regionsState.clicked] }</p>
+        <p>Coordonnées : { gameTurnState.coordinatesX[gameTurnState.clicked] };{ gameTurnState.coordinatesY[gameTurnState.clicked] }<br/>
+        NB Zone Max : { gameTurnState.zoneMax[gameTurnState.clicked] }<br/>
+        Zones : { gameTurnState.zoneTypes[gameTurnState.clicked] }</p>
         { specificMapButton() }
       </div>
     )
@@ -64,7 +60,7 @@ function GameInformations() {
 
   if(stateOfOptions.display !== 'full'){
     return(
-      <div id='game-informations-div'>{ regionsState.clicked !== false && playerState.whichTab === 1 ? insideMap() : '' }</div>
+      <div id='game-informations-div'>{ gameTurnState.clicked !== false && gameTurnState.whichTab === 1 ? insideMap() : '' }</div>
     )
   } else {
     return(<div></div>)

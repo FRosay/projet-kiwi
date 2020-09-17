@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
-import { usePlayerStore } from './player/player-store.js';
+import { useGameTurnStore } from './game-turn/game-turn-store.js';
 import NameGenerator from './misc-tools/name-generator/NameGenerator.js';
 
 function Testing() {
-    const { playerState, playerDispatch }       = usePlayerStore();
+    const { gameTurnState, gameTurnDispatch }       = useGameTurnStore();
     const [range, setRange]                     = useState(1);
     const [nameLengthRange, setNameLengthRange] = useState([3,8])
     const [randomName, setRandomName]           = useState('')
@@ -23,7 +23,7 @@ function Testing() {
     function handleChange(whichField, newValue) {
         let newLetters = []
         newLetters = newValue.split('')
-        
+
         if (whichField === 'one') {
             setAddedLetters([newLetters, addedLetters[1]])
         } else {
@@ -34,9 +34,9 @@ function Testing() {
     return (
         <div>
             <p>
-                <button onClick={() => playerDispatch({ type: 'removePoints', range: range })}>Diminuer</button>
-                Points de préoccupation actuels: { playerState.preoccupationPoints }
-                <button onClick={() => playerDispatch({ type: 'addPoints', range: range })}>Augmenter</button>
+                <button onClick={() => gameTurnDispatch({ category:'player', type: 'removePoints', range: range })}>Diminuer</button>
+                Points de préoccupation actuels: { gameTurnState.preoccupationPoints }
+                <button onClick={() => gameTurnDispatch({ category:'player', type: 'addPoints', range: range })}>Augmenter</button>
             </p>
 
             <p>Valeur d'augmentation ou de diminution des PPs :
@@ -44,35 +44,35 @@ function Testing() {
                 { range }
                 <button onClick={() => setRange(range + 1)}>+</button>
             </p>
-            <button onClick={() => playerDispatch({ type: 'resetPoints' })}>Réinitialiser</button> <br /><br />
+            <button onClick={() => gameTurnDispatch({ category:'player', type: 'resetPoints' })}>Réinitialiser</button> <br /><br />
 
             <ul>
                 <li>
-                    { playerState.resourcesQuantity[0] } { playerState.resourcesName[0] } : 
-                    <button onClick={() => playerDispatch({ type: 'increaseRes', index:0, range:1}) }>+</button>
-                    <button onClick={() => playerDispatch({ type: 'decreaseRes', index:0, range:1}) }>-</button>
+                    { gameTurnState.resourcesQuantity[0] } { gameTurnState.resourcesName[0] } :
+                    <button onClick={() => gameTurnDispatch({ category:'player', type: 'increaseRes', index:0, range:1}) }>+</button>
+                    <button onClick={() => gameTurnDispatch({ category:'player', type: 'decreaseRes', index:0, range:1}) }>-</button>
                 </li>
                 <li>
-                    { playerState.resourcesQuantity[1] } { playerState.resourcesName[1] } : 
-                    <button onClick={() => playerDispatch({ type: 'increaseRes', index:1, range:1}) }>+</button>
-                    <button onClick={() => playerDispatch({ type: 'decreaseRes', index:1, range:1}) }>-</button>
+                    { gameTurnState.resourcesQuantity[1] } { gameTurnState.resourcesName[1] } :
+                    <button onClick={() => gameTurnDispatch({ category:'player', type: 'increaseRes', index:1, range:1}) }>+</button>
+                    <button onClick={() => gameTurnDispatch({ category:'player', type: 'decreaseRes', index:1, range:1}) }>-</button>
                 </li>
-                <li>{ playerState.resourcesQuantity[2] } { playerState.resourcesName[2] } : 
-                    <button onClick={() => playerDispatch({ type: 'increaseRes', index:2, range:1}) }>+</button>
-                    <button onClick={() => playerDispatch({ type: 'decreaseRes', index:2, range:1}) }>-</button>
+                <li>{ gameTurnState.resourcesQuantity[2] } { gameTurnState.resourcesName[2] } :
+                    <button onClick={() => gameTurnDispatch({ category:'player', type: 'increaseRes', index:2, range:1}) }>+</button>
+                    <button onClick={() => gameTurnDispatch({ category:'player', type: 'decreaseRes', index:2, range:1}) }>-</button>
                 </li>
-                <li>{ playerState.resourcesQuantity[3] } { playerState.resourcesName[3] } : 
-                    <button onClick={() => playerDispatch({ type: 'increaseRes', index:3, range:1}) }>+</button>
-                    <button onClick={() => playerDispatch({ type: 'decreaseRes', index:3, range:1}) }>-</button>
+                <li>{ gameTurnState.resourcesQuantity[3] } { gameTurnState.resourcesName[3] } :
+                    <button onClick={() => gameTurnDispatch({ category:'player', type: 'increaseRes', index:3, range:1}) }>+</button>
+                    <button onClick={() => gameTurnDispatch({ category:'player', type: 'decreaseRes', index:3, range:1}) }>-</button>
                 </li>
-            </ul> 
+            </ul>
             <br />
             <p>
                 Nom généré aléatoirement : {randomName}
                 <br /> <br />
                 <button onClick={() => generateRandomName(nameLengthRange[0], nameLengthRange[1])}>Générer un nouveau nom </button>
                 <br />
-                qui a entre <input type='number' onChange={(event) => setNameLengthRange([event.target.value,nameLengthRange[1]])} min='1' max={nameLengthRange[1]} style={{ textAlign: 'center', width: '8%' }} /> 
+                qui a entre <input type='number' onChange={(event) => setNameLengthRange([event.target.value,nameLengthRange[1]])} min='1' max={nameLengthRange[1]} style={{ textAlign: 'center', width: '8%' }} />
                 et <input type='number' onChange={(event) => setNameLengthRange([nameLengthRange[0],event.target.value])} min={nameLengthRange[0]} max='100' style={{ textAlign: 'center', width: '8%' }} /> lettres
                 <br /><br />
                 \/ Facultatif \/

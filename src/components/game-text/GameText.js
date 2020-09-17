@@ -1,6 +1,5 @@
 import React from 'react';
-import { usePlayerStore } from '../player/player-store.js';
-import { useRegionsStore } from '../regions/regions-store.js';
+import { useGameTurnStore } from '../game-turn/game-turn-store.js';
 
 import Report from './Report.js'
 import Map from './Map.js'
@@ -11,29 +10,27 @@ import Testing from './../Testing.js'
 
 
 function GameText() {
-  const { playerState, playerDispatch } = usePlayerStore();
-  const { regionsDispatch } = useRegionsStore();
+  const { gameTurnState, gameTurnDispatch } = useGameTurnStore();
 
-  if (playerState.whichTab === 0) {
+  if (gameTurnState.whichTab === 0) {
     return (<Report />)
 
-  } else if (playerState.whichTab === 1) {
+  } else if (gameTurnState.whichTab === 1) {
     return (<Map />)
 
-  } else if (playerState.whichTab === 2) {
+  } else if (gameTurnState.whichTab === 2) {
     return (<Technologies />)
 
-  } else if (playerState.whichTab === 3) {
+  } else if (gameTurnState.whichTab === 3) {
     return (<Politic />)
 
-  } else if (playerState.whichTab === 4) {
-    return (<div><h1>Fin de cycle</h1><p>{playerState.preoccupationPoints > 0 ? ' /!\\ Il te reste encore des PP /!\\' : 'Passer au cycle suivant...'}</p>
+  } else if (gameTurnState.whichTab === 4) {
+    return (<div><h1>Fin de cycle</h1><p>{gameTurnState.preoccupationPoints > 0 ? ' /!\\ Il te reste encore des PP /!\\' : 'Passer au cycle suivant...'}</p>
     <button onClick={() => {
-    playerDispatch({ type: 'endTurn' });
-    regionsDispatch({ type: 'endTurn' });
+    gameTurnDispatch({ category:'endTurn' });
     }}>S'endormir</button></div>)
 
-  } else if (playerState.whichTab === 5) { //rough code, for testing
+  } else if (gameTurnState.whichTab === 5) { //rough code, for testing
     return (<Testing />)
 
   } else {

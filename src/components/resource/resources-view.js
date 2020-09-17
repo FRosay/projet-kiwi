@@ -1,18 +1,18 @@
 import React from 'react';
 import SingleResource from './single-resource.js'
 import { useOptionsStore } from '../options/options-store.js';
-import { usePlayerStore } from '../player/player-store.js';
+import { useGameTurnStore } from '../game-turn/game-turn-store.js';
 
 
 function ResourcesView() {
 
   const { stateOfOptions } = useOptionsStore();
-  const { playerState, playerDispatch } = usePlayerStore();
+  const { gameTurnState, gameTurnDispatch } = useGameTurnStore();
 
   let res = []
-  for(let i = 0; i < playerState.resourcesName.length; i++){
+  for(let i = 0; i < gameTurnState.resourcesName.length; i++){
     res.push(
-      <SingleResource key= { i } name= { playerState.resourcesName[i] } type= { playerState.resourcesCategory[i] } quantity= { playerState.resourcesQuantity[i] } isUnique= { playerState.resourcesIsUnique[i] } shortVersion= { true } playerDispatch= { playerDispatch } />
+      <SingleResource key= { i } name= { gameTurnState.resourcesName[i] } type= { gameTurnState.resourcesCategory[i] } quantity= { gameTurnState.resourcesQuantity[i] } isUnique= { gameTurnState.resourcesIsUnique[i] } shortVersion= { true } gameTurnDispatch= { gameTurnDispatch } />
     )
   }
 
