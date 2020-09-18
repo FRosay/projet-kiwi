@@ -3,12 +3,12 @@ import React, { createContext, useContext, useReducer } from 'react';
 const GameTurnContext = createContext();
 const REGIONS_NAMES = ['pineForest', 'pineLake']
 const REGIONS_NAMES_FR = ['forêt de pins', 'lac de pins']
-const ZONES_NAMES = ['field', 'foret', 'mine', 'rocks']
+const ZONES_NAMES = ['field', 'forest', 'mine', 'rocks']
 const ZONES_NAMES_FR = ['champs', 'forêt', 'mine', 'rochers']
-const REGIONS_ZONES_POSSIBILITIES = {
-  pineForest: [0,1,3],
-  pineLake: [1,2,3]
-};
+const REGIONS_ZONES_POSSIBILITIES = [
+  [1,3],//pineForest
+  [0,1,2,3]//pineLake
+];
 const OBSTACLES_NAMES = ['sea', 'mountains', 'bridge']
 const OBSTACLES_NAMES_FR = ['mer', 'montagnes', 'pont']
 const INIT_COMPACT = initRegions();
@@ -33,6 +33,7 @@ const INITIAL_STATE = {
   zoneMax: INIT_COMPACT[5],
   zoneTypes: INIT_COMPACT[6],
   values: INIT_COMPACT[7],
+  owner: INIT_COMPACT[8],
   cross: [],
   explore: []
 };
@@ -44,8 +45,8 @@ const INITIAL_STATE = {
 
 
 function initRegions(){
-  let iCoordinatesX = [0,-1,0,1,0];
-  let iCoordinatesY = [0,0,1,0,-1];
+  let iCoordinatesX = [0,0,1,0,-1];
+  let iCoordinatesY = [0,1,0,-1,0];
   let iIsObstacle = [false, true, true, true, true];
   let iType = [];
   let iName = [];
@@ -61,15 +62,10 @@ function initRegions(){
     }
   }
   let iZoneMax = [parseInt(Math.random()*7)+6,0,0,0,0];//for region starter
-  let iZoneTypes = [];
+  let iZoneTypes = [[],[],[],[],[]];
   let iValues = [[],[],[],[],[]];
-  return [iCoordinatesX, iCoordinatesY, iIsObstacle, iType, iName, iZoneMax, iZoneTypes, iValues];
-}
-
-function cross(position){
-  for(let i = 0; i < position.length; i++){
-    console.log('c\'est f(cross)')
-  }
+  let iOwner = [[],['noOne'],['noOne'],['noOne'],['noOne']];
+  return [iCoordinatesX, iCoordinatesY, iIsObstacle, iType, iName, iZoneMax, iZoneTypes, iValues, iOwner];
 }
 
 
@@ -91,20 +87,24 @@ const gameTurnReducer = (state, action) => {
   let newWhichTab = state.whichTab
 ////////////////////////////////////////////////////////////////////////////////
   let newClicked = state.clicked
-  let newCoordinatesX = state.coordinatesX
-  let newCoordinatesY = state.coordinatesY
-  let newIsObstacle = state.isObstacle
-  let newType = state.type
-  let newName = state.name
-  let newZoneMax = state.zoneMax
+  let newCoordinatesX = state.coordinatesX.slice()
+  let newCoordinatesY = state.coordinatesY.slice()
+  let newIsObstacle = state.isObstacle.slice()
+  let newType = state.type.slice()
+  let newName = state.name.slice()
+  let newZoneMax = state.zoneMax.slice()
   let newZoneTypes = []
   for(let row = 0; row < state.zoneTypes.length; row++){
     newZoneTypes[row] = state.zoneTypes[row].slice()
   }
-  let newValues = state.values
+  let newValues = state.values.slice()
+  let newOwner = []
+  for(let row = 0; row < state.owner.length; row++){
+    newOwner[row] = state.owner[row].slice()
+  }
 
-  let newCross = state.cross
-  let newExplore = state.explore
+  let newCross = state.cross.slice()
+  let newExplore = state.explore.slice()
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
   if (action.category === 'tabs' && Number.isInteger(action.value)) {
@@ -143,14 +143,13 @@ const gameTurnReducer = (state, action) => {
   } else if (action.category === 'regions') {
     switch (action.type) {
       case 'cross':
-      console.log("crosss > "+newClicked)
       newPreoccupationPoints --
       newCross.push(newClicked)
       break;
 
       case 'explore':
-      console.log("explore > "+newClicked)
       newPreoccupationPoints --
+      newExplore.push(newClicked)
       break;
 
       default:
@@ -173,6 +172,39 @@ const gameTurnReducer = (state, action) => {
     newTurnNumber ++
     newPreoccupationPoints = state.preoccupationPointsMax
     newWhichTab = 0
+    // MAP //
+    //Cross
+    for(let i = 0; i < newCross.length; i++){
+      newOwner[newCross[i]] = ['player']
+    }
+    newCross = []
+    //Explore
+    for(let i = 0; i < newExplore.length; i++){
+      let regionNamePosition = REGIONS_NAMES.indexOf(newType[newExplore[i]])
+      let zoneTypePosition = REGIONS_ZONES_POSSIBILITIES[regionNamePosition][parseInt(Math.random()*REGIONS_ZONES_POSSIBILITIES[regionNamePosition].length)]
+      if(newZoneTypes[newExplore[i]].length < newZoneMax[newExplore[i]]){
+        newZoneTypes[newExplore[i]].push(ZONES_NAMES[zoneTypePosition]);
+        newOwner[newExplore[i]].push('player');
+        switch(zoneTypePosition){
+          case 0:
+            newResourcesQuantity[3]++
+            break;
+          case 1:
+            newResourcesQuantity[0]++
+            break;
+          case 2:
+            newResourcesQuantity[2]++
+            break;
+          case 3:
+            newResourcesQuantity[1]++
+            break;
+          default:
+            throw new Error(`Unhandled zoneTypePosition: ${zoneTypePosition}`);
+        }
+      }
+    }
+    newExplore = []
+    //TECHNOLOGIES
   } else {
     //throw new Error(`Unhandled action type: ${action.actegorie}`);
   }
@@ -199,6 +231,7 @@ const gameTurnReducer = (state, action) => {
     zoneMax: newZoneMax,
     zoneTypes: newZoneTypes,
     values: newValues,
+    owner: newOwner,
     cross: newCross,
     explore: newExplore
   }

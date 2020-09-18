@@ -17,12 +17,12 @@ function GameInformations() {
       }
       i++;
     }
-    console.log('gameTurnState.cross : '+gameTurnState.cross)
+    console.log('f(isCrossing) gameTurnState.cross : '+gameTurnState.cross)
     return isIt;
   }
 
   function specificMapButton(){
-    if(gameTurnState.isObstacle[gameTurnState.clicked]){
+    if (gameTurnState.isObstacle[gameTurnState.clicked] && gameTurnState.owner[gameTurnState.clicked][0] === 'noOne') {
       return(
         <button
         disabled={ gameTurnState.preoccupationPoints > 0 && !isCrossing(gameTurnState.clicked) ? false : true }
@@ -31,7 +31,7 @@ function GameInformations() {
         }}
         ><span role="img" aria-label="crossing">🚸</span> Franchir [-1 <img alt='preoccupation Point' src={GetImage('preoccupationPoint')}/>]</button>
       )
-    } else {
+    } else if (!gameTurnState.isObstacle[gameTurnState.clicked] && gameTurnState.zoneTypes[gameTurnState.clicked].length < gameTurnState.zoneMax[gameTurnState.clicked]) {
       return(
         <button
         disabled={ gameTurnState.preoccupationPoints > 0 ? false : true }
@@ -43,6 +43,17 @@ function GameInformations() {
     }
   }
 
+  function displayMapZones(){
+    let zones = ''
+    for(let i = 0; i < gameTurnState.zoneTypes[gameTurnState.clicked].length; i++){
+      zones += gameTurnState.zoneTypes[gameTurnState.clicked][i]
+      if(i+1 < gameTurnState.zoneTypes[gameTurnState.clicked].length){
+        zones +=', '
+      }
+    }
+    return(zones)
+  }
+
   function insideMap(){
     return(
       <div>
@@ -50,9 +61,10 @@ function GameInformations() {
         <p><img alt='img of region discovered'
         src={GetImage(gameTurnState.type[gameTurnState.clicked])}
         /></p>
-        <p>Coordonnées : { gameTurnState.coordinatesX[gameTurnState.clicked] };{ gameTurnState.coordinatesY[gameTurnState.clicked] }<br/>
-        NB Zone Max : { gameTurnState.zoneMax[gameTurnState.clicked] }<br/>
-        Zones : { gameTurnState.zoneTypes[gameTurnState.clicked] }</p>
+        <p>(coordonnées : { gameTurnState.coordinatesX[gameTurnState.clicked] };{ gameTurnState.coordinatesY[gameTurnState.clicked] })<br/>
+        (nb zones max : { gameTurnState.zoneMax[gameTurnState.clicked] })<br/>
+        (owner : { gameTurnState.owner[gameTurnState.clicked] })<br/>
+        Zones :<br/>{ displayMapZones() }</p>
         { specificMapButton() }
       </div>
     )
