@@ -17,7 +17,6 @@ function GameInformations() {
       }
       i++;
     }
-    console.log('f(isCrossing) gameTurnState.cross : '+gameTurnState.cross)
     return isIt;
   }
 

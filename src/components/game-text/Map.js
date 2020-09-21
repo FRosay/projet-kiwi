@@ -41,6 +41,7 @@ function Map() {
         rowObject.push(
           <td key={[row,col]}>
           <img alt='img of region discovered'
+          className={gameTurnState.owner[index][0] === 'player' ? 'obstacle-crossed' : ''}
           onClick={() => gameTurnDispatch({category:'informations', click:index})}
           src={GetImage(gameTurnState.type[index])}
           style={{cursor:'pointer'}}

@@ -101,3 +101,7 @@ footer{
   top: -5%;
   left: -5%;
 }
+
+.obstacle-crossed{
+  background-color: #b7eab7;
+}

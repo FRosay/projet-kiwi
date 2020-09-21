@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useReducer } from 'react';
+import NameGenerator from '../misc-tools/name-generator/NameGenerator.js';
 
 const GameTurnContext = createContext();
 const REGIONS_NAMES = ['pineForest', 'pineLake']
@@ -54,11 +55,11 @@ function initRegions(){
     if(iIsObstacle[i]){
       let z = parseInt(Math.random()*OBSTACLES_NAMES.length)
       iType[i] = OBSTACLES_NAMES[z]
-      iName[i] = OBSTACLES_NAMES_FR[z]+' de Folfaire'
+      iName[i] = OBSTACLES_NAMES_FR[z]+' de '+NameGenerator(3, 6)
     } else {
       let z = parseInt(Math.random()*REGIONS_NAMES.length)
       iType[i] = REGIONS_NAMES[z]
-      iName[i] = REGIONS_NAMES_FR[z]+' de Folfaire'
+      iName[i] = REGIONS_NAMES_FR[z]+' de '+NameGenerator(3, 6)
     }
   }
   let iZoneMax = [parseInt(Math.random()*7)+6,0,0,0,0];//for region starter
@@ -172,13 +173,151 @@ const gameTurnReducer = (state, action) => {
     newTurnNumber ++
     newPreoccupationPoints = state.preoccupationPointsMax
     newWhichTab = 0
-    // MAP //
-    //Cross
+
+    ////////////////////////////////////////////////////////////////////////////
+    //                                  MAP                                   //
+    ////////////////////////////////////////////////////////////////////////////
+
+    // CROSS //
     for(let i = 0; i < newCross.length; i++){
       newOwner[newCross[i]] = ['player']
+      if (Math.abs(newCoordinatesX[newCross[i]]%2) === 1 && newCoordinatesY[newCross[i]]%2 === 0) {//HORIZONTAL expansion
+        //Check left or right
+        let coordinatesNewRegion = []
+        for (let j = 0; j < newName.length; j++){
+          if(newCoordinatesX[j] === newCoordinatesX[newCross[i]]-1 && newCoordinatesY[j] === newCoordinatesY[newCross[i]]){
+            coordinatesNewRegion.push([newCoordinatesX[j]+2,newCoordinatesY[j]])//exist left so push right (2: obstacle + free zone)
+          } else if (newCoordinatesX[j] === newCoordinatesX[newCross[i]]+1 && newCoordinatesY[j] === newCoordinatesY[newCross[i]]) {
+            coordinatesNewRegion.push([newCoordinatesX[j]-2,newCoordinatesY[j]])//exist right so push left (2: obstacle + free zone)
+          }
+        }
+        //Create
+        if (coordinatesNewRegion.length === 1){
+          //new region
+          newCoordinatesX.push(coordinatesNewRegion[0][0])
+          newCoordinatesY.push(coordinatesNewRegion[0][1])
+          newIsObstacle.push(false)
+          let z = parseInt(Math.random()*REGIONS_NAMES.length)
+          newType.push(REGIONS_NAMES[z])
+          newName.push(REGIONS_NAMES_FR[z]+' de '+NameGenerator(3, 7))
+          newZoneMax.push(parseInt(Math.random()*7)+6)
+          newZoneTypes.push([])
+          newValues.push([])
+          newOwner.push([])
+          //new obstacles
+          let coordinatesObstaclesToCreate = []
+          for (let j = 0; j < newName.length; j++){
+            if(newCoordinatesX[j] === coordinatesNewRegion[0][0]-1 && newCoordinatesY[j] === coordinatesNewRegion[0][1]){
+              coordinatesObstaclesToCreate.push('left')//exist left
+            } else if (newCoordinatesX[j] === coordinatesNewRegion[0][0]+1 && newCoordinatesY[j] === coordinatesNewRegion[0][1]) {
+              coordinatesObstaclesToCreate.push('right')//exist right
+            } else if (newCoordinatesX[j] === coordinatesNewRegion[0][0] && newCoordinatesY[j] === coordinatesNewRegion[0][1]+1) {
+              coordinatesObstaclesToCreate.push('up')//exist up
+            } else if (newCoordinatesX[j] === coordinatesNewRegion[0][0] && newCoordinatesY[j] === coordinatesNewRegion[0][1]-1) {
+              coordinatesObstaclesToCreate.push('down')//exist down
+            }
+          }
+          //console.log('obstacle exist in '+coordinatesObstaclesToCreate)
+          if (!coordinatesObstaclesToCreate.includes('left')){
+            newCoordinatesX.push(coordinatesNewRegion[0][0]-1)
+            newCoordinatesY.push(coordinatesNewRegion[0][1])
+          }
+          if (!coordinatesObstaclesToCreate.includes('right')){
+            newCoordinatesX.push(coordinatesNewRegion[0][0]+1)
+            newCoordinatesY.push(coordinatesNewRegion[0][1])
+          }
+          if (!coordinatesObstaclesToCreate.includes('up')){
+            newCoordinatesX.push(coordinatesNewRegion[0][0])
+            newCoordinatesY.push(coordinatesNewRegion[0][1]+1)
+          }
+          if (!coordinatesObstaclesToCreate.includes('down')){
+            newCoordinatesX.push(coordinatesNewRegion[0][0])
+            newCoordinatesY.push(coordinatesNewRegion[0][1]-1)
+          }
+          for (let j = 0; j < 4-coordinatesObstaclesToCreate.length; j++){
+            newIsObstacle.push(true)
+            let z = parseInt(Math.random()*OBSTACLES_NAMES.length)
+            newType.push(OBSTACLES_NAMES[z])
+            newName.push(OBSTACLES_NAMES_FR[z]+' de '+NameGenerator(3, 7))
+            newZoneMax.push(0)
+            newZoneTypes.push([])
+            newValues.push([])
+            newOwner.push(['noOne'])
+          }
+          //console.log('nCX length> '+newCoordinatesX.length+' - nName length> '+newName.length)
+        }//end of Create
+      } else if (newCoordinatesX[newCross[i]]%2 === 0 && Math.abs(newCoordinatesY[newCross[i]]%2) === 1) {//VERTICAL expansion
+        //Check up or down
+        let coordinatesNewRegion = []
+        for (let j = 0; j < newName.length; j++){
+          if(newCoordinatesX[j] === newCoordinatesX[newCross[i]] && newCoordinatesY[j] === newCoordinatesY[newCross[i]]+1){
+            coordinatesNewRegion.push([newCoordinatesX[j],newCoordinatesY[j]-2])//exist up so push down (2: obstacle + free zone)
+          } else if (newCoordinatesX[j] === newCoordinatesX[newCross[i]] && newCoordinatesY[j] === newCoordinatesY[newCross[i]]-1) {
+            coordinatesNewRegion.push([newCoordinatesX[j],newCoordinatesY[j]+2])//exist down so push up (2: obstacle + free zone)
+          }
+        }
+        //Create
+        if (coordinatesNewRegion.length === 1){
+          //new region
+          newCoordinatesX.push(coordinatesNewRegion[0][0])
+          newCoordinatesY.push(coordinatesNewRegion[0][1])
+          newIsObstacle.push(false)
+          let z = parseInt(Math.random()*REGIONS_NAMES.length)
+          newType.push(REGIONS_NAMES[z])
+          newName.push(REGIONS_NAMES_FR[z]+' de '+NameGenerator(3, 7))
+          newZoneMax.push(parseInt(Math.random()*7)+6)
+          newZoneTypes.push([])
+          newValues.push([])
+          newOwner.push([])
+          //new obstacles
+          let coordinatesObstaclesToCreate = []
+          for (let j = 0; j < newName.length; j++){
+            if(newCoordinatesX[j] === coordinatesNewRegion[0][0]-1 && newCoordinatesY[j] === coordinatesNewRegion[0][1]){
+              coordinatesObstaclesToCreate.push('left')//exist left
+            } else if (newCoordinatesX[j] === coordinatesNewRegion[0][0]+1 && newCoordinatesY[j] === coordinatesNewRegion[0][1]) {
+              coordinatesObstaclesToCreate.push('right')//exist right
+            } else if (newCoordinatesX[j] === coordinatesNewRegion[0][0] && newCoordinatesY[j] === coordinatesNewRegion[0][1]+1) {
+              coordinatesObstaclesToCreate.push('up')//exist up
+            } else if (newCoordinatesX[j] === coordinatesNewRegion[0][0] && newCoordinatesY[j] === coordinatesNewRegion[0][1]-1) {
+              coordinatesObstaclesToCreate.push('down')//exist down
+            }
+          }
+          //console.log('obstacle exist in '+coordinatesObstaclesToCreate)
+          if (!coordinatesObstaclesToCreate.includes('left')){
+            newCoordinatesX.push(coordinatesNewRegion[0][0]-1)
+            newCoordinatesY.push(coordinatesNewRegion[0][1])
+          }
+          if (!coordinatesObstaclesToCreate.includes('right')){
+            newCoordinatesX.push(coordinatesNewRegion[0][0]+1)
+            newCoordinatesY.push(coordinatesNewRegion[0][1])
+          }
+          if (!coordinatesObstaclesToCreate.includes('up')){
+            newCoordinatesX.push(coordinatesNewRegion[0][0])
+            newCoordinatesY.push(coordinatesNewRegion[0][1]+1)
+          }
+          if (!coordinatesObstaclesToCreate.includes('down')){
+            newCoordinatesX.push(coordinatesNewRegion[0][0])
+            newCoordinatesY.push(coordinatesNewRegion[0][1]-1)
+          }
+          for (let j = 0; j < 4-coordinatesObstaclesToCreate.length; j++){
+            newIsObstacle.push(true)
+            let z = parseInt(Math.random()*OBSTACLES_NAMES.length)
+            newType.push(OBSTACLES_NAMES[z])
+            newName.push(OBSTACLES_NAMES_FR[z]+' de '+NameGenerator(3, 7))
+            newZoneMax.push(0)
+            newZoneTypes.push([])
+            newValues.push([])
+            newOwner.push(['noOne'])
+          }
+          //console.log('nCX length> '+newCoordinatesX.length+' - nName length> '+newName.length)
+        }//end of Create
+      } else {
+        throw new Error(`Unhandled cross in game-turn-store: for position:${newCross[i]} X:${newCoordinatesX[newCross[i]]} Y:${newCoordinatesY[newCross[i]]}`);
+      }
     }
     newCross = []
-    //Explore
+
+    // EXPLORE //
     for(let i = 0; i < newExplore.length; i++){
       let regionNamePosition = REGIONS_NAMES.indexOf(newType[newExplore[i]])
       let zoneTypePosition = REGIONS_ZONES_POSSIBILITIES[regionNamePosition][parseInt(Math.random()*REGIONS_ZONES_POSSIBILITIES[regionNamePosition].length)]
@@ -204,7 +343,11 @@ const gameTurnReducer = (state, action) => {
       }
     }
     newExplore = []
-    //TECHNOLOGIES
+
+    ////////////////////////////////////////////////////////////////////////////
+    //                              TECHNOLOGIES                              //
+    ////////////////////////////////////////////////////////////////////////////
+
   } else {
     //throw new Error(`Unhandled action type: ${action.actegorie}`);
   }

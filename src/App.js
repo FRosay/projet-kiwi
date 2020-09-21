@@ -22,7 +22,7 @@ function App() {
             <GameText />
           </div>
           <GameInformations />
-        <footer>Footer de merde</footer>
+        <footer>Footer de merde - Version 0.01</footer>
       </GameTurnProvider>
     </OptionsProvider>
     </div>
