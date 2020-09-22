@@ -7,7 +7,7 @@ function Report() {
       <div>
       <h1>Rapport</h1>
       <p>-- Cycle {gameTurnState.turnNumber} --</p>
-      <p>{gameTurnState.turnNumber === 0 ? 'TODO paragraphe de crash' : 'TODO'}</p>
+      <p>{gameTurnState.turnNumber === 0 ? 'TODO paragraphe de crash' : gameTurnState.report}</p>
       </div>
   )
 }

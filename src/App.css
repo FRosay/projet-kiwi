@@ -89,17 +89,16 @@ footer{
   width: 100%;
 }
 
-.pp-map{
-  position: relative;
-  left: 50%;
-  top: -20%;
-}
 
 .border-image-of-region-discovered-checked{
   filter: brightness(0);
   width: 110%;
   top: -5%;
   left: -5%;
+}
+
+.hightlight{
+  color: var(--color-hightlight);
 }
 
 .obstacle-crossed{

@@ -20,8 +20,7 @@ function Map() {
       let index = regionIndex(row,col)
       if(index === false){
         rowObject.push(
-          <td key={[row,col]}><img alt='img of region undiscovered'
-          src={GetImage('undiscovered')} /></td>
+          <td key={[row,col]}></td>
         )
       } else if (gameTurnState.coordinatesX[gameTurnState.clicked] === col && gameTurnState.coordinatesY[gameTurnState.clicked] === row) {
         rowObject.push(

@@ -24,6 +24,7 @@ const INITIAL_STATE = {
   resourcesQuantity: [0,0,0,0],
   resourcesIsUnique: [false, false, false, false],
   whichTab: -1,
+  report: '',
 
   clicked: false,
   coordinatesX: INIT_COMPACT[0],
@@ -86,6 +87,7 @@ const gameTurnReducer = (state, action) => {
   let newResourcesQuantity = state.resourcesQuantity.slice()
   let newResourcesIsUnique = state.resourcesIsUnique.slice()
   let newWhichTab = state.whichTab
+  let newReport = state.report
 ////////////////////////////////////////////////////////////////////////////////
   let newClicked = state.clicked
   let newCoordinatesX = state.coordinatesX.slice()
@@ -173,6 +175,7 @@ const gameTurnReducer = (state, action) => {
     newTurnNumber ++
     newPreoccupationPoints = state.preoccupationPointsMax
     newWhichTab = 0
+    newReport = ''
 
     ////////////////////////////////////////////////////////////////////////////
     //                                  MAP                                   //
@@ -204,6 +207,7 @@ const gameTurnReducer = (state, action) => {
           newZoneTypes.push([])
           newValues.push([])
           newOwner.push([])
+          newReport += '🚸 Après avoir traversé '+newName[newCross[i]]+', nous avons découvert : '+newName[newName.length-1]+' !'
           //new obstacles
           let coordinatesObstaclesToCreate = []
           for (let j = 0; j < newName.length; j++){
@@ -269,6 +273,7 @@ const gameTurnReducer = (state, action) => {
           newZoneTypes.push([])
           newValues.push([])
           newOwner.push([])
+          newReport += '🚸 Après avoir traversé '+newName[newCross[i]]+', nous avons découvert : '+newName[newName.length-1]+' !'
           //new obstacles
           let coordinatesObstaclesToCreate = []
           for (let j = 0; j < newName.length; j++){
@@ -324,17 +329,22 @@ const gameTurnReducer = (state, action) => {
       if(newZoneTypes[newExplore[i]].length < newZoneMax[newExplore[i]]){
         newZoneTypes[newExplore[i]].push(ZONES_NAMES[zoneTypePosition]);
         newOwner[newExplore[i]].push('player');
+        newReport += '🧭 En explorant les alentours de '+newName[newExplore[i]]+', nous sommes tombés sur '
         switch(zoneTypePosition){
           case 0:
+            newReport += 'de la nourriture !'
             newResourcesQuantity[3]++
             break;
           case 1:
+            newReport += 'du bois !'
             newResourcesQuantity[0]++
             break;
           case 2:
+            newReport += 'du minerai !'
             newResourcesQuantity[2]++
             break;
           case 3:
+            newReport += 'de la roche !'
             newResourcesQuantity[1]++
             break;
           default:
@@ -364,6 +374,7 @@ const gameTurnReducer = (state, action) => {
     resourcesQuantity: newResourcesQuantity,
     resourcesIsUnique: newResourcesIsUnique,
     whichTab: newWhichTab,
+    report: newReport,
 
     clicked: newClicked,
     coordinatesX: newCoordinatesX,

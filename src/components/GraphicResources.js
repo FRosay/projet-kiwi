@@ -5,7 +5,6 @@ import food                 from '../assets/images/resources/food.png';
 
 import pineForest           from '../assets/images/regions/pineForest.png';
 import pineLake             from '../assets/images/regions/pineLake.png';
-import undiscovered         from '../assets/images/regions/undiscovered.png';
 
 import bridge               from '../assets/images/obstacles/bridge.png';
 import mountains            from '../assets/images/obstacles/mountains.png';
@@ -20,19 +19,19 @@ import techFishingCane      from '../assets/images/technologies/fishingCane.png'
 import techFishingNet      from '../assets/images/technologies/fishingNet.png';
 import techFishingBoat      from '../assets/images/technologies/fishingBoat.png';
 
-const IMAGES =  [[stone, wood, minerals, food], [pineForest, pineLake, undiscovered], [bridge, mountains, sea], [rocks, tree], 
+const IMAGES =  [[stone, wood, minerals, food], [pineForest, pineLake], [bridge, mountains, sea], [rocks, tree],
                 [preoccupationPoint], [techFishingCane, techFishingNet, techFishingBoat]]
 
 function GetImage(imageName) {
 
     let category
     let imageNumber
-    
+
     switch (imageName) {
         case 'stone':
             category = 0
             imageNumber = 0
-            break; 
+            break;
         case 'wood':
             category = 0
             imageNumber = 1
@@ -48,15 +47,11 @@ function GetImage(imageName) {
         case 'pineForest':
             category = 1
             imageNumber = 0
-            break; 
+            break;
         case 'pineLake':
             category = 1
             imageNumber = 1
-            break; 
-        case 'undiscovered':
-            category = 1
-            imageNumber = 2
-            break; 
+            break;
         case 'bridge':
             category = 2
             imageNumber = 0
@@ -68,14 +63,14 @@ function GetImage(imageName) {
         case 'sea':
             category = 2
             imageNumber = 2
-            break; 
+            break;
         case 'rocks':
             category = 3
             imageNumber = 0
-            break; 
+            break;
         case 'tree':
             category = 3
-            imageNumber = 1 
+            imageNumber = 1
             break;
         case 'preoccupationPoint':
             category = 4
@@ -96,9 +91,9 @@ function GetImage(imageName) {
         default:
             category = 4
             imageNumber = 0
-            break;      
+            break;
     }
-    
+
     return IMAGES[category][imageNumber];
 }
 
