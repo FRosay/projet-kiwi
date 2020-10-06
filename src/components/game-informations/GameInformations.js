@@ -43,11 +43,16 @@ function GameInformations() {
   }
 
   function displayMapZones(){
-    let zones = ''
+    let zones = []
     for(let i = 0; i < gameTurnState.zoneTypes[gameTurnState.clicked].length; i++){
-      zones += gameTurnState.zoneTypes[gameTurnState.clicked][i]
+      zones.push(
+        <img alt='resource discovered'
+        key={i}
+        src={GetImage(gameTurnState.zoneTypes[gameTurnState.clicked][i])}
+        />
+      )
       if(i+1 < gameTurnState.zoneTypes[gameTurnState.clicked].length){
-        zones +=', '
+        zones.push(' ')
       }
     }
     return(zones)

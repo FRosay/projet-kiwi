@@ -11,7 +11,6 @@ import { OptionsProvider } from './components/options/options-store.js'
 
 
 function App() {
-
   return (
     <div className="App">
     <OptionsProvider>

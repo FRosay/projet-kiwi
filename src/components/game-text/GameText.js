@@ -5,6 +5,7 @@ import Report from './Report.js'
 import Map from './Map.js'
 import Technologies from './Technology/Technologies.js'
 import Politic from './Politic.js'
+import Options from './Options.js'
 import Introduction from './Introduction/Introduction.js'
 import Testing from './../Testing.js'
 
@@ -32,6 +33,9 @@ function GameText() {
 
   } else if (gameTurnState.whichTab === 5) { //rough code, for testing
     return (<Testing />)
+
+  } else if (gameTurnState.whichTab === 9) {
+    return (<Options />)
 
   } else {
     return (<Introduction />)

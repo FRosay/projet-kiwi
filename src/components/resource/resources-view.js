@@ -19,7 +19,7 @@ function ResourcesView() {
   if(stateOfOptions.display !== 'full'){
     return (
         <div id='resources-view-div'>
-          {res}
+          <table><tbody><tr>{res}</tr></tbody></table>
         </div>
     )
   } else {

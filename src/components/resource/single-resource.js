@@ -6,9 +6,9 @@ function SingleResource(props) {
   if (props.shortVersion===true) {
     if(props.quantity > 0){
       return (
-        <div id="resource-div">
-          { props.quantity } <img alt={ props.name } src= { GetImage(props.name) }></img>
-        </div>
+        <td>
+          { props.quantity } <img alt={ props.name } src= { GetImage(props.name) }/>
+        </td>
       )
     } else {
       return null

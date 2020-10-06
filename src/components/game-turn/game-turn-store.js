@@ -1,10 +1,11 @@
 import React, { createContext, useContext, useReducer } from 'react';
 import NameGenerator from '../misc-tools/name-generator/NameGenerator.js';
+import GetImage from '../GraphicResources.js';
 
 const GameTurnContext = createContext();
 const REGIONS_NAMES = ['pineForest', 'pineLake']
 const REGIONS_NAMES_FR = ['forêt de pins', 'lac de pins']
-const ZONES_NAMES = ['field', 'forest', 'mine', 'rocks']
+const ZONES_NAMES = ['food', 'wood', 'minerals', 'stone']
 const ZONES_NAMES_FR = ['champs', 'forêt', 'mine', 'rochers']
 const REGIONS_ZONES_POSSIBILITIES = [
   [1,3],//pineForest
@@ -24,7 +25,7 @@ const INITIAL_STATE = {
   resourcesQuantity: [0,0,0,0],
   resourcesIsUnique: [false, false, false, false],
   whichTab: -1,
-  report: '',
+  report: [],
 
   clicked: false,
   coordinatesX: INIT_COMPACT[0],
@@ -175,7 +176,7 @@ const gameTurnReducer = (state, action) => {
     newTurnNumber ++
     newPreoccupationPoints = state.preoccupationPointsMax
     newWhichTab = 0
-    newReport = ''
+    newReport = []
 
     ////////////////////////////////////////////////////////////////////////////
     //                                  MAP                                   //
@@ -207,7 +208,7 @@ const gameTurnReducer = (state, action) => {
           newZoneTypes.push([])
           newValues.push([])
           newOwner.push([])
-          newReport += '🚸 Après avoir traversé '+newName[newCross[i]]+', nous avons découvert : '+newName[newName.length-1]+' !'
+          newReport.push(<span><span role="img" aria-label="crossing">🚸</span> Après avoir traversé <u>{newName[newCross[i]]}</u>, nous avons découvert : <u>{newName[newName.length-1]}</u> !</span>)
           //new obstacles
           let coordinatesObstaclesToCreate = []
           for (let j = 0; j < newName.length; j++){
@@ -273,7 +274,7 @@ const gameTurnReducer = (state, action) => {
           newZoneTypes.push([])
           newValues.push([])
           newOwner.push([])
-          newReport += '🚸 Après avoir traversé '+newName[newCross[i]]+', nous avons découvert : '+newName[newName.length-1]+' !'
+          newReport.push(<span><span role="img" aria-label="crossing">🚸</span> Après avoir traversé <u>{newName[newCross[i]]}</u>, nous avons découvert : <u>{newName[newName.length-1]}</u> !</span>)
           //new obstacles
           let coordinatesObstaclesToCreate = []
           for (let j = 0; j < newName.length; j++){
@@ -329,22 +330,21 @@ const gameTurnReducer = (state, action) => {
       if(newZoneTypes[newExplore[i]].length < newZoneMax[newExplore[i]]){
         newZoneTypes[newExplore[i]].push(ZONES_NAMES[zoneTypePosition]);
         newOwner[newExplore[i]].push('player');
-        newReport += '🧭 En explorant les alentours de '+newName[newExplore[i]]+', nous sommes tombés sur '
         switch(zoneTypePosition){
           case 0:
-            newReport += 'de la nourriture !'
+          newReport.push(<span><span role="img" aria-label="compass">🧭</span> En explorant les alentours de <u>{newName[newExplore[i]]}</u>, nous sommes tombés sur de la nourriture <img alt='[food]' src={GetImage('food')}/> !</span>)
             newResourcesQuantity[3]++
             break;
           case 1:
-            newReport += 'du bois !'
+          newReport.push(<span><span role="img" aria-label="compass">🧭</span> En explorant les alentours de <u>{newName[newExplore[i]]}</u>, nous sommes tombés sur une forêt <img alt='[wood]' src={GetImage('wood')}/> !</span>)
             newResourcesQuantity[0]++
             break;
           case 2:
-            newReport += 'du minerai !'
+          newReport.push(<span><span role="img" aria-label="compass">🧭</span> En explorant les alentours de <u>{newName[newExplore[i]]}</u>, nous sommes tombés sur une mine remplie de minerais <img alt='[minerals]' src={GetImage('minerals')}/> !</span>)
             newResourcesQuantity[2]++
             break;
           case 3:
-            newReport += 'de la roche !'
+          newReport.push(<span><span role="img" aria-label="compass">🧭</span> En explorant les alentours de <u>{newName[newExplore[i]]}</u>, nous sommes tombés sur une carrière rocheuse <img alt='[stone]' src={GetImage('stone')}/> !</span>)
             newResourcesQuantity[1]++
             break;
           default:

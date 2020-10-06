@@ -1,7 +1,6 @@
 import React from 'react';
 import { useOptionsStore } from '../options/options-store.js';
 import { useGameTurnStore } from '../game-turn/game-turn-store.js';
-import './Tabs.css';
 import GetImage from '../GraphicResources.js'
 
 const NAMES_TABS = ['📝 Rapport', '🗺️ Carte', '⚙️ Technologie', '🗳️ Politique', '🌙 Fin de cycle', 'Brouillon']
@@ -19,7 +18,7 @@ function Tabs() {
   function buttonsRender(){
     let buttons = []
     for (let i = 0; i < NAMES_TABS.length; i++) {
-      buttons.push(<button className={ isDisplayed[i] ? 'is-displayed' : ''} disabled={ isClickable[i] ? false : true } onClick={ () => gameTurnDispatch({ category:'tabs', value: i }) } key={i}>{ NAMES_TABS[i] }</button>);
+      buttons.push(<button style={ isDisplayed[i] ? {color:stateOfOptions.hightlightColor} : {color:''}} disabled={ isClickable[i] ? false : true } onClick={ () => gameTurnDispatch({ category:'tabs', value: i }) } key={i}>{ NAMES_TABS[i] }</button>);
     }
     return buttons
   }
@@ -27,6 +26,7 @@ function Tabs() {
   if(stateOfOptions.display !== 'full'){
     return (
       <div id='tabs-div'>
+        <div id='options-div' onClick={ () => gameTurnDispatch({ category:'tabs', value: 9 }) }><span role="img" aria-label="gear">⚙️</span></div>
         <div>-- Cycle {gameTurnState.turnNumber} --</div>
         <div>{gameTurnState.preoccupationPoints}/{gameTurnState.preoccupationPointsMax} <img alt='preoccupation Point' src={GetImage('preoccupationPoint')}/></div>
         { buttonsRender() }
