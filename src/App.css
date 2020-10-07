@@ -13,6 +13,7 @@
 
 .App {
   background-color: black;
+  cursor: url(assets/images/cursor/auto.png), auto;
   display: flex;
   align-content: space-between;
   flex-direction: row;
@@ -23,10 +24,10 @@
 }
 
 [title]{
-  cursor: help;
+  cursor: url(assets/images/cursor/help.png), help;
 }
 [disabled]{
-  cursor: not-allowed;
+  cursor: url(assets/images/cursor/not-allowed.png), not-allowed;
 }
 
 html, body, #root, .App{
@@ -38,10 +39,14 @@ button{
   font-size: 1.5em;
 }
 button:hover{
-  cursor: pointer;
+  cursor: url(assets/images/cursor/pointer.png), pointer;
 }
 button:hover[disabled]{
-  cursor: not-allowed;
+  cursor: url(assets/images/cursor/not-allowed.png), not-allowed;
+}
+
+details{
+  text-align: justify;
 }
 
 img{
@@ -56,6 +61,11 @@ footer{
   background-color: gray;
   height: var(--height-bottom);
   width: 100%;
+}
+
+summary{
+  cursor: url(assets/images/cursor/pointer.png), pointer;
+  text-align: center;
 }
 
 #resources-view-div{
@@ -89,7 +99,7 @@ footer{
   background-color: rgba(0,0,0,0.5);
   border : 2px solid lightgray;
   border-radius: 40% 0%;
-  cursor: pointer;
+  cursor: url(assets/images/cursor/pointer.png), pointer;
   font-size: 1.5em;
   padding: 4px;
   position: absolute;
@@ -114,6 +124,10 @@ footer{
   width: 110%;
   top: -5%;
   left: -5%;
+}
+
+.interactable{
+  cursor: url(assets/images/cursor/pointer.png), pointer;
 }
 
 .obstacle-crossed{
