@@ -5,10 +5,10 @@ import GetImage from '../GraphicResources.js';
 const GameTurnContext = createContext();
 const REGIONS_NAMES = ['pineForest', 'pineLake']
 const REGIONS_NAMES_FR = ['forêt de pins', 'lac de pins']
-const ZONES_NAMES = ['food', 'wood', 'minerals', 'stone']
-const ZONES_NAMES_FR = ['champs', 'forêt', 'mine', 'rochers']
+const ZONES_NAMES = ['food', 'wood', 'stone', 'minerals']
+const ZONES_NAMES_FR = ['champs', 'forêt', 'rochers', 'minerais']
 const REGIONS_ZONES_POSSIBILITIES = [
-  [1,3],//pineForest
+  [1,2],//pineForest (wood+stone)
   [0,1,2,3]//pineLake
 ];
 const OBSTACLES_NAMES = ['sea', 'mountains', 'bridge']
@@ -18,9 +18,9 @@ const INITIAL_STATE = {
   technologiesMastered: [],
   technologiesDiscovered: [],
   turnNumber: 0,
-  preoccupationPoints: 3,
-  preoccupationPointsMax: 3,
-  resourcesName: ['wood', 'stone', 'minerals', 'food'],
+  preoccupationPoints: 10,
+  preoccupationPointsMax: 10,
+  resourcesName: ['food', 'wood', 'stone', 'minerals'],
   resourcesCategory: ['resource', 'resource', 'resource', 'resource'],
   resourcesQuantity: [0,0,0,0],
   resourcesIsUnique: [false, false, false, false],
@@ -329,27 +329,39 @@ const gameTurnReducer = (state, action) => {
       let zoneTypePosition = REGIONS_ZONES_POSSIBILITIES[regionNamePosition][parseInt(Math.random()*REGIONS_ZONES_POSSIBILITIES[regionNamePosition].length)]
       if(newZoneTypes[newExplore[i]].length < newZoneMax[newExplore[i]]){
         newZoneTypes[newExplore[i]].push(ZONES_NAMES[zoneTypePosition]);
-        newOwner[newExplore[i]].push('player');
-        switch(zoneTypePosition){
-          case 0:
-          newReport.push(<span><span role="img" aria-label="compass">🧭</span> En explorant les alentours de <u>{newName[newExplore[i]]}</u>, nous sommes tombés sur de la nourriture <img alt='[food]' src={GetImage('food')}/> !</span>)
-            newResourcesQuantity[3]++
-            break;
-          case 1:
-          newReport.push(<span><span role="img" aria-label="compass">🧭</span> En explorant les alentours de <u>{newName[newExplore[i]]}</u>, nous sommes tombés sur une forêt <img alt='[wood]' src={GetImage('wood')}/> !</span>)
-            newResourcesQuantity[0]++
-            break;
-          case 2:
-          newReport.push(<span><span role="img" aria-label="compass">🧭</span> En explorant les alentours de <u>{newName[newExplore[i]]}</u>, nous sommes tombés sur une mine remplie de minerais <img alt='[minerals]' src={GetImage('minerals')}/> !</span>)
-            newResourcesQuantity[2]++
-            break;
-          case 3:
-          newReport.push(<span><span role="img" aria-label="compass">🧭</span> En explorant les alentours de <u>{newName[newExplore[i]]}</u>, nous sommes tombés sur une carrière rocheuse <img alt='[stone]' src={GetImage('stone')}/> !</span>)
-            newResourcesQuantity[1]++
-            break;
-          default:
-            throw new Error(`Unhandled zoneTypePosition: ${zoneTypePosition}`);
+        let randomOwner = Math.random()
+        if(newExplore[i] === 0){//explore first spot
+          randomOwner = 0
         }
+        //
+        let randomOwnerText
+        if(randomOwner < 0.25) {
+          newResourcesQuantity[zoneTypePosition]++
+          newOwner[newExplore[i]].push('player')
+          randomOwnerText = 'disponible'
+        } else if (randomOwner < 0.5) {
+          newOwner[newExplore[i]].push('ally')
+          randomOwnerText = 'contrôlé par un allié'
+        } else if (randomOwner < 0.75) {
+          newOwner[newExplore[i]].push('enemy')
+          randomOwnerText = 'sous l\'emprise d\'un ennemi'
+        } else {
+          newOwner[newExplore[i]].push('neutral')
+          randomOwnerText = 'contrôlé par un peuple neutre'
+        }
+        newReport.push(<span><span role="img" aria-label="compass">🧭</span> En explorant les alentours de <u>{newName[newExplore[i]]}</u>, nous sommes tombés sur un ensemble de {ZONES_NAMES_FR[zoneTypePosition]} <img alt={'['+ZONES_NAMES[zoneTypePosition]+']'} src={GetImage(ZONES_NAMES[zoneTypePosition])}/> <u>{randomOwnerText}</u> !</span>)
+      } else {
+        newReport.push(<span><span role="img" aria-label="compass">🧭</span> Nous n'avons rien trouvé de plus à explorer au niveau de <u>{newName[newExplore[i]]}</u>.</span>)
+        //retirer dans newExplore la valeur actuelle pour ne pas avoir de doublon
+        let j = i+1 //les prochains seulement
+        while (j < newExplore.length) {
+          if (newExplore[j] === newExplore[i]) {
+            newExplore.splice(j, 1)
+          } else {
+            j++
+          }
+        }
+        //
       }
     }
     newExplore = []

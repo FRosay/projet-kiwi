@@ -30,6 +30,11 @@ function Options() {
             <td><input id='enemyColor' type='text'
             defaultValue={stateOfOptions.enemyColor}/></td>
           </tr>
+          <tr>
+            <td style={{color:stateOfOptions.neutralColor}}>Couleur des neutres : </td>
+            <td><input id='neutralColor' type='text'
+            defaultValue={stateOfOptions.neutralColor}/></td>
+          </tr>
         </tbody>
         </table>
         <button onClick={ () => dispatchInOptions({ values: {'hightlightColor':document.getElementById('hightlightColor').value, 'playerColor':document.getElementById('playerColor').value, 'allyColor':document.getElementById('allyColor').value, 'enemyColor':document.getElementById('enemyColor').value} }) }>Appliquer</button>

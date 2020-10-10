@@ -107,6 +107,10 @@ summary{
   right: 0;
 }
 
+#report-div p{
+  text-align: left;
+}
+
 #tabs-div{
   background-color: lightgray;
   height: var(--height-middle);

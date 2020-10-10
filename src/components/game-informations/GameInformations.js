@@ -45,10 +45,21 @@ function GameInformations() {
   function displayMapZones(){
     let zones = []
     for(let i = 0; i < gameTurnState.zoneTypes[gameTurnState.clicked].length; i++){
+      let bgColor
+      if(gameTurnState.owner[gameTurnState.clicked][i] === 'player'){
+        bgColor = stateOfOptions.playerColor
+      } else if(gameTurnState.owner[gameTurnState.clicked][i] === 'ally'){
+        bgColor = stateOfOptions.allyColor
+      } else if(gameTurnState.owner[gameTurnState.clicked][i] === 'enemy'){
+        bgColor = stateOfOptions.enemyColor
+      } else if(gameTurnState.owner[gameTurnState.clicked][i] === 'neutral'){
+        bgColor = stateOfOptions.neutralColor
+      }
       zones.push(
         <img alt='resource discovered'
         key={i}
         src={GetImage(gameTurnState.zoneTypes[gameTurnState.clicked][i])}
+        style={{backgroundColor:bgColor}}
         />
       )
       if(i+1 < gameTurnState.zoneTypes[gameTurnState.clicked].length){
@@ -67,7 +78,6 @@ function GameInformations() {
         /></p>
         <p>(coordonnées : { gameTurnState.coordinatesX[gameTurnState.clicked] };{ gameTurnState.coordinatesY[gameTurnState.clicked] })<br/>
         (nb zones max : { gameTurnState.zoneMax[gameTurnState.clicked] })<br/>
-        (owner : { gameTurnState.owner[gameTurnState.clicked] })<br/>
         Zones :<br/>{ displayMapZones() }</p>
         { specificMapButton() }
       </div>

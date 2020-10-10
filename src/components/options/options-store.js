@@ -3,10 +3,11 @@ import React, { createContext, useContext, useReducer } from 'react';
 const OptionsContext = createContext();
 const INITIAL_STATE = {
   display: 'full',
-  hightlightColor: 'orange',//example
-  playerColor: 'purple',
-  allyColor: 'pink',
-  enemyColor: 'red'
+  hightlightColor: 'orange',
+  playerColor: 'blue',
+  allyColor: 'lime',
+  enemyColor: 'red',
+  neutralColor: 'black'
 };
 
 const OptionsReducer = (state, action) => {
@@ -15,6 +16,7 @@ const OptionsReducer = (state, action) => {
   let newPlayerColor = state.playerColor
   let newAllyColor = state.allyColor
   let newEnemyColor = state.enemyColor
+  let newNeutralColor = state.neutralColor
 
   if(action.category === 'display'){
     newDisplay = action.value
@@ -23,6 +25,7 @@ const OptionsReducer = (state, action) => {
     newPlayerColor = action.values['playerColor']
     newAllyColor = action.values['allyColor']
     newEnemyColor = action.values['enemyColor']
+    newNeutralColor = action.values['neutralColor']
   } else {
     throw new Error(`Unhandled options-store: ${action.category}`);
   }
@@ -32,7 +35,8 @@ const OptionsReducer = (state, action) => {
     hightlightColor: newHightlightColor,
     playerColor: newPlayerColor,
     allyColor: newAllyColor,
-    enemyColor: newEnemyColor
+    enemyColor: newEnemyColor,
+    neutralColor: newNeutralColor
   }
 }
 
