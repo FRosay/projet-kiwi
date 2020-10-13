@@ -8,6 +8,7 @@ import deepLake             from '../assets/images/regions/deepLake.png';
 import pineForest           from '../assets/images/regions/pineForest.png';
 import pineLake             from '../assets/images/regions/pineLake.png';
 
+import workInProgress       from '../assets/images/zones/workInProgress.png';
 import camp                 from '../assets/images/zones/camp.png';
 import rocks                from '../assets/images/zones/rocks.png';
 import tree                 from '../assets/images/zones/trees.png';
@@ -20,7 +21,7 @@ import techFishingBoat      from '../assets/images/technologies/fishingBoat.png'
 
 const IMAGES =  [[stone, wood, minerals, food],
 [crystalCave, deepLake, pineForest, pineLake],
-[camp, rocks, tree],
+[workInProgress, camp, rocks, tree],
 [preoccupationPoint],
 [techFishingCane, techFishingNet, techFishingBoat]]
 
@@ -64,17 +65,21 @@ function GetImage(imageName) {
             imageNumber = 3
             break;
 
-        case 'camp':
+        case 'workInProgress':
             category = 2
             imageNumber = 0
             break;
-        case 'rocks':
+        case 'camp':
             category = 2
             imageNumber = 1
             break;
-        case 'tree':
+        case 'rocks':
             category = 2
             imageNumber = 2
+            break;
+        case 'tree':
+            category = 2
+            imageNumber = 3
             break;
 
         case 'preoccupationPoint':

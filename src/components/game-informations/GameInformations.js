@@ -56,10 +56,12 @@ function GameInformations() {
         bgColor = stateOfOptions.neutralColor
       }
       zones.push(
-        <img alt='resource discovered'
+        <img alt='zone discovered'
         key={i}
+        className={'interactable'}
+        onClick={() => gameTurnDispatch({category:'informations', click:gameTurnState.clicked, subClick:i})}
         src={GetImage(gameTurnState.zoneTypes[gameTurnState.clicked][i])}
-        style={{backgroundColor:bgColor}}
+        style={{backgroundColor:bgColor, borderBottom:(gameTurnState.subClick === i ? '8px solid transparent' : 'none')}}
         />
       )
       if(i+1 < gameTurnState.zoneTypes[gameTurnState.clicked].length){
@@ -69,6 +71,17 @@ function GameInformations() {
     return(zones)
   }
 
+  function displayMapZoneInfo(){
+    if(gameTurnState.subClick !== false){
+      return(<table><tbody>
+          <tr><td>Nom :</td><td>{ gameTurnState.zoneTypes[gameTurnState.clicked][gameTurnState.subClick] }</td></tr>
+          <tr><td>Proprio :</td><td>{ gameTurnState.zoneOwner[gameTurnState.clicked][gameTurnState.subClick] }</td></tr>
+          <tr><td>Action :</td><td>{ gameTurnState.zoneOwner[gameTurnState.clicked][gameTurnState.subClick] === 'player' && gameTurnState.zoneTypes[gameTurnState.clicked][gameTurnState.subClick] !== 'workInProgress' && gameTurnState.zoneTypes[gameTurnState.clicked][gameTurnState.subClick] !== 'camp' ?
+          <button onClick={() => gameTurnDispatch({category:'build', type:'camp', click:gameTurnState.clicked, subClick:gameTurnState.subClick})}><span role="img" aria-label="hammer-pick">⚒️</span> Raser pour un camp [-1 <img alt='preoccupation Point' src={GetImage('preoccupationPoint')}/>]</button> : '...' }</td></tr>
+        </tbody></table>)
+    }
+  }
+
   function insideMap(){
     return(
       <div>
@@ -76,11 +89,12 @@ function GameInformations() {
         <p><img alt='img of region discovered'
         src={GetImage(gameTurnState.type[gameTurnState.clicked])}
         /></p>
-        <p>(coordonnées : { gameTurnState.coordinatesX[gameTurnState.clicked] };{ gameTurnState.coordinatesY[gameTurnState.clicked] })<br/>
-        (zoneOwner : {gameTurnState.zoneOwner[gameTurnState.clicked]} )<br/>
-        (nb zones max : { gameTurnState.zoneMax[gameTurnState.clicked] })<br/>
-        Zones :<br/>{ displayMapZones() }</p>
         { specificMapButton() }
+        <p>(coord : { gameTurnState.coordinatesX[gameTurnState.clicked] };{ gameTurnState.coordinatesY[gameTurnState.clicked] })<br/>
+        (zoneMax : { gameTurnState.zoneMax[gameTurnState.clicked] })</p>
+        <h2>Zones</h2>
+        { displayMapZones() }
+        { displayMapZoneInfo() }
       </div>
     )
   }

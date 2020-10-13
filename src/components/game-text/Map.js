@@ -41,7 +41,7 @@ function Map() {
           <td key={[row,col]}>
           <img alt='img of region discovered'
           className={ gameTurnState.isUncrossed[index] ? 'interactable' : 'obstacle-crossed interactable'}
-          onClick={() => gameTurnDispatch({category:'informations', click:index})}
+          onClick={() => gameTurnDispatch({category:'informations', click:index, subClick:false})}
           src={GetImage(gameTurnState.type[index])}
           />
           </td>

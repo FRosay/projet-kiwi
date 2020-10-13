@@ -31,6 +31,7 @@ const INITIAL_STATE = {
   report: [],
 
   clicked: false,
+  subClick: false,
   coordinatesX: INIT_COMPACT[0],
   coordinatesY: INIT_COMPACT[1],
   isUncrossed: INIT_COMPACT[2],
@@ -40,6 +41,7 @@ const INITIAL_STATE = {
   zoneTypes: INIT_COMPACT[6],
   values: INIT_COMPACT[7],
   zoneOwner: INIT_COMPACT[8],
+  build: [],
   cross: [],
   explore: []
 };
@@ -89,6 +91,7 @@ const gameTurnReducer = (state, action) => {
   let newReport = state.report
 ////////////////////////////////////////////////////////////////////////////////
   let newClicked = state.clicked
+  let newSubClick = state.subClick
   let newCoordinatesX = state.coordinatesX.slice()
   let newCoordinatesY = state.coordinatesY.slice()
   let newIsUncrossed = state.isUncrossed.slice()
@@ -105,6 +108,7 @@ const gameTurnReducer = (state, action) => {
     newZoneOwner[row] = state.zoneOwner[row].slice()
   }
 
+  let newBuild = state.build.slice()
   let newCross = state.cross.slice()
   let newExplore = state.explore.slice()
 ////////////////////////////////////////////////////////////////////////////////
@@ -113,6 +117,7 @@ const gameTurnReducer = (state, action) => {
     newWhichTab = action.value
   } else if (action.category === 'informations' && typeof action.click !== 'undefined' && action.click !== null) {
     newClicked = action.click
+    newSubClick = action.subClick
   } else if (action.category === 'player') {
     switch (action.type) {
       case 'addPoints':
@@ -170,6 +175,20 @@ const gameTurnReducer = (state, action) => {
       default:
         throw new Error(`Unhandled technologies action type: ${action.type}`);
       }
+  } else if (action.category === 'build'){
+    switch (action.type) {
+      case 'camp':
+        newPreoccupationPoints --
+        //loose resource
+        if(ZONES_NAMES.indexOf(newZoneTypes[action.click][action.subClick]) !== -1 && ZONES_NAMES.indexOf(newZoneTypes[action.click][action.subClick]) < 4){
+          newResourcesQuantity[ZONES_NAMES.indexOf(newZoneTypes[action.click][action.subClick])] --
+        }
+        newZoneTypes[action.click][action.subClick] = 'workInProgress'
+        newBuild.push([action.click, action.subClick, 'camp'])
+        break;
+      default:
+        throw new Error(`Unhandled build action type: ${action.type}`);
+    }
   } else if (action.category === 'endTurn') {
     newTurnNumber ++
     newPreoccupationPoints = state.preoccupationPointsMax
@@ -179,6 +198,13 @@ const gameTurnReducer = (state, action) => {
     ////////////////////////////////////////////////////////////////////////////
     //                                  MAP                                   //
     ////////////////////////////////////////////////////////////////////////////
+
+    // BUILD //
+    for(let i = 0; i < newBuild.length; i++){
+      newZoneTypes[newBuild[i][0]][newBuild[i][1]] = newBuild[i][2]
+      newReport.push(<span><span role="img" aria-label="hammer-pick">⚒️</span> Nous avons construit dans {REGIONS_ARTICLES_FR[REGIONS_NAMES.indexOf(newType[newBuild[i][0]])]} <u>{newName[newBuild[i][0]]}</u> : notre <u>{ZONES_NAMES_FR[ZONES_NAMES.indexOf(newBuild[i][2])]}</u> !</span>)
+    }
+    newBuild = []
 
     // CROSS //
     for(let i = 0; i < newCross.length; i++){
@@ -262,7 +288,7 @@ const gameTurnReducer = (state, action) => {
           newZoneOwner[newExplore[i]].push('neutral')
           randomOwnerText = 'contrôlé par un peuple neutre'
         }
-        newReport.push(<span><span role="img" aria-label="compass">🧭</span> En explorant les alentours de <u>{newName[newExplore[i]]}</u>, nous sommes tombés sur un ensemble de {ZONES_NAMES_FR[zoneTypePosition]} <img alt={'['+ZONES_NAMES[zoneTypePosition]+']'} src={GetImage(ZONES_NAMES[zoneTypePosition])}/> <u>{randomOwnerText}</u> !</span>)
+        newReport.push(<span><span role="img" aria-label="compass">🧭</span> En explorant {REGIONS_ARTICLES_FR[REGIONS_NAMES.indexOf(newType[newExplore[i]])]} <u>{newName[newExplore[i]]}</u>, nous sommes tombés sur un ensemble de {ZONES_NAMES_FR[zoneTypePosition]} <img alt={'['+ZONES_NAMES[zoneTypePosition]+']'} src={GetImage(ZONES_NAMES[zoneTypePosition])}/> <u>{randomOwnerText}</u> !</span>)
       } else {
         newReport.push(<span><span role="img" aria-label="compass">🧭</span> Nous n'avons rien trouvé de plus à explorer au niveau de <u>{newName[newExplore[i]]}</u>.</span>)
         //retirer dans newExplore la valeur actuelle pour ne pas avoir de doublon
@@ -302,6 +328,7 @@ const gameTurnReducer = (state, action) => {
     report: newReport,
 
     clicked: newClicked,
+    subClick: newSubClick,
     coordinatesX: newCoordinatesX,
     coordinatesY: newCoordinatesY,
     isUncrossed: newIsUncrossed,
@@ -311,6 +338,8 @@ const gameTurnReducer = (state, action) => {
     zoneTypes: newZoneTypes,
     values: newValues,
     zoneOwner: newZoneOwner,
+
+    build: newBuild,
     cross: newCross,
     explore: newExplore
   }
