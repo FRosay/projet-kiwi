@@ -21,7 +21,7 @@ function GameInformations() {
   }
 
   function specificMapButton(){
-    if (gameTurnState.isObstacle[gameTurnState.clicked] && gameTurnState.owner[gameTurnState.clicked][0] === 'noOne') {
+    if (gameTurnState.isUncrossed[gameTurnState.clicked] && gameTurnState.owner[gameTurnState.clicked][0] === 'noOne') {
       return(
         <button
         disabled={ gameTurnState.preoccupationPoints > 0 && !isCrossing(gameTurnState.clicked) ? false : true }
@@ -30,7 +30,7 @@ function GameInformations() {
         }}
         ><span role="img" aria-label="crossing">🚸</span> Franchir [-1 <img alt='preoccupation Point' src={GetImage('preoccupationPoint')}/>]</button>
       )
-    } else if (!gameTurnState.isObstacle[gameTurnState.clicked] && gameTurnState.zoneTypes[gameTurnState.clicked].length < gameTurnState.zoneMax[gameTurnState.clicked]) {
+    } else if (!gameTurnState.isUncrossed[gameTurnState.clicked] && gameTurnState.zoneTypes[gameTurnState.clicked].length < gameTurnState.zoneMax[gameTurnState.clicked]) {
       return(
         <button
         disabled={ gameTurnState.preoccupationPoints > 0 ? false : true }

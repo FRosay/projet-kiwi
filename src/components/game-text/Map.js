@@ -22,7 +22,7 @@ function Map() {
         rowObject.push(
           <td key={[row,col]}></td>
         )
-      } else if (gameTurnState.coordinatesX[gameTurnState.clicked] === col && gameTurnState.coordinatesY[gameTurnState.clicked] === row) {
+      } else if (gameTurnState.coordinatesX[gameTurnState.clicked] === col && gameTurnState.coordinatesY[gameTurnState.clicked] === row) {//clicked ? > border-image
         rowObject.push(
           <td key={[row,col]} style={{position: 'relative'}}>
           <img alt='border img'
@@ -40,7 +40,7 @@ function Map() {
         rowObject.push(
           <td key={[row,col]}>
           <img alt='img of region discovered'
-          className={ gameTurnState.isObstacle[index] && gameTurnState.owner[index][0] === 'player' ? 'obstacle-crossed' : 'interactable'}
+          className={ gameTurnState.isUncrossed[index] ? 'interactable' : 'obstacle-crossed interactable'}
           onClick={() => gameTurnDispatch({category:'informations', click:index})}
           src={GetImage(gameTurnState.type[index])}
           />

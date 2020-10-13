@@ -3,16 +3,18 @@ import NameGenerator from '../misc-tools/name-generator/NameGenerator.js';
 import GetImage from '../GraphicResources.js';
 
 const GameTurnContext = createContext();
-const REGIONS_NAMES = ['pineForest', 'pineLake']
-const REGIONS_NAMES_FR = ['forêt de pins', 'lac de pins']
+const REGIONS_NAMES = ['pineForest', 'pineLake', 'crystalCave', 'deepLake']
+const REGIONS_NAMES_FR = ['forêt de pins', 'lac de pins', 'cave de cristal', 'lac profond']
 const ZONES_NAMES = ['food', 'wood', 'stone', 'minerals']
 const ZONES_NAMES_FR = ['champs', 'forêt', 'rochers', 'minerais']
 const REGIONS_ZONES_POSSIBILITIES = [
   [1,2],//pineForest (wood+stone)
-  [0,1,2,3]//pineLake
+  [0,1,2,3],//pineLake
+  [2,3],//crystalCave
+  [0,2]//deepLake
 ];
-const OBSTACLES_NAMES = ['sea', 'mountains', 'bridge']
-const OBSTACLES_NAMES_FR = ['mer', 'montagnes', 'pont']
+//const OBSTACLES_NAMES = ['sea', 'mountains', 'bridge']
+//const OBSTACLES_NAMES_FR = ['mer', 'montagnes', 'pont']
 const INIT_COMPACT = initRegions();
 const INITIAL_STATE = {
   technologiesMastered: [],
@@ -30,7 +32,7 @@ const INITIAL_STATE = {
   clicked: false,
   coordinatesX: INIT_COMPACT[0],
   coordinatesY: INIT_COMPACT[1],
-  isObstacle: INIT_COMPACT[2],
+  isUncrossed: INIT_COMPACT[2],
   type: INIT_COMPACT[3],
   name: INIT_COMPACT[4],
   zoneMax: INIT_COMPACT[5],
@@ -50,25 +52,20 @@ const INITIAL_STATE = {
 function initRegions(){
   let iCoordinatesX = [0,0,1,0,-1];
   let iCoordinatesY = [0,1,0,-1,0];
-  let iIsObstacle = [false, true, true, true, true];
+  let iIsUncrossed = [false, true, true, true, true];
   let iType = [];
   let iName = [];
+  let iZoneMax = [];
   for(let i = 0; i < 5; i++){
-    if(iIsObstacle[i]){
-      let z = parseInt(Math.random()*OBSTACLES_NAMES.length)
-      iType[i] = OBSTACLES_NAMES[z]
-      iName[i] = OBSTACLES_NAMES_FR[z]+' de '+NameGenerator(3, 6)
-    } else {
-      let z = parseInt(Math.random()*REGIONS_NAMES.length)
-      iType[i] = REGIONS_NAMES[z]
-      iName[i] = REGIONS_NAMES_FR[z]+' de '+NameGenerator(3, 6)
-    }
+    let z = parseInt(Math.random()*REGIONS_NAMES.length)
+    iType[i] = REGIONS_NAMES[z]
+    iName[i] = REGIONS_NAMES_FR[z]+' de '+NameGenerator(3, 6)
+    iZoneMax[i] = parseInt(Math.random()*7)+6
   }
-  let iZoneMax = [parseInt(Math.random()*7)+6,0,0,0,0];//for region starter
   let iZoneTypes = [[],[],[],[],[]];
   let iValues = [[],[],[],[],[]];
   let iOwner = [[],['noOne'],['noOne'],['noOne'],['noOne']];
-  return [iCoordinatesX, iCoordinatesY, iIsObstacle, iType, iName, iZoneMax, iZoneTypes, iValues, iOwner];
+  return [iCoordinatesX, iCoordinatesY, iIsUncrossed, iType, iName, iZoneMax, iZoneTypes, iValues, iOwner];
 }
 
 
@@ -93,7 +90,7 @@ const gameTurnReducer = (state, action) => {
   let newClicked = state.clicked
   let newCoordinatesX = state.coordinatesX.slice()
   let newCoordinatesY = state.coordinatesY.slice()
-  let newIsObstacle = state.isObstacle.slice()
+  let newIsUncrossed = state.isUncrossed.slice()
   let newType = state.type.slice()
   let newName = state.name.slice()
   let newZoneMax = state.zoneMax.slice()
@@ -184,8 +181,54 @@ const gameTurnReducer = (state, action) => {
 
     // CROSS //
     for(let i = 0; i < newCross.length; i++){
-      newOwner[newCross[i]] = ['player']
-      if (Math.abs(newCoordinatesX[newCross[i]]%2) === 1 && newCoordinatesY[newCross[i]]%2 === 0) {//HORIZONTAL expansion
+      //Mark this region as crossed
+      newIsUncrossed[newCross[i]] = false
+      //Check where regions exists
+      let coordinatesExistRegion = []
+      for(let j = 0; j < newName.length; j++){
+        if (newCoordinatesX[newCross[i]] === newCoordinatesX[j] && newCoordinatesY[newCross[i]]+1 === newCoordinatesY[j]){//haut existe
+          coordinatesExistRegion.push('haut existe')
+        } else if (newCoordinatesX[newCross[i]] === newCoordinatesX[j] && newCoordinatesY[newCross[i]]-1 === newCoordinatesY[j]){//bas existe
+          coordinatesExistRegion.push('bas existe')
+        } else if (newCoordinatesX[newCross[i]]-1 === newCoordinatesX[j] && newCoordinatesY[newCross[i]] === newCoordinatesY[j]){//gauche existe
+          coordinatesExistRegion.push('gauche existe')
+        } else if (newCoordinatesX[newCross[i]]+1 === newCoordinatesX[j] && newCoordinatesY[newCross[i]] === newCoordinatesY[j]){//droite existe
+          coordinatesExistRegion.push('droite existe')
+        }
+      }
+      //Put coordinates to new regions to create
+      let coordinatesNewRegion = []
+      if(coordinatesExistRegion.indexOf('haut existe') === -1){//haut n'existe pas
+        coordinatesNewRegion.push([newCoordinatesX[newCross[i]],newCoordinatesY[newCross[i]]+1])
+      }
+      if(coordinatesExistRegion.indexOf('bas existe') === -1){//bas n'existe pas
+        coordinatesNewRegion.push([newCoordinatesX[newCross[i]],newCoordinatesY[newCross[i]]-1])
+      }
+      if(coordinatesExistRegion.indexOf('gauche existe') === -1){//gauche n'existe pas
+        coordinatesNewRegion.push([newCoordinatesX[newCross[i]]-1,newCoordinatesY[newCross[i]]])
+      }
+      if(coordinatesExistRegion.indexOf('droite existe') === -1){//droite n'existe pas
+        coordinatesNewRegion.push([newCoordinatesX[newCross[i]]+1,newCoordinatesY[newCross[i]]])
+      }
+      //Create new regions
+      for(let j = 0; j < coordinatesNewRegion.length; j++){
+        //console.log(coordinatesNewRegion[j])
+        newCoordinatesX.push(coordinatesNewRegion[j][0])
+        newCoordinatesY.push(coordinatesNewRegion[j][1])
+        newIsUncrossed.push(true)
+        let z = parseInt(Math.random()*REGIONS_NAMES.length)
+        newType.push(REGIONS_NAMES[z])
+        newName.push(REGIONS_NAMES_FR[z]+' de '+NameGenerator(3, 6))
+        newZoneMax.push(parseInt(Math.random()*7)+6)
+        newZoneTypes.push([])
+        newValues.push('')
+        newOwner.push(['noOne'])
+        newReport.push(<span><span role="img" aria-label="crossing">🚸</span> En traversant <u>{newName[newCross[i]]}</u>, nous avons découvert : <u>{newName[newName.length-1]}</u> !</span>)
+      }
+
+
+      //////////////////////////////////////////////////////////
+      /*if (Math.abs(newCoordinatesX[newCross[i]]%2) === 1 && newCoordinatesY[newCross[i]]%2 === 0) {//HORIZONTAL expansion
         //Check left or right
         let coordinatesNewRegion = []
         for (let j = 0; j < newName.length; j++){
@@ -200,7 +243,7 @@ const gameTurnReducer = (state, action) => {
           //new region
           newCoordinatesX.push(coordinatesNewRegion[0][0])
           newCoordinatesY.push(coordinatesNewRegion[0][1])
-          newIsObstacle.push(false)
+          newIsUncrossed.push(false)
           let z = parseInt(Math.random()*REGIONS_NAMES.length)
           newType.push(REGIONS_NAMES[z])
           newName.push(REGIONS_NAMES_FR[z]+' de '+NameGenerator(3, 7))
@@ -240,7 +283,7 @@ const gameTurnReducer = (state, action) => {
             newCoordinatesY.push(coordinatesNewRegion[0][1]-1)
           }
           for (let j = 0; j < 4-coordinatesObstaclesToCreate.length; j++){
-            newIsObstacle.push(true)
+            newIsUncrossed.push(true)
             let z = parseInt(Math.random()*OBSTACLES_NAMES.length)
             newType.push(OBSTACLES_NAMES[z])
             newName.push(OBSTACLES_NAMES_FR[z]+' de '+NameGenerator(3, 7))
@@ -266,7 +309,7 @@ const gameTurnReducer = (state, action) => {
           //new region
           newCoordinatesX.push(coordinatesNewRegion[0][0])
           newCoordinatesY.push(coordinatesNewRegion[0][1])
-          newIsObstacle.push(false)
+          newIsUncrossed.push(false)
           let z = parseInt(Math.random()*REGIONS_NAMES.length)
           newType.push(REGIONS_NAMES[z])
           newName.push(REGIONS_NAMES_FR[z]+' de '+NameGenerator(3, 7))
@@ -306,7 +349,7 @@ const gameTurnReducer = (state, action) => {
             newCoordinatesY.push(coordinatesNewRegion[0][1]-1)
           }
           for (let j = 0; j < 4-coordinatesObstaclesToCreate.length; j++){
-            newIsObstacle.push(true)
+            newIsUncrossed.push(true)
             let z = parseInt(Math.random()*OBSTACLES_NAMES.length)
             newType.push(OBSTACLES_NAMES[z])
             newName.push(OBSTACLES_NAMES_FR[z]+' de '+NameGenerator(3, 7))
@@ -319,7 +362,7 @@ const gameTurnReducer = (state, action) => {
         }//end of Create
       } else {
         throw new Error(`Unhandled cross in game-turn-store: for position:${newCross[i]} X:${newCoordinatesX[newCross[i]]} Y:${newCoordinatesY[newCross[i]]}`);
-      }
+      }*/
     }
     newCross = []
 
@@ -391,7 +434,7 @@ const gameTurnReducer = (state, action) => {
     clicked: newClicked,
     coordinatesX: newCoordinatesX,
     coordinatesY: newCoordinatesY,
-    isObstacle: newIsObstacle,
+    isUncrossed: newIsUncrossed,
     type: newType,
     name: newName,
     zoneMax: newZoneMax,

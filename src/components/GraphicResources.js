@@ -3,12 +3,10 @@ import wood                 from '../assets/images/resources/wood.png';
 import minerals             from '../assets/images/resources/minerals.png';
 import food                 from '../assets/images/resources/food.png';
 
+import crystalCave             from '../assets/images/regions/crystalCave.png';
+import deepLake             from '../assets/images/regions/deepLake.png';
 import pineForest           from '../assets/images/regions/pineForest.png';
 import pineLake             from '../assets/images/regions/pineLake.png';
-
-import bridge               from '../assets/images/obstacles/bridge.png';
-import mountains            from '../assets/images/obstacles/mountains.png';
-import sea                  from '../assets/images/obstacles/sea.png';
 
 import rocks                from '../assets/images/zones/rocks.png';
 import tree                 from '../assets/images/zones/trees.png';
@@ -19,8 +17,11 @@ import techFishingCane      from '../assets/images/technologies/fishingCane.png'
 import techFishingNet      from '../assets/images/technologies/fishingNet.png';
 import techFishingBoat      from '../assets/images/technologies/fishingBoat.png';
 
-const IMAGES =  [[stone, wood, minerals, food], [pineForest, pineLake], [bridge, mountains, sea], [rocks, tree],
-                [preoccupationPoint], [techFishingCane, techFishingNet, techFishingBoat]]
+const IMAGES =  [[stone, wood, minerals, food],
+[crystalCave, deepLake, pineForest, pineLake],
+[rocks, tree],
+[preoccupationPoint],
+[techFishingCane, techFishingNet, techFishingBoat]]
 
 function GetImage(imageName) {
 
@@ -44,53 +45,55 @@ function GetImage(imageName) {
             category = 0
             imageNumber = 3
             break;
-        case 'pineForest':
+
+        case 'crystalCave':
             category = 1
             imageNumber = 0
+            break;
+        case 'deepLake':
+            category = 1
+            imageNumber = 1
+            break;
+        case 'pineForest':
+            category = 1
+            imageNumber = 2
             break;
         case 'pineLake':
             category = 1
-            imageNumber = 1
+            imageNumber = 3
             break;
-        case 'bridge':
-            category = 2
-            imageNumber = 0
-            break;
-        case 'mountains':
-            category = 2
-            imageNumber = 1
-            break;
-        case 'sea':
-            category = 2
-            imageNumber = 2
-            break;
-        case 'rocks':
-            category = 3
-            imageNumber = 0
-            break;
-        case 'tree':
-            category = 3
-            imageNumber = 1
-            break;
+
+          case 'rocks':
+              category = 2
+              imageNumber = 0
+              break;
+            case 'tree':
+                category = 2
+                imageNumber = 1
+                break;
+
         case 'preoccupationPoint':
-            category = 4
+            category = 3
             imageNumber = 0
             break;
+
         case 'techFishingCane':
-            category = 5
+            category = 4
             imageNumber = 0
             break;
         case 'techFishingNet':
-            category = 5
+            category = 4
             imageNumber = 1
             break;
         case 'techFishingBoat':
-            category = 5
+            category = 3
             imageNumber = 2
             break;
+
         default:
-            category = 4
+            category = 3
             imageNumber = 0
+            console.log('what is '+imageName+' ?')
             break;
     }
 
