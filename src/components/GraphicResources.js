@@ -3,23 +3,24 @@ import wood                 from '../assets/images/resources/wood.png';
 import minerals             from '../assets/images/resources/minerals.png';
 import food                 from '../assets/images/resources/food.png';
 
-import crystalCave             from '../assets/images/regions/crystalCave.png';
+import crystalCave          from '../assets/images/regions/crystalCave.png';
 import deepLake             from '../assets/images/regions/deepLake.png';
 import pineForest           from '../assets/images/regions/pineForest.png';
 import pineLake             from '../assets/images/regions/pineLake.png';
 
+import camp                 from '../assets/images/zones/camp.png';
 import rocks                from '../assets/images/zones/rocks.png';
 import tree                 from '../assets/images/zones/trees.png';
 
 import preoccupationPoint   from '../assets/images/preoccupation-point.png';
 
 import techFishingCane      from '../assets/images/technologies/fishingCane.png';
-import techFishingNet      from '../assets/images/technologies/fishingNet.png';
+import techFishingNet       from '../assets/images/technologies/fishingNet.png';
 import techFishingBoat      from '../assets/images/technologies/fishingBoat.png';
 
 const IMAGES =  [[stone, wood, minerals, food],
 [crystalCave, deepLake, pineForest, pineLake],
-[rocks, tree],
+[camp, rocks, tree],
 [preoccupationPoint],
 [techFishingCane, techFishingNet, techFishingBoat]]
 
@@ -63,14 +64,18 @@ function GetImage(imageName) {
             imageNumber = 3
             break;
 
-          case 'rocks':
-              category = 2
-              imageNumber = 0
-              break;
-            case 'tree':
-                category = 2
-                imageNumber = 1
-                break;
+        case 'camp':
+            category = 2
+            imageNumber = 0
+            break;
+        case 'rocks':
+            category = 2
+            imageNumber = 1
+            break;
+        case 'tree':
+            category = 2
+            imageNumber = 2
+            break;
 
         case 'preoccupationPoint':
             category = 3
@@ -86,7 +91,7 @@ function GetImage(imageName) {
             imageNumber = 1
             break;
         case 'techFishingBoat':
-            category = 3
+            category = 4
             imageNumber = 2
             break;
 

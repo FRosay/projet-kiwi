@@ -6,8 +6,8 @@ const GameTurnContext = createContext();
 const REGIONS_NAMES = ['pineForest', 'pineLake', 'crystalCave', 'deepLake']
 const REGIONS_NAMES_FR = ['forêt de pins', 'lac de pins', 'cave de cristal', 'lac profond']
 const REGIONS_ARTICLES_FR = ['la', 'le', 'la', 'le']
-const ZONES_NAMES = ['food', 'wood', 'stone', 'minerals']
-const ZONES_NAMES_FR = ['champs', 'forêt', 'rochers', 'minerais']
+const ZONES_NAMES = ['food', 'wood', 'stone', 'minerals', 'camp']
+const ZONES_NAMES_FR = ['champs', 'forêt', 'rochers', 'minerais', 'camp']
 const REGIONS_ZONES_POSSIBILITIES = [
   [1,2],//pineForest (wood+stone)
   [0,1,2,3],//pineLake
@@ -39,7 +39,7 @@ const INITIAL_STATE = {
   zoneMax: INIT_COMPACT[5],
   zoneTypes: INIT_COMPACT[6],
   values: INIT_COMPACT[7],
-  owner: INIT_COMPACT[8],
+  zoneOwner: INIT_COMPACT[8],
   cross: [],
   explore: []
 };
@@ -63,9 +63,9 @@ function initRegions(){
     iName[i] = REGIONS_NAMES_FR[z]+' de '+NameGenerator(3, 6)
     iZoneMax[i] = parseInt(Math.random()*7)+6
   }
-  let iZoneTypes = [[],[],[],[],[]];
+  let iZoneTypes = [['camp'],[],[],[],[]];
   let iValues = [[],[],[],[],[]];
-  let iOwner = [[],['noOne'],['noOne'],['noOne'],['noOne']];
+  let iOwner = [['player'],[],[],[],[]];
   return [iCoordinatesX, iCoordinatesY, iIsUncrossed, iType, iName, iZoneMax, iZoneTypes, iValues, iOwner];
 }
 
@@ -100,9 +100,9 @@ const gameTurnReducer = (state, action) => {
     newZoneTypes[row] = state.zoneTypes[row].slice()
   }
   let newValues = state.values.slice()
-  let newOwner = []
-  for(let row = 0; row < state.owner.length; row++){
-    newOwner[row] = state.owner[row].slice()
+  let newZoneOwner = []
+  for(let row = 0; row < state.zoneOwner.length; row++){
+    newZoneOwner[row] = state.zoneOwner[row].slice()
   }
 
   let newCross = state.cross.slice()
@@ -223,8 +223,8 @@ const gameTurnReducer = (state, action) => {
         newName.push(REGIONS_NAMES_FR[z]+' de '+NameGenerator(3, 6))
         newZoneMax.push(parseInt(Math.random()*7)+6)
         newZoneTypes.push([])
-        newValues.push('')
-        newOwner.push(['noOne'])
+        newValues.push([])
+        newZoneOwner.push([])
         allRegionsDiscovered.push(<span key={j}> {REGIONS_ARTICLES_FR[REGIONS_NAMES.indexOf(newType[newType.length-1])]} <u>{newName[newName.length-1]}</u>{coordinatesNewRegion.length >= 2 && j === coordinatesNewRegion.length-2 ? ', et' : j < coordinatesNewRegion.length-2 ? ', ' : ''}</span>)
         if(j === coordinatesNewRegion.length-1){//last one
           newReport.push(<span><span role="img" aria-label="crossing">🚸</span> En traversant {REGIONS_ARTICLES_FR[REGIONS_NAMES.indexOf(newType[newCross[i]])]} <u>{newName[newCross[i]]}</u>, nous avons découvert : {allRegionsDiscovered} !</span>)
@@ -250,16 +250,16 @@ const gameTurnReducer = (state, action) => {
         let randomOwnerText
         if(randomOwner < 0.25) {
           newResourcesQuantity[zoneTypePosition]++
-          newOwner[newExplore[i]].push('player')
+          newZoneOwner[newExplore[i]].push('player')
           randomOwnerText = 'disponible'
         } else if (randomOwner < 0.5) {
-          newOwner[newExplore[i]].push('ally')
+          newZoneOwner[newExplore[i]].push('ally')
           randomOwnerText = 'contrôlé par un allié'
         } else if (randomOwner < 0.75) {
-          newOwner[newExplore[i]].push('enemy')
+          newZoneOwner[newExplore[i]].push('enemy')
           randomOwnerText = 'sous l\'emprise d\'un ennemi'
         } else {
-          newOwner[newExplore[i]].push('neutral')
+          newZoneOwner[newExplore[i]].push('neutral')
           randomOwnerText = 'contrôlé par un peuple neutre'
         }
         newReport.push(<span><span role="img" aria-label="compass">🧭</span> En explorant les alentours de <u>{newName[newExplore[i]]}</u>, nous sommes tombés sur un ensemble de {ZONES_NAMES_FR[zoneTypePosition]} <img alt={'['+ZONES_NAMES[zoneTypePosition]+']'} src={GetImage(ZONES_NAMES[zoneTypePosition])}/> <u>{randomOwnerText}</u> !</span>)
@@ -310,7 +310,7 @@ const gameTurnReducer = (state, action) => {
     zoneMax: newZoneMax,
     zoneTypes: newZoneTypes,
     values: newValues,
-    owner: newOwner,
+    zoneOwner: newZoneOwner,
     cross: newCross,
     explore: newExplore
   }

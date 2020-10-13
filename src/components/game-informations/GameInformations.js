@@ -21,7 +21,7 @@ function GameInformations() {
   }
 
   function specificMapButton(){
-    if (gameTurnState.isUncrossed[gameTurnState.clicked] && gameTurnState.owner[gameTurnState.clicked][0] === 'noOne') {
+    if (gameTurnState.isUncrossed[gameTurnState.clicked] && gameTurnState.zoneOwner[gameTurnState.clicked].length === 0) {
       return(
         <button
         disabled={ gameTurnState.preoccupationPoints > 0 && !isCrossing(gameTurnState.clicked) ? false : true }
@@ -46,13 +46,13 @@ function GameInformations() {
     let zones = []
     for(let i = 0; i < gameTurnState.zoneTypes[gameTurnState.clicked].length; i++){
       let bgColor
-      if(gameTurnState.owner[gameTurnState.clicked][i] === 'player'){
+      if(gameTurnState.zoneOwner[gameTurnState.clicked][i] === 'player'){
         bgColor = stateOfOptions.playerColor
-      } else if(gameTurnState.owner[gameTurnState.clicked][i] === 'ally'){
+      } else if(gameTurnState.zoneOwner[gameTurnState.clicked][i] === 'ally'){
         bgColor = stateOfOptions.allyColor
-      } else if(gameTurnState.owner[gameTurnState.clicked][i] === 'enemy'){
+      } else if(gameTurnState.zoneOwner[gameTurnState.clicked][i] === 'enemy'){
         bgColor = stateOfOptions.enemyColor
-      } else if(gameTurnState.owner[gameTurnState.clicked][i] === 'neutral'){
+      } else if(gameTurnState.zoneOwner[gameTurnState.clicked][i] === 'neutral'){
         bgColor = stateOfOptions.neutralColor
       }
       zones.push(
@@ -77,6 +77,7 @@ function GameInformations() {
         src={GetImage(gameTurnState.type[gameTurnState.clicked])}
         /></p>
         <p>(coordonnées : { gameTurnState.coordinatesX[gameTurnState.clicked] };{ gameTurnState.coordinatesY[gameTurnState.clicked] })<br/>
+        (zoneOwner : {gameTurnState.zoneOwner[gameTurnState.clicked]} )<br/>
         (nb zones max : { gameTurnState.zoneMax[gameTurnState.clicked] })<br/>
         Zones :<br/>{ displayMapZones() }</p>
         { specificMapButton() }
