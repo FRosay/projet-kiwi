@@ -5,6 +5,7 @@ import GetImage from '../GraphicResources.js';
 const GameTurnContext = createContext();
 const REGIONS_NAMES = ['pineForest', 'pineLake', 'crystalCave', 'deepLake']
 const REGIONS_NAMES_FR = ['forêt de pins', 'lac de pins', 'cave de cristal', 'lac profond']
+const REGIONS_ARTICLES_FR = ['la', 'le', 'la', 'le']
 const ZONES_NAMES = ['food', 'wood', 'stone', 'minerals']
 const ZONES_NAMES_FR = ['champs', 'forêt', 'rochers', 'minerais']
 const REGIONS_ZONES_POSSIBILITIES = [
@@ -211,6 +212,7 @@ const gameTurnReducer = (state, action) => {
         coordinatesNewRegion.push([newCoordinatesX[newCross[i]]+1,newCoordinatesY[newCross[i]]])
       }
       //Create new regions
+      let allRegionsDiscovered = []
       for(let j = 0; j < coordinatesNewRegion.length; j++){
         //console.log(coordinatesNewRegion[j])
         newCoordinatesX.push(coordinatesNewRegion[j][0])
@@ -223,146 +225,14 @@ const gameTurnReducer = (state, action) => {
         newZoneTypes.push([])
         newValues.push('')
         newOwner.push(['noOne'])
-        newReport.push(<span><span role="img" aria-label="crossing">🚸</span> En traversant <u>{newName[newCross[i]]}</u>, nous avons découvert : <u>{newName[newName.length-1]}</u> !</span>)
+        allRegionsDiscovered.push(<span key={j}> {REGIONS_ARTICLES_FR[REGIONS_NAMES.indexOf(newType[newType.length-1])]} <u>{newName[newName.length-1]}</u>{coordinatesNewRegion.length >= 2 && j === coordinatesNewRegion.length-2 ? ', et' : j < coordinatesNewRegion.length-2 ? ', ' : ''}</span>)
+        if(j === coordinatesNewRegion.length-1){//last one
+          newReport.push(<span><span role="img" aria-label="crossing">🚸</span> En traversant {REGIONS_ARTICLES_FR[REGIONS_NAMES.indexOf(newType[newCross[i]])]} <u>{newName[newCross[i]]}</u>, nous avons découvert : {allRegionsDiscovered} !</span>)
+        }
       }
-
-
-      //////////////////////////////////////////////////////////
-      /*if (Math.abs(newCoordinatesX[newCross[i]]%2) === 1 && newCoordinatesY[newCross[i]]%2 === 0) {//HORIZONTAL expansion
-        //Check left or right
-        let coordinatesNewRegion = []
-        for (let j = 0; j < newName.length; j++){
-          if(newCoordinatesX[j] === newCoordinatesX[newCross[i]]-1 && newCoordinatesY[j] === newCoordinatesY[newCross[i]]){
-            coordinatesNewRegion.push([newCoordinatesX[j]+2,newCoordinatesY[j]])//exist left so push right (2: obstacle + free zone)
-          } else if (newCoordinatesX[j] === newCoordinatesX[newCross[i]]+1 && newCoordinatesY[j] === newCoordinatesY[newCross[i]]) {
-            coordinatesNewRegion.push([newCoordinatesX[j]-2,newCoordinatesY[j]])//exist right so push left (2: obstacle + free zone)
-          }
-        }
-        //Create
-        if (coordinatesNewRegion.length === 1){
-          //new region
-          newCoordinatesX.push(coordinatesNewRegion[0][0])
-          newCoordinatesY.push(coordinatesNewRegion[0][1])
-          newIsUncrossed.push(false)
-          let z = parseInt(Math.random()*REGIONS_NAMES.length)
-          newType.push(REGIONS_NAMES[z])
-          newName.push(REGIONS_NAMES_FR[z]+' de '+NameGenerator(3, 7))
-          newZoneMax.push(parseInt(Math.random()*7)+6)
-          newZoneTypes.push([])
-          newValues.push([])
-          newOwner.push([])
-          newReport.push(<span><span role="img" aria-label="crossing">🚸</span> Après avoir traversé <u>{newName[newCross[i]]}</u>, nous avons découvert : <u>{newName[newName.length-1]}</u> !</span>)
-          //new obstacles
-          let coordinatesObstaclesToCreate = []
-          for (let j = 0; j < newName.length; j++){
-            if(newCoordinatesX[j] === coordinatesNewRegion[0][0]-1 && newCoordinatesY[j] === coordinatesNewRegion[0][1]){
-              coordinatesObstaclesToCreate.push('left')//exist left
-            } else if (newCoordinatesX[j] === coordinatesNewRegion[0][0]+1 && newCoordinatesY[j] === coordinatesNewRegion[0][1]) {
-              coordinatesObstaclesToCreate.push('right')//exist right
-            } else if (newCoordinatesX[j] === coordinatesNewRegion[0][0] && newCoordinatesY[j] === coordinatesNewRegion[0][1]+1) {
-              coordinatesObstaclesToCreate.push('up')//exist up
-            } else if (newCoordinatesX[j] === coordinatesNewRegion[0][0] && newCoordinatesY[j] === coordinatesNewRegion[0][1]-1) {
-              coordinatesObstaclesToCreate.push('down')//exist down
-            }
-          }
-          //console.log('obstacle exist in '+coordinatesObstaclesToCreate)
-          if (!coordinatesObstaclesToCreate.includes('left')){
-            newCoordinatesX.push(coordinatesNewRegion[0][0]-1)
-            newCoordinatesY.push(coordinatesNewRegion[0][1])
-          }
-          if (!coordinatesObstaclesToCreate.includes('right')){
-            newCoordinatesX.push(coordinatesNewRegion[0][0]+1)
-            newCoordinatesY.push(coordinatesNewRegion[0][1])
-          }
-          if (!coordinatesObstaclesToCreate.includes('up')){
-            newCoordinatesX.push(coordinatesNewRegion[0][0])
-            newCoordinatesY.push(coordinatesNewRegion[0][1]+1)
-          }
-          if (!coordinatesObstaclesToCreate.includes('down')){
-            newCoordinatesX.push(coordinatesNewRegion[0][0])
-            newCoordinatesY.push(coordinatesNewRegion[0][1]-1)
-          }
-          for (let j = 0; j < 4-coordinatesObstaclesToCreate.length; j++){
-            newIsUncrossed.push(true)
-            let z = parseInt(Math.random()*OBSTACLES_NAMES.length)
-            newType.push(OBSTACLES_NAMES[z])
-            newName.push(OBSTACLES_NAMES_FR[z]+' de '+NameGenerator(3, 7))
-            newZoneMax.push(0)
-            newZoneTypes.push([])
-            newValues.push([])
-            newOwner.push(['noOne'])
-          }
-          //console.log('nCX length> '+newCoordinatesX.length+' - nName length> '+newName.length)
-        }//end of Create
-      } else if (newCoordinatesX[newCross[i]]%2 === 0 && Math.abs(newCoordinatesY[newCross[i]]%2) === 1) {//VERTICAL expansion
-        //Check up or down
-        let coordinatesNewRegion = []
-        for (let j = 0; j < newName.length; j++){
-          if(newCoordinatesX[j] === newCoordinatesX[newCross[i]] && newCoordinatesY[j] === newCoordinatesY[newCross[i]]+1){
-            coordinatesNewRegion.push([newCoordinatesX[j],newCoordinatesY[j]-2])//exist up so push down (2: obstacle + free zone)
-          } else if (newCoordinatesX[j] === newCoordinatesX[newCross[i]] && newCoordinatesY[j] === newCoordinatesY[newCross[i]]-1) {
-            coordinatesNewRegion.push([newCoordinatesX[j],newCoordinatesY[j]+2])//exist down so push up (2: obstacle + free zone)
-          }
-        }
-        //Create
-        if (coordinatesNewRegion.length === 1){
-          //new region
-          newCoordinatesX.push(coordinatesNewRegion[0][0])
-          newCoordinatesY.push(coordinatesNewRegion[0][1])
-          newIsUncrossed.push(false)
-          let z = parseInt(Math.random()*REGIONS_NAMES.length)
-          newType.push(REGIONS_NAMES[z])
-          newName.push(REGIONS_NAMES_FR[z]+' de '+NameGenerator(3, 7))
-          newZoneMax.push(parseInt(Math.random()*7)+6)
-          newZoneTypes.push([])
-          newValues.push([])
-          newOwner.push([])
-          newReport.push(<span><span role="img" aria-label="crossing">🚸</span> Après avoir traversé <u>{newName[newCross[i]]}</u>, nous avons découvert : <u>{newName[newName.length-1]}</u> !</span>)
-          //new obstacles
-          let coordinatesObstaclesToCreate = []
-          for (let j = 0; j < newName.length; j++){
-            if(newCoordinatesX[j] === coordinatesNewRegion[0][0]-1 && newCoordinatesY[j] === coordinatesNewRegion[0][1]){
-              coordinatesObstaclesToCreate.push('left')//exist left
-            } else if (newCoordinatesX[j] === coordinatesNewRegion[0][0]+1 && newCoordinatesY[j] === coordinatesNewRegion[0][1]) {
-              coordinatesObstaclesToCreate.push('right')//exist right
-            } else if (newCoordinatesX[j] === coordinatesNewRegion[0][0] && newCoordinatesY[j] === coordinatesNewRegion[0][1]+1) {
-              coordinatesObstaclesToCreate.push('up')//exist up
-            } else if (newCoordinatesX[j] === coordinatesNewRegion[0][0] && newCoordinatesY[j] === coordinatesNewRegion[0][1]-1) {
-              coordinatesObstaclesToCreate.push('down')//exist down
-            }
-          }
-          //console.log('obstacle exist in '+coordinatesObstaclesToCreate)
-          if (!coordinatesObstaclesToCreate.includes('left')){
-            newCoordinatesX.push(coordinatesNewRegion[0][0]-1)
-            newCoordinatesY.push(coordinatesNewRegion[0][1])
-          }
-          if (!coordinatesObstaclesToCreate.includes('right')){
-            newCoordinatesX.push(coordinatesNewRegion[0][0]+1)
-            newCoordinatesY.push(coordinatesNewRegion[0][1])
-          }
-          if (!coordinatesObstaclesToCreate.includes('up')){
-            newCoordinatesX.push(coordinatesNewRegion[0][0])
-            newCoordinatesY.push(coordinatesNewRegion[0][1]+1)
-          }
-          if (!coordinatesObstaclesToCreate.includes('down')){
-            newCoordinatesX.push(coordinatesNewRegion[0][0])
-            newCoordinatesY.push(coordinatesNewRegion[0][1]-1)
-          }
-          for (let j = 0; j < 4-coordinatesObstaclesToCreate.length; j++){
-            newIsUncrossed.push(true)
-            let z = parseInt(Math.random()*OBSTACLES_NAMES.length)
-            newType.push(OBSTACLES_NAMES[z])
-            newName.push(OBSTACLES_NAMES_FR[z]+' de '+NameGenerator(3, 7))
-            newZoneMax.push(0)
-            newZoneTypes.push([])
-            newValues.push([])
-            newOwner.push(['noOne'])
-          }
-          //console.log('nCX length> '+newCoordinatesX.length+' - nName length> '+newName.length)
-        }//end of Create
-      } else {
-        throw new Error(`Unhandled cross in game-turn-store: for position:${newCross[i]} X:${newCoordinatesX[newCross[i]]} Y:${newCoordinatesY[newCross[i]]}`);
-      }*/
+      if(allRegionsDiscovered.length === 0){//rare cas où le joueur visite autour et donc toutes les régions autours sont découvertes
+        newReport.push(<span><span role="img" aria-label="crossing">🚸</span> Après avoir visité tout autour, nous sommes enfin entré dans {REGIONS_ARTICLES_FR[REGIONS_NAMES.indexOf(newType[newCross[i]])]} <u>{newName[newCross[i]]}</u> !</span>)
+      }
     }
     newCross = []
 
