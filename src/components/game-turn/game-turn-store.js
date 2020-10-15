@@ -150,12 +150,12 @@ const gameTurnReducer = (state, action) => {
   } else if (action.category === 'regions') {
     switch (action.type) {
       case 'cross':
-      newPreoccupationPoints --
+      newPreoccupationPoints -= action.cost
       newCross.push(newClicked)
       break;
 
       case 'explore':
-      newPreoccupationPoints --
+      newPreoccupationPoints -= action.cost
       newExplore.push(newClicked)
       break;
 

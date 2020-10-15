@@ -8,6 +8,69 @@ function GameInformations() {
   const { stateOfOptions } = useOptionsStore();
   const { gameTurnState, gameTurnDispatch } = useGameTurnStore();
 
+  function xyToIndex(x,y){
+    let index = -1
+    for(let i = 0; i < gameTurnState.type.length; i++){
+      if(gameTurnState.coordinatesX[i] === x && gameTurnState.coordinatesY[i] === y){
+        index = i
+      }
+    }
+    return index
+  }
+
+  function mapPpCostLinkToCamp(){
+    let cost = -1
+    let indexChecked = []
+    let indexToCheck = [gameTurnState.clicked]//start
+    let indexToCheckNext = []
+    let distance = 0
+
+    while (cost === -1) {
+      for(let i = 0; i < indexToCheck.length; i++){
+        let x = gameTurnState.coordinatesX[indexToCheck[i]]
+        let y = gameTurnState.coordinatesY[indexToCheck[i]]
+        //console.log('--CHECKING '+x+','+y)
+        //check if camp HERE
+        let isCamp = false
+        for(let j = 0; j < gameTurnState.zoneTypes[indexToCheck[i]].length; j++){
+          if(gameTurnState.zoneTypes[indexToCheck[i]][j] === 'camp'){
+            isCamp = true
+          }
+        }
+        //set cost OR add index to check
+        if(gameTurnState.zoneTypes[indexToCheck[i]].length > 0 && isCamp){
+          cost = distance
+        } else {
+          //push adjacent index if not in checked or to check next
+          if(xyToIndex(x,y+1) !== -1 && !gameTurnState.isUncrossed[xyToIndex(x,y+1)] && indexChecked.indexOf(xyToIndex(x,y+1)) === -1 && indexToCheck.indexOf(xyToIndex(x,y+1)) === -1){//top
+            indexToCheckNext.push(xyToIndex(x,y+1))
+          }
+          if(xyToIndex(x,y-1) !== -1 && !gameTurnState.isUncrossed[xyToIndex(x,y-1)] && indexChecked.indexOf(xyToIndex(x,y-1)) === -1 && indexToCheck.indexOf(xyToIndex(x,y-1)) === -1){//bottom
+            indexToCheckNext.push(xyToIndex(x,y-1))
+          }
+          if(xyToIndex(x-1,y) !== -1 && !gameTurnState.isUncrossed[xyToIndex(x-1,y)] && indexChecked.indexOf(xyToIndex(x-1,y)) === -1 && indexToCheck.indexOf(xyToIndex(x-1,y)) === -1){//left
+            indexToCheckNext.push(xyToIndex(x-1,y))
+          }
+          if(xyToIndex(x+1,y) !== -1 && !gameTurnState.isUncrossed[xyToIndex(x+1,y)] && indexChecked.indexOf(xyToIndex(x+1,y)) === -1 && indexToCheck.indexOf(xyToIndex(x+1,y)) === -1){//right
+            indexToCheckNext.push(xyToIndex(x+1,y))
+          }
+        }
+      }
+      //push
+      for(let i = 0; i < indexToCheck.length; i++){
+        indexChecked.push(indexToCheck[i])
+      }
+      indexToCheck = []
+      for(let i = 0; i < indexToCheckNext.length; i++){
+        indexToCheck.push(indexToCheckNext[i])
+      }
+      indexToCheckNext = []
+      distance ++
+    }
+
+    return cost+1
+  }
+
   function isCrossing(arrayPosition){
     let i = 0;
     let isIt = false;
@@ -21,23 +84,25 @@ function GameInformations() {
   }
 
   function specificMapButton(){
+    let ppCost = mapPpCostLinkToCamp()
+
     if (gameTurnState.isUncrossed[gameTurnState.clicked] && gameTurnState.zoneOwner[gameTurnState.clicked].length === 0) {
       return(
         <button
-        disabled={ gameTurnState.preoccupationPoints > 0 && !isCrossing(gameTurnState.clicked) ? false : true }
+        disabled={ gameTurnState.preoccupationPoints >= ppCost && !isCrossing(gameTurnState.clicked) ? false : true }
         onClick={() => {
-        gameTurnDispatch({ category:'regions', type:'cross' });
+        gameTurnDispatch({ category:'regions', type:'cross', cost:ppCost });
         }}
-        ><span role="img" aria-label="crossing">🚸</span> Franchir [-1 <img alt='preoccupation Point' src={GetImage('preoccupationPoint')}/>]</button>
+        ><span role="img" aria-label="crossing">🚸</span> Franchir [-{ppCost} <img alt='preoccupation Point' src={GetImage('preoccupationPoint')}/>]</button>
       )
     } else if (!gameTurnState.isUncrossed[gameTurnState.clicked] && gameTurnState.zoneTypes[gameTurnState.clicked].length < gameTurnState.zoneMax[gameTurnState.clicked]) {
       return(
         <button
-        disabled={ gameTurnState.preoccupationPoints > 0 ? false : true }
+        disabled={ gameTurnState.preoccupationPoints >= ppCost ? false : true }
         onClick={() => {
-        gameTurnDispatch({ category:'regions', type:'explore' });
+        gameTurnDispatch({ category:'regions', type:'explore', cost:ppCost });
         }}
-        ><span role="img" aria-label="compass">🧭</span> Explorer [-1 <img alt='preoccupation Point' src={GetImage('preoccupationPoint')}/>]</button>
+        ><span role="img" aria-label="compass">🧭</span> Explorer [-{ppCost} <img alt='preoccupation Point' src={GetImage('preoccupationPoint')}/>]</button>
       )
     }
   }
