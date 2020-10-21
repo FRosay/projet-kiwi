@@ -35,11 +35,9 @@ html, body, #root, .App{
 }
 
 button{
+  cursor: url(assets/images/cursor/pointer.png), pointer;
   font-family: "FontFamilyChoosed", serif;
   font-size: 1.5em;
-}
-button:hover{
-  cursor: url(assets/images/cursor/pointer.png), pointer;
 }
 button:hover[disabled]{
   cursor: url(assets/images/cursor/not-allowed.png), not-allowed;
@@ -136,4 +134,11 @@ summary{
 
 .obstacle-crossed{
   background-color: #b7eab7;
+}
+
+
+@media only screen and (min--moz-device-pixel-ratio: 1.5) {/*smartphone*/
+  body{
+    font-size: 0.5em;
+  }
 }
