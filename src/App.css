@@ -3,6 +3,8 @@
   --height-top: 15%;
   --height-middle: 78%;
   --height-bottom: 5%;
+  --background-color-dark: #272d44;
+  --background-color-light: #3c5b6a;
 }
 
 
@@ -12,7 +14,8 @@
 }
 
 .App {
-  background-color: black;
+  background-color: var(--background-color-dark);
+  color: white;
   cursor: url(assets/images/cursor/auto.png), auto;
   display: flex;
   align-content: space-between;
@@ -35,11 +38,16 @@ html, body, #root, .App{
 }
 
 button{
+  background-color: rgba(0, 0, 0, 0);
+  border: 22px solid red;
+  border-image: url(assets/images/borders/button.png) 22 / 22px;
+  color: white;
   cursor: url(assets/images/cursor/pointer.png), pointer;
   font-family: "FontFamilyChoosed", serif;
   font-size: 1.5em;
 }
-button:hover[disabled]{
+button[disabled]{
+  color: black;
   cursor: url(assets/images/cursor/not-allowed.png), not-allowed;
 }
 
@@ -56,7 +64,6 @@ input{
 }
 
 footer{
-  background-color: gray;
   height: var(--height-bottom);
   width: 100%;
 }
@@ -67,7 +74,6 @@ summary{
 }
 
 #resources-view-div{
-  background-color: gray;
   height: var(--height-top);
   width: 100%;
   display: flex;
@@ -80,14 +86,13 @@ summary{
 }
 
 #game-informations-div{
-  background-color: lightgray;
+  border-image: url(assets/images/borders/informations.png) 22 / 22px;
   height: var(--height-middle);
   overflow: auto;
   width: 20%;
 }
 
 #game-text-div{
-  background-color: white;
   height: var(--height-middle);
   overflow: auto; /*scroll*/
   width: 58%;
@@ -110,13 +115,13 @@ summary{
 }
 
 #tabs-div{
-  background-color: lightgray;
   height: var(--height-middle);
   overflow: auto;
   width: 20%;
 }
 
 #tabs-div button{
+  border-image: url(assets/images/borders/menu.png) 22 / 22px;
   width: 100%;
 }
 
