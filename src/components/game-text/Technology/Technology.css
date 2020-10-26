@@ -4,8 +4,7 @@
     width: 100%;
 }
 
-.masteredTechs, .discoveredTechs{
-    height: 40%;
+.masteredTechs, .discoveredTechs, .toBeDiscoveredTechs {
     width: 100%;
     display:flex;
     flex-direction: row;
@@ -13,10 +12,12 @@
     justify-content: center;
 }
 
+.masteredTechs, .discoveredTechs {
+    height: 40%;
+}
+
 .toBeDiscoveredTechs {
     height: 20%;
-    width: 100%;
-    justify-content: center;
 }
 
 .singleTech {

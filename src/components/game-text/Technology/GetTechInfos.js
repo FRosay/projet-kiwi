@@ -1,5 +1,7 @@
 function GetTechInfos(techName) {
 
+    const allTechNames = ['Canne à pêche', 'Filet de pêche', 'Bâteau de pêche']
+
     let techObject = {}
     techObject.techName = techName
     
@@ -24,10 +26,7 @@ function GetTechInfos(techName) {
 
         case 'Random':
             let rng = Math.floor(Math.random() * Math.floor(3))
-            if (rng === 0) {return GetTechInfos('Canne à pêche')}
-            if (rng === 1) {return GetTechInfos('Filet de pêche')}
-            if (rng === 2) {return GetTechInfos('Bâteau de pêche')} 
-            break;
+            return GetTechInfos(allTechNames[rng])
 
         default:
             break;

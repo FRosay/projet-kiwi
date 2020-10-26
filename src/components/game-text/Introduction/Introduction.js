@@ -20,7 +20,7 @@ function Introduction() {
         case 0:
             return(
               <div>
-                <h1>[Insert game name]</h1>
+                <h1>Project: KIWI</h1>
                 <button onClick={() => setPage(page+1)}>Nouvel atterrissage</button>
 
                 <br /><br />

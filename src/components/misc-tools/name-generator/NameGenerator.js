@@ -12,9 +12,6 @@ function NameGenerator(minLength, maxLength, requiredTitle = [false, false, fals
     let firstForcedLettersPositioning
     let secondForcedLettersPositioning
 
-    console.log(minLength + ' ' + maxLength)
-    console.log(nameLength)
-
     function addTitle() {
         let title
         let requiredGender = ''

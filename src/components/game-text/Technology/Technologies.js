@@ -1,38 +1,53 @@
 import React from 'react';
 
 import Technology from './Technology.js';
-import GetTechInfos from './GetTechInfos.js';
 import { useGameTurnStore } from '../../game-turn/game-turn-store.js';
 
 function Technologies() {
 
   const { gameTurnState, gameTurnDispatch } = useGameTurnStore();
-
+  
+  let rng = 0
   let masteredTechs = gameTurnState.technologiesMastered
   let discoveredTechs = gameTurnState.technologiesDiscovered
+  let toBeDiscoveredTechs = gameTurnState.technologiesToBeDiscovered
 
-  let newTech = GetTechInfos('Random')
 
   function addDiscoveredTech() {
-    gameTurnDispatch({category:'technologies', type: 'addDiscoveredTech', newTech: newTech})
-    //newTech = GetTechInfos('Random')
+    if (typeof toBeDiscoveredTechs !== 'undefined' && toBeDiscoveredTechs.length > 0) {
+      rng = Math.floor(Math.random() * Math.floor(toBeDiscoveredTechs.length));
+      gameTurnDispatch({category:'technologies', type: 'addRandomDiscoveredTech', rng: rng})
+    } else {
+      alert('Plus de technologies à découvrir !')
+    } 
+  }
+
+  function addMasteredTech() {
+    if (typeof discoveredTechs !== 'undefined' && discoveredTechs > 0) {
+      rng = Math.floor(Math.random() * Math.floor(discoveredTechs.length));
+      gameTurnDispatch({category:'technologies', type: 'addRandomMasteredTech', rng: rng})
+    } else {
+      alert('Pas ou plus de technologies à maîtriser !')
+    }
   }
 
   return (
     <div className='container'>
 
-        Technologies maîtrisées :
+      <h1>Technologies maîtrisées :</h1>
       <div className='masteredTechs'>
-        { masteredTechs.map((tech, index) => { return <Technology key= {index} techImage= {tech.techImage} techName= {tech.techName} techGroup= {tech.techGroup} techCost= {tech.techCost} /> }) }
+        {masteredTechs.map((techName, index) => {return <Technology key={index} techName={techName} />})}
       </div>
 
-        Technologies découvertes :
+      <h1>Technologies découvertes :</h1>
       <div className='discoveredTechs'>
-        { discoveredTechs.map((tech, index) => { return <Technology key= {index} techImage= {tech.techImage} techName= {tech.techName} techGroup= {tech.techGroup} techCost= {tech.techCost} /> }) }
+        {discoveredTechs.map((techName, index) => {return <Technology key={index} techName={techName} />})}
+        <button onClick={() => addMasteredTech()}>Maîtriser une technologie aléatoire</button>
       </div>
 
-        Technologies à découvrir :
+      <h1>Technologies à découvrir :</h1>
       <div className='toBeDiscoveredTechs'>
+        {toBeDiscoveredTechs.map((techName, index) => {return <Technology key={index} techName={techName} />})}
         <button onClick={() => addDiscoveredTech()}>Découvrir une technologie aléatoire</button>
       </div>
 

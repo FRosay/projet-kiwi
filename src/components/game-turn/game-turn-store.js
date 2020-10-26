@@ -20,6 +20,7 @@ const INIT_COMPACT = initRegions();
 const INITIAL_STATE = {
   technologiesMastered: [],
   technologiesDiscovered: [],
+  technologiesToBeDiscovered: ['Canne à pêche', 'Filet de pêche', 'Bâteau de pêche'],
   turnNumber: 0,
   preoccupationPoints: 10,
   preoccupationPointsMax: 10,
@@ -80,6 +81,7 @@ function initRegions(){
 const gameTurnReducer = (state, action) => {
   let newTechnologiesMastered = state.technologiesMastered.slice()
   let newTechnologiesDiscovered = state.technologiesDiscovered.slice()
+  let newTechnologiesToBeDiscovered = state.technologiesToBeDiscovered.slice()
   let newTurnNumber = state.turnNumber
   let newPreoccupationPoints = state.preoccupationPoints
   let newPreoccupationPointsMax = state.preoccupationPointsMax
@@ -163,18 +165,36 @@ const gameTurnReducer = (state, action) => {
         throw new Error(`Unhandled regions action type: ${action.type}`);
     }
   } else if (action.category === 'technologies') {
+    let splicedTech = ''
     switch (action.type) {
+      case 'addToBeDiscoveredTech':
+        newTechnologiesToBeDiscovered.push(action.newTech)
+        break;
+      
       case 'addDiscoveredTech':
         newTechnologiesDiscovered.push(action.newTech)
+        newTechnologiesToBeDiscovered.splice(newTechnologiesToBeDiscovered.indexOf(action.newTech.techName), 1)
         break;
+
+      case 'addRandomDiscoveredTech':
+        splicedTech = newTechnologiesToBeDiscovered.splice(action.rng, 1)
+        newTechnologiesDiscovered.push(splicedTech[0])
+      break;
 
       case 'addMasteredTech':
         newTechnologiesMastered.push(action.newTech)
+        newTechnologiesDiscovered.splice(newTechnologiesDiscovered.indexOf(action.newTech), 1)
         break;
+
+      case 'addRandomMasteredTech':
+        splicedTech = newTechnologiesDiscovered.splice(action.rng, 1)
+        newTechnologiesMastered.push(splicedTech[0])
+      break;
 
       default:
         throw new Error(`Unhandled technologies action type: ${action.type}`);
       }
+      
   } else if (action.category === 'build'){
     switch (action.type) {
       case 'camp':
@@ -317,6 +337,7 @@ const gameTurnReducer = (state, action) => {
   return {
     technologiesMastered: newTechnologiesMastered,
     technologiesDiscovered: newTechnologiesDiscovered,
+    technologiesToBeDiscovered: newTechnologiesToBeDiscovered,
     turnNumber: newTurnNumber,
     preoccupationPoints: newPreoccupationPoints,
     preoccupationPointsMax: newPreoccupationPointsMax,

@@ -1,17 +1,20 @@
 import React from 'react';
 import './Technology.css';
 
+import GetTechInfos from './GetTechInfos.js';
 import GetImage from '../../GraphicResources.js'
 
 function Technology(props) {
 
+    let tech = GetTechInfos(props.techName)
+
     return (
         <div className='singleTech'>
-            <img alt={ props.techImage } src={ GetImage( props.techImage ) }></img>
+            <img alt={ tech.techImage } src={ GetImage( tech.techImage ) }></img>
             <br />
-            Nom : { props.techName } <br />
-            Coût : { props.techCost} <br />
-            Groupe de technologies : { props.techGroup }
+            Nom : { tech.techName } <br />
+            Coût : { tech.techCost} <br />
+            Groupe de technologies : { tech.techGroup }
         </div>
     )
 }

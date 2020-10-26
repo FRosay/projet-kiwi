@@ -103,7 +103,7 @@ function GetImage(imageName) {
         default:
             category = 3
             imageNumber = 0
-            console.log('what is '+imageName+' ?')
+            console.log('Unknown image: ' + imageName)
             break;
     }
 
