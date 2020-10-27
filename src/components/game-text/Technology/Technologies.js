@@ -23,7 +23,7 @@ function Technologies() {
   }
 
   function addMasteredTech() {
-    if (typeof discoveredTechs !== 'undefined' && discoveredTechs > 0) {
+    if (typeof discoveredTechs !== 'undefined' && discoveredTechs.length > 0) {
       rng = Math.floor(Math.random() * Math.floor(discoveredTechs.length));
       gameTurnDispatch({category:'technologies', type: 'addRandomMasteredTech', rng: rng})
     } else {
