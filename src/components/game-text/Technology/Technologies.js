@@ -1,6 +1,7 @@
-import React from 'react';
+import React                from 'react';
 
-import Technology from './Technology.js';
+import Technology           from './Technology.js';
+import GetUnlockedTech      from './GetUnlockedTech.js';
 import { useGameTurnStore } from '../../game-turn/game-turn-store.js';
 
 function Technologies() {
@@ -8,6 +9,7 @@ function Technologies() {
   const { gameTurnState, gameTurnDispatch } = useGameTurnStore();
   
   let rng = 0
+  let unlockedTechs = []
   let masteredTechs = gameTurnState.technologiesMastered
   let discoveredTechs = gameTurnState.technologiesDiscovered
   let toBeDiscoveredTechs = gameTurnState.technologiesToBeDiscovered
@@ -16,7 +18,11 @@ function Technologies() {
   function addDiscoveredTech() {
     if (typeof toBeDiscoveredTechs !== 'undefined' && toBeDiscoveredTechs.length > 0) {
       rng = Math.floor(Math.random() * Math.floor(toBeDiscoveredTechs.length));
-      gameTurnDispatch({category:'technologies', type: 'addRandomDiscoveredTech', rng: rng})
+      unlockedTechs = GetUnlockedTech(toBeDiscoveredTechs[rng])
+      gameTurnDispatch({category: 'technologies', type: 'addRandomDiscoveredTech', rng: rng})
+      for (let i=0; i<unlockedTechs.length ;i++) {
+        gameTurnDispatch({category: 'technologies', type: 'addToBeDiscoveredTech', newTech: unlockedTechs[i]})
+      }
     } else {
       alert('Plus de technologies à découvrir !')
     } 
@@ -25,7 +31,7 @@ function Technologies() {
   function addMasteredTech() {
     if (typeof discoveredTechs !== 'undefined' && discoveredTechs.length > 0) {
       rng = Math.floor(Math.random() * Math.floor(discoveredTechs.length));
-      gameTurnDispatch({category:'technologies', type: 'addRandomMasteredTech', rng: rng})
+      gameTurnDispatch({category: 'technologies', type: 'addRandomMasteredTech', rng: rng})
     } else {
       alert('Pas ou plus de technologies à maîtriser !')
     }
