@@ -1,29 +1,32 @@
-import stone                from '../assets/images/resources/stone.png';
-import wood                 from '../assets/images/resources/wood.png';
-import minerals             from '../assets/images/resources/minerals.png';
-import food                 from '../assets/images/resources/food.png';
+import stone                        from '../assets/images/resources/stone.png';
+import wood                         from '../assets/images/resources/wood.png';
+import minerals                     from '../assets/images/resources/minerals.png';
+import food                         from '../assets/images/resources/food.png';
 
-import crystalCave          from '../assets/images/regions/crystalCave.png';
-import deepLake             from '../assets/images/regions/deepLake.png';
-import pineForest           from '../assets/images/regions/pineForest.png';
-import pineLake             from '../assets/images/regions/pineLake.png';
+import crystalCave                  from '../assets/images/regions/crystalCave.png';
+import deepLake                     from '../assets/images/regions/deepLake.png';
+import pineForest                   from '../assets/images/regions/pineForest.png';
+import pineLake                     from '../assets/images/regions/pineLake.png';
 
-import workInProgress       from '../assets/images/zones/workInProgress.png';
-import camp                 from '../assets/images/zones/camp.png';
-import rocks                from '../assets/images/zones/rocks.png';
-import tree                 from '../assets/images/zones/trees.png';
+import workInProgress               from '../assets/images/zones/workInProgress.png';
+import camp                         from '../assets/images/zones/camp.png';
+import rocks                        from '../assets/images/zones/rocks.png';
+import tree                         from '../assets/images/zones/trees.png';
 
-import preoccupationPoint   from '../assets/images/preoccupation-point.png';
+import preoccupationPoint           from '../assets/images/preoccupation-point.png';
 
-import techFishingCane      from '../assets/images/technologies/fishingCane.png';
-import techFishingNet       from '../assets/images/technologies/fishingNet.png';
-import techFishingBoat      from '../assets/images/technologies/fishingBoat.png';
+import techFishingCane              from '../assets/images/technologies/fishingCane.png';
+import techFishingNet               from '../assets/images/technologies/fishingNet.png';
+import techFishingBoat              from '../assets/images/technologies/fishingBoat.png';
+import techRudimentaryTools         from '../assets/images/technologies/techRudimentaryTools.png';
+import techRudimentaryWeapons       from '../assets/images/technologies/techRudimentaryWeapons.png';
+import techRudimentaryAgriculture   from '../assets/images/technologies/techRudimentaryAgriculture.png';
 
 const IMAGES =  [[stone, wood, minerals, food],
 [crystalCave, deepLake, pineForest, pineLake],
 [workInProgress, camp, rocks, tree],
 [preoccupationPoint],
-[techFishingCane, techFishingNet, techFishingBoat]]
+[techFishingCane, techFishingNet, techFishingBoat, techRudimentaryTools, techRudimentaryWeapons, techRudimentaryAgriculture]]
 
 function GetImage(imageName) {
 
@@ -98,6 +101,18 @@ function GetImage(imageName) {
         case 'techFishingBoat':
             category = 4
             imageNumber = 2
+            break;
+        case 'techRudimentaryTools':
+            category = 4
+            imageNumber = 3
+            break;
+        case 'techRudimentaryWeapons':
+            category = 4
+            imageNumber = 4
+            break;
+        case 'techRudimentaryAgriculture':
+            category = 4
+            imageNumber = 5
             break;
 
         default:

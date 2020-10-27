@@ -20,7 +20,7 @@ const INIT_COMPACT = initRegions();
 const INITIAL_STATE = {
   technologiesMastered: [],
   technologiesDiscovered: [],
-  technologiesToBeDiscovered: ['Canne à pêche', 'Filet de pêche', 'Bâteau de pêche'],
+  technologiesToBeDiscovered: ['Canne à pêche', 'Filet de pêche', 'Bâteau de pêche', 'Outils rudimentaires', 'Armes rudimentaires', 'Agriculture rudimentaire'],
   turnNumber: 0,
   preoccupationPoints: 10,
   preoccupationPointsMax: 10,
