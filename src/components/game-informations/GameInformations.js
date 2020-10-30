@@ -151,6 +151,7 @@ function GameInformations() {
     return(
       <div>
         <h1>{ gameTurnState.name[gameTurnState.clicked].charAt(0).toUpperCase() + gameTurnState.name[gameTurnState.clicked].slice(1) }</h1>
+        <h1>TEST</h1><h1>RETEST</h1>
         <p><img alt='img of region discovered'
         src={GetImage(gameTurnState.type[gameTurnState.clicked])}
         /></p>
@@ -163,6 +164,7 @@ function GameInformations() {
       </div>
     )
   }
+
 
   if(stateOfOptions.display !== 'full'){
     return(

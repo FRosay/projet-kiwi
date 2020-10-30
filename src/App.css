@@ -1,12 +1,8 @@
 :root
 {
-  --height-top: 15%;
-  --height-middle: 78%;
-  --height-bottom: 5%;
   --background-color-dark: #272d44;
   --background-color-light: #3c5b6a;
 }
-
 
 @font-face{
   font-family: "FontFamilyChoosed";
@@ -19,7 +15,7 @@
   cursor: url(assets/images/cursor/auto.png), auto;
   display: flex;
   align-content: space-between;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: wrap;
   justify-content: space-between;
   text-align: center;
@@ -63,39 +59,20 @@ input{
   font-family: "FontFamilyChoosed", serif;
 }
 
-footer{
-  height: var(--height-bottom);
-  width: 100%;
-}
-
 summary{
   cursor: url(assets/images/cursor/pointer.png), pointer;
   text-align: center;
 }
 
-#resources-view-div{
-  height: var(--height-top);
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-}
-#resources-view-div table td{
-  border: 2px solid lightgray;
-  font-size: 2em;
-}
-
 #game-informations-div{
   border-image: url(assets/images/borders/informations.png) 22 / 22px;
-  height: var(--height-middle);
+  padding-left: 22px;
   overflow: auto;
-  width: 20%;
+  height: 100%;
 }
 
 #game-text-div{
-  height: var(--height-middle);
   overflow: auto; /*scroll*/
-  width: 58%;
 }
 
 #options-div{
@@ -114,10 +91,18 @@ summary{
   text-align: left;
 }
 
+#resources-view-div{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+#resources-view-div table td{
+  border: 2px solid lightgray;
+  font-size: 2em;
+}
+
 #tabs-div{
-  height: var(--height-middle);
   overflow: auto;
-  width: 20%;
 }
 
 #tabs-div button{
