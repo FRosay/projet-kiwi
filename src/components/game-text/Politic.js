@@ -9,6 +9,7 @@ function Politic() {
     for(let i = 0; i < gameTurnState.relationsSpecies.length; i++){
       toks.push(
         <table style={{border:'2px solid white'}} key={i}><tbody>
+          <tr><td>Nom:</td><td>{gameTurnState.relationsName[i]}</td></tr>
           <tr><td>Espèce:</td><td>{gameTurnState.relationsSpecies[i]}</td></tr>
           <tr><td>Sympathie:</td><td>{gameTurnState.relationsLiking[i]}</td></tr>
         </tbody></table>

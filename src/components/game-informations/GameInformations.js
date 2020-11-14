@@ -138,13 +138,23 @@ function GameInformations() {
 
   function displayMapZoneInfo(){
     if(gameTurnState.subClick !== false){
-      return(<table><tbody>
-          <tr><td>Nom :</td><td>{ gameTurnState.zoneTypes[gameTurnState.clicked][gameTurnState.subClick] }</td></tr>
-          <tr><td>Proprio :</td><td>{ gameTurnState.zoneOwner[gameTurnState.clicked][gameTurnState.subClick] }</td></tr>
-          <tr><td>Action :</td><td>{ gameTurnState.zoneOwner[gameTurnState.clicked][gameTurnState.subClick] === 'player' && gameTurnState.zoneTypes[gameTurnState.clicked][gameTurnState.subClick] !== 'workInProgress' && gameTurnState.zoneTypes[gameTurnState.clicked][gameTurnState.subClick] !== 'camp' ?
-          <button onClick={() => gameTurnDispatch({category:'build', type:'camp', click:gameTurnState.clicked, subClick:gameTurnState.subClick})}><span role="img" aria-label="hammer-pick">⚒️</span> Raser pour un camp [-1 <img alt='preoccupation Point' src={GetImage('preoccupationPoint')}/>]</button> : '...' }</td></tr>
-        </tbody></table>)
+      return(<div><b>{ gameTurnState.zoneTypes[gameTurnState.clicked][gameTurnState.subClick] }</b> appartenant aux <b>{ gameTurnState.zoneOwner[gameTurnState.clicked][gameTurnState.subClick] }</b><br/><br/>{ displayMapActions() }</div>)
     }
+  }
+
+  function displayMapActions(){
+    let actionsPossibilities = []
+    let tribeToGift = []
+    for(let i = 0; i < gameTurnState.relationsName.length; i++){
+      tribeToGift.push(<button onClick={() => gameTurnDispatch({category:'gift', click:gameTurnState.clicked, subClick:gameTurnState.subClick, tribe:gameTurnState.relationsName[i]})} key={gameTurnState.relationsName[i]}>
+        {gameTurnState.relationsName[i]} ({gameTurnState.relationsSpecies[i]})
+        </button>)
+    }
+    if(gameTurnState.zoneOwner[gameTurnState.clicked][gameTurnState.subClick] === 'player' && gameTurnState.zoneTypes[gameTurnState.clicked][gameTurnState.subClick] !== 'workInProgress' && gameTurnState.zoneTypes[gameTurnState.clicked][gameTurnState.subClick] !== 'camp'){
+      actionsPossibilities.push(<details key='build'><summary><span role="img" aria-label="hammer-pick">⚒️</span> Construire...</summary><button onClick={() => gameTurnDispatch({category:'build', type:'camp', click:gameTurnState.clicked, subClick:gameTurnState.subClick})} disabled={gameTurnState.preoccupationPoints >= 1 ? false : true}><img alt='camp' src={GetImage('camp')}/> Camp [-1 <img alt='preoccupation Point' src={GetImage('preoccupationPoint')}/>]</button></details>)
+      actionsPossibilities.push(<details key='gift'><summary><span role="img" aria-label="gift">🎁</span> Offrir à...</summary>{tribeToGift}</details>)
+    }
+    return actionsPossibilities
   }
 
   function insideMap(){

@@ -61,9 +61,13 @@ input{
 }
 
 summary{
+  background-color: #99e550;
+  color: black;
   cursor: url(assets/images/cursor/pointer.png), pointer;
+  font-size: 1.5em;
   text-align: center;
 }
+
 
 #game-informations-div{
   border-image: url(assets/images/borders/informations.png) 22 / 22px;

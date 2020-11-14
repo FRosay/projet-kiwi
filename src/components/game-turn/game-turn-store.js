@@ -61,6 +61,7 @@ const INITIAL_STATE = {
   cross: [],
   explore: [],
 
+  relationsName: [],
   relationsSpecies: [],
   relationsLiking: []
 };
@@ -135,6 +136,7 @@ const gameTurnReducer = (state, action) => {
   let newCross = state.cross.slice()
   let newExplore = state.explore.slice()
 
+  let newRelationsName = state.relationsName.slice()
   let newRelationsSpecies = state.relationsSpecies.slice()
   let newRelationsLiking = state.relationsLiking.slice()
 ////////////////////////////////////////////////////////////////////////////////
@@ -253,6 +255,9 @@ const gameTurnReducer = (state, action) => {
       default:
         throw new Error(`Unhandled build action type: ${action.type}`);
     }
+  } else if (action.category === 'gift') {
+    newResourcesQuantity[ZONES_NAMES.indexOf(newZoneTypes[action.click][action.subClick])] --
+    newZoneOwner[action.click][action.subClick] = action.tribe
   } else if (action.category === 'endTurn') {
     newTurnNumber ++
     newPreoccupationPoints = state.preoccupationPointsMax
@@ -352,12 +357,13 @@ const gameTurnReducer = (state, action) => {
             }
           }
           let randSpAllowed = parseInt(Math.random()*speciesAllowed.length)
-          newZoneOwner[newExplore[i]].push(SPECIES.name[speciesAllowed[randSpAllowed]])
-          randomOwnerText = 'sous l\'emprise d\'un ' +SPECIES.name[speciesAllowed[randSpAllowed]]
           if(newRelationsSpecies.indexOf(SPECIES.name[speciesAllowed[randSpAllowed]]) === -1){
+            newRelationsName.push(NameGenerator(SPECIES.languageRules[speciesAllowed[randSpAllowed]][0],SPECIES.languageRules[speciesAllowed[randSpAllowed]][1]))
             newRelationsSpecies.push(SPECIES.name[speciesAllowed[randSpAllowed]])
             newRelationsLiking.push(SPECIES.likingBase[speciesAllowed[randSpAllowed]])
           }
+          newZoneOwner[newExplore[i]].push(newRelationsName[newRelationsSpecies.indexOf(SPECIES.name[speciesAllowed[randSpAllowed]])])
+          randomOwnerText = 'sous l\'emprise d\'un groupe de ' +SPECIES.name[speciesAllowed[randSpAllowed]]
         }
         newReport.push(<span><span role="img" aria-label="compass">🧭</span> En explorant {REGIONS_ARTICLES_FR[REGIONS_NAMES.indexOf(newRegionType[newExplore[i]])]} <u>{newRegionName[newExplore[i]]}</u>, nous sommes tombés sur un ensemble de {ZONES_NAMES_FR[zoneTypePosition]} <img alt={'['+ZONES_NAMES[zoneTypePosition]+']'} src={GetImage(ZONES_NAMES[zoneTypePosition])}/> <u>{randomOwnerText}</u> !</span>)
       } else {
@@ -418,6 +424,7 @@ const gameTurnReducer = (state, action) => {
     cross: newCross,
     explore: newExplore,
 
+    relationsName: newRelationsName,
     relationsSpecies: newRelationsSpecies,
     relationsLiking: newRelationsLiking
   }
