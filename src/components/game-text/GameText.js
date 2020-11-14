@@ -26,7 +26,7 @@ function GameText() {
     return (<Politic />)
 
   } else if (gameTurnState.whichTab === 4) {
-    return (<div><h1>Fin de cycle</h1><p>{gameTurnState.preoccupationPoints > 0 ? ' /!\\ Il te reste encore des PP /!\\' : 'Passer au cycle suivant...'}</p>
+    return (<div><p>{gameTurnState.preoccupationPoints > 0 ? ' /!\\ Il te reste encore des PP /!\\' : 'Passer au cycle suivant...'}</p>
     <button onClick={() => {
     gameTurnDispatch({ category:'endTurn' });
     }}>S'endormir</button></div>)

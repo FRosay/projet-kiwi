@@ -27,6 +27,7 @@
 }
 [disabled]{
   cursor: url(assets/images/cursor/not-allowed.png), not-allowed;
+  text-decoration: line-through;
 }
 
 html, body, #root, .App{

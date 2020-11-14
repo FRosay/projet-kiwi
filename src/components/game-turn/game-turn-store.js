@@ -14,8 +14,20 @@ const REGIONS_ZONES_POSSIBILITIES = [
   [2,3],//crystalCave
   [0,2]//deepLake
 ];
-//const OBSTACLES_NAMES = ['sea', 'mountains', 'bridge']
-//const OBSTACLES_NAMES_FR = ['mer', 'montagnes', 'pont']
+
+const SPECIES = {
+  name: ['monkey', 'newtfrog', 'splitgemer', 'nainard'],
+  regionsAllowed: [['pineForest', 'pineLake'],
+  ['deepLake'],
+  ['crystalCave'],
+  ['crystalCave']],
+  populationBaseQuantity: [100, 75, 15, 30],
+  languageRules: [[3,3], [4,4], [5,5], [6,6]],//min, max, title, letter, inPosition
+  likingBase: [50, 20, 70, 50],
+  likingVar: [15, 5, 10, 25],
+  likingTwoSetps: [[40,80], [50,90], [30,70], [40,80]]
+}
+
 const INIT_COMPACT = initRegions();
 const INITIAL_STATE = {
   technologiesMastered: [],
@@ -30,6 +42,9 @@ const INITIAL_STATE = {
   resourcesIsUnique: [false, false, false, false],
   whichTab: -1,
   report: [],
+  ownSpecies: 'XXX',
+  populationQuantity: 0,
+  happiness: 0,
 
   clicked: false,
   subClick: false,
@@ -44,7 +59,9 @@ const INITIAL_STATE = {
   zoneOwner: INIT_COMPACT[8],
   build: [],
   cross: [],
-  explore: []
+  explore: [],
+
+  relations: []
 };
 
 
@@ -91,6 +108,9 @@ const gameTurnReducer = (state, action) => {
   let newResourcesIsUnique = state.resourcesIsUnique.slice()
   let newWhichTab = state.whichTab
   let newReport = state.report
+  let newOwnSpecies = state.ownSpecies
+  let newPopulationQuantity = state.populationQuantity
+  let newHappiness = state.happiness
 ////////////////////////////////////////////////////////////////////////////////
   let newClicked = state.clicked
   let newSubClick = state.subClick
@@ -113,6 +133,8 @@ const gameTurnReducer = (state, action) => {
   let newBuild = state.build.slice()
   let newCross = state.cross.slice()
   let newExplore = state.explore.slice()
+
+  let newRelations = state.relations.slice()
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
   if (action.category === 'tabs' && Number.isInteger(action.value)) {
@@ -146,6 +168,26 @@ const gameTurnReducer = (state, action) => {
         newResourcesQuantity[action.index] -= action.range
         break;
 
+      case 'setOwnSpecies':
+        newOwnSpecies = action.value
+        let posOS = SPECIES.name.indexOf(action.value)
+        newName[0] = 'Base de '+NameGenerator(
+          SPECIES.languageRules[posOS][0],SPECIES.languageRules[posOS][1]
+        )
+        break;
+
+      case 'setPopulationQuantity':
+        newPopulationQuantity = action.range
+        break;
+
+      case 'setHappiness':
+        newHappiness = action.range
+        break;
+
+      case 'setStartingRegion':
+        newType[0] = action.value
+        break;
+
       default:
         throw new Error(`Unhandled player action type: ${action.type}`);
       }
@@ -170,7 +212,7 @@ const gameTurnReducer = (state, action) => {
       case 'addToBeDiscoveredTech':
         newTechnologiesToBeDiscovered.push(action.newTech)
         break;
-      
+
       case 'addDiscoveredTech':
         newTechnologiesDiscovered.push(action.newTech)
         newTechnologiesToBeDiscovered.splice(newTechnologiesToBeDiscovered.indexOf(action.newTech.techName), 1)
@@ -194,7 +236,7 @@ const gameTurnReducer = (state, action) => {
       default:
         throw new Error(`Unhandled technologies action type: ${action.type}`);
       }
-      
+
   } else if (action.category === 'build'){
     switch (action.type) {
       case 'camp':
@@ -347,6 +389,9 @@ const gameTurnReducer = (state, action) => {
     resourcesIsUnique: newResourcesIsUnique,
     whichTab: newWhichTab,
     report: newReport,
+    ownSpecies: newOwnSpecies,
+    populationQuantity: newPopulationQuantity,
+    happiness: newHappiness,
 
     clicked: newClicked,
     subClick: newSubClick,
@@ -362,7 +407,9 @@ const gameTurnReducer = (state, action) => {
 
     build: newBuild,
     cross: newCross,
-    explore: newExplore
+    explore: newExplore,
+
+    relations: newRelations
   }
 }
 
@@ -377,3 +424,5 @@ export const GameTurnProvider = ({ children }) => {
 }
 
 export const useGameTurnStore = () => useContext(GameTurnContext);
+
+export {REGIONS_NAMES as REGIONS_NAMES_GTS, SPECIES as SPECIES_GTS};

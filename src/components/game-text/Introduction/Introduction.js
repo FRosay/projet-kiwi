@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import StartingLocation from './StartingLocation.js'
 import Tooltip from '../../misc-tools/tooltip/tooltip.js'
 import { useOptionsStore } from '../../options/options-store.js';
-import { useGameTurnStore } from '../../game-turn/game-turn-store.js';
+import { useGameTurnStore, SPECIES_GTS } from '../../game-turn/game-turn-store.js';
 
 function Introduction() {
 
@@ -11,21 +11,48 @@ function Introduction() {
 
     const [page, setPage] = useState(0)
 
-    function skipIntro() {
-        gameTurnDispatch({ category:'tabs', value:0 })
-        dispatchInOptions({ category: 'display', value: 'framed'})
+    const [ownSpeciesChoice, setOwnSpecies] = useState(SPECIES_GTS.name[0])
+    const populationQuantityAdvise = [100,75,15,30]
+    const happinessAdvise = [80,60,90,65]
+    const [regionStartingChoice, setRegionStarting] = useState(SPECIES_GTS.regionsAllowed[0][0])
+
+    let speciesOptions = []
+    for(let i = 0; i < SPECIES_GTS.name.length; i++){
+      speciesOptions.push(<option onClick={() => setOwnSpecies(SPECIES_GTS.name[i]) & setRegionStarting(SPECIES_GTS.regionsAllowed[i][0])} key={i}>{SPECIES_GTS.name[i]}</option>)
     }
+    let regionsOptions = []
+    for(let i = 0; i < SPECIES_GTS.regionsAllowed[SPECIES_GTS.name.indexOf(ownSpeciesChoice)].length; i++){
+      regionsOptions.push(<option onClick={() => setRegionStarting(SPECIES_GTS.regionsAllowed[SPECIES_GTS.name.indexOf(ownSpeciesChoice)][i])} key={i}>{SPECIES_GTS.regionsAllowed[SPECIES_GTS.name.indexOf(ownSpeciesChoice)][i]}</option>)
+    }
+
+
+    function validateStartingLocation() {
+      gameTurnDispatch({ category:'player', type: 'setOwnSpecies', value: ownSpeciesChoice })
+      if(document.getElementById('inputPopulationQuantity').value.length === 0){
+        document.getElementById('inputPopulationQuantity').value = populationQuantityAdvise[SPECIES_GTS.name.indexOf(ownSpeciesChoice)]
+      }
+      gameTurnDispatch({ category:'player', type: 'setPopulationQuantity', range:  document.getElementById('inputPopulationQuantity').value })
+      if(document.getElementById('inputHappiness').value.length === 0){
+        document.getElementById('inputHappiness').value = happinessAdvise[SPECIES_GTS.name.indexOf(ownSpeciesChoice)]
+      }
+      gameTurnDispatch({ category:'player', type: 'setHappiness', range: document.getElementById('inputHappiness').value })
+      gameTurnDispatch({ category:'player', type: 'setStartingRegion', value: regionStartingChoice })
+      //
+      gameTurnDispatch({ category:'tabs', value: 0 })
+      dispatchInOptions({ category: 'display', value: 'framed'})
+    }
+
 
     switch (page) {
         case 0:
             return(
               <div>
                 <h1>Project: KIWI</h1>
-                <button onClick={() => setPage(page+1)}>Nouvel atterrissage</button>
+                <button onClick={() => setPage(page+1)} disabled>Nouvel atterrissage</button>
 
                 <br /><br />
 
-                <button onClick={() => skipIntro()}>Passer l'introduction</button>
+                <button onClick={() => setPage(-1)}>Custom</button>
               </div>
             )
         case 1:
@@ -83,6 +110,20 @@ function Introduction() {
                     <StartingLocation />
                 </div>
             )
+        case -1:
+          return(
+            <div style={{border:"2px solid white"}}><table><tbody>
+              <tr><th>Carac</th><th>Valeur</th><th>Conseil</th></tr>
+              <tr><td>Espèce</td><td>
+              <select>{speciesOptions}</select>
+              </td><td>{SPECIES_GTS.name[0]}</td></tr>
+              <tr><td>Nombre d'individus</td><td><input id="inputPopulationQuantity" type="number" min="1" max="100"/></td><td>{populationQuantityAdvise[SPECIES_GTS.name.indexOf(ownSpeciesChoice)]}</td></tr>
+              <tr><td>Bonheur de départ</td><td><input id="inputHappiness" type="number" min="0" max="100"/></td><td>{happinessAdvise[SPECIES_GTS.name.indexOf(ownSpeciesChoice)]}</td></tr>
+              <tr><td>Région de départ</td><td>
+              <select>{regionsOptions}</select>
+              </td><td>...</td></tr>
+            </tbody></table><button onClick={() => validateStartingLocation()}>Valider</button></div>
+          )
         default:
             return(
                 <div>

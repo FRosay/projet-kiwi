@@ -66,7 +66,6 @@ function Map() {
 
   return(
       <div>
-        <h1>Carte</h1>
         <div style={{textAlign: 'center'}}>
           <table style={{display: 'inline-block'}}>
             <tbody>{ tilesPlacement() }</tbody>

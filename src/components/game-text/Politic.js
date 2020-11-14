@@ -2,7 +2,7 @@ import React from 'react';
 
 function Politic() {
   return(
-      <h1>Politique</h1>
+      <div>txt politiq</div>
   )
 }
 

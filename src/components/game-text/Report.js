@@ -12,8 +12,7 @@ function Report() {
   }
   return(
       <div id='report-div'>
-      <h1>Rapport</h1>
-      <h2>-- Cycle {gameTurnState.turnNumber} --</h2>
+      <h1>-- Cycle {gameTurnState.turnNumber} --</h1>
       <p>{gameTurnState.turnNumber === 0 ? 'TODO paragraphe de crash' : displayReport()}</p>
       </div>
   )

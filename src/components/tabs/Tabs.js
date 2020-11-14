@@ -11,8 +11,8 @@ function Tabs() {
 
   let isDisplayed = [false, false, false, false, false, false]
   isDisplayed[gameTurnState.whichTab] = true
-  let isClickable = [true, true, true, false, true, true]
-  isClickable[gameTurnState.whichTab] = false
+  let isClickable = [true, true, true, true, true, true]
+  //isClickable[gameTurnState.whichTab] = false
 
   function buttonsRender(){
     let buttons = []
