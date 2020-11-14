@@ -10,7 +10,7 @@ function GameInformations() {
 
   function xyToIndex(x,y){
     let index = -1
-    for(let i = 0; i < gameTurnState.type.length; i++){
+    for(let i = 0; i < gameTurnState.regionType.length; i++){
       if(gameTurnState.coordinatesX[i] === x && gameTurnState.coordinatesY[i] === y){
         index = i
       }
@@ -150,10 +150,10 @@ function GameInformations() {
   function insideMap(){
     return(
       <div>
-        <h1>{ gameTurnState.name[gameTurnState.clicked].charAt(0).toUpperCase() + gameTurnState.name[gameTurnState.clicked].slice(1) }</h1>
+        <h1>{ gameTurnState.regionName[gameTurnState.clicked].charAt(0).toUpperCase() + gameTurnState.regionName[gameTurnState.clicked].slice(1) }</h1>
         <h1>TEST</h1><h1>RETEST</h1>
         <p><img alt='img of region discovered'
-        src={GetImage(gameTurnState.type[gameTurnState.clicked])}
+        src={GetImage(gameTurnState.regionType[gameTurnState.clicked])}
         /></p>
         { specificMapButton() }
         <p>(coord : { gameTurnState.coordinatesX[gameTurnState.clicked] };{ gameTurnState.coordinatesY[gameTurnState.clicked] })<br/>

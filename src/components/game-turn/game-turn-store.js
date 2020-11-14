@@ -51,8 +51,8 @@ const INITIAL_STATE = {
   coordinatesX: INIT_COMPACT[0],
   coordinatesY: INIT_COMPACT[1],
   isUncrossed: INIT_COMPACT[2],
-  type: INIT_COMPACT[3],
-  name: INIT_COMPACT[4],
+  regionType: INIT_COMPACT[3],
+  regionName: INIT_COMPACT[4],
   zoneMax: INIT_COMPACT[5],
   zoneTypes: INIT_COMPACT[6],
   values: INIT_COMPACT[7],
@@ -61,7 +61,8 @@ const INITIAL_STATE = {
   cross: [],
   explore: [],
 
-  relations: []
+  relationsSpecies: [],
+  relationsLiking: []
 };
 
 
@@ -117,8 +118,8 @@ const gameTurnReducer = (state, action) => {
   let newCoordinatesX = state.coordinatesX.slice()
   let newCoordinatesY = state.coordinatesY.slice()
   let newIsUncrossed = state.isUncrossed.slice()
-  let newType = state.type.slice()
-  let newName = state.name.slice()
+  let newRegionType = state.regionType.slice()
+  let newRegionName = state.regionName.slice()
   let newZoneMax = state.zoneMax.slice()
   let newZoneTypes = []
   for(let row = 0; row < state.zoneTypes.length; row++){
@@ -134,7 +135,8 @@ const gameTurnReducer = (state, action) => {
   let newCross = state.cross.slice()
   let newExplore = state.explore.slice()
 
-  let newRelations = state.relations.slice()
+  let newRelationsSpecies = state.relationsSpecies.slice()
+  let newRelationsLiking = state.relationsLiking.slice()
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
   if (action.category === 'tabs' && Number.isInteger(action.value)) {
@@ -171,7 +173,7 @@ const gameTurnReducer = (state, action) => {
       case 'setOwnSpecies':
         newOwnSpecies = action.value
         let posOS = SPECIES.name.indexOf(action.value)
-        newName[0] = 'Base de '+NameGenerator(
+        newRegionName[0] = 'Base de '+NameGenerator(
           SPECIES.languageRules[posOS][0],SPECIES.languageRules[posOS][1]
         )
         break;
@@ -185,7 +187,7 @@ const gameTurnReducer = (state, action) => {
         break;
 
       case 'setStartingRegion':
-        newType[0] = action.value
+        newRegionType[0] = action.value
         break;
 
       default:
@@ -264,7 +266,7 @@ const gameTurnReducer = (state, action) => {
     // BUILD //
     for(let i = 0; i < newBuild.length; i++){
       newZoneTypes[newBuild[i][0]][newBuild[i][1]] = newBuild[i][2]
-      newReport.push(<span><span role="img" aria-label="hammer-pick">⚒️</span> Nous avons construit dans {REGIONS_ARTICLES_FR[REGIONS_NAMES.indexOf(newType[newBuild[i][0]])]} <u>{newName[newBuild[i][0]]}</u> : notre <u>{ZONES_NAMES_FR[ZONES_NAMES.indexOf(newBuild[i][2])]}</u> !</span>)
+      newReport.push(<span><span role="img" aria-label="hammer-pick">⚒️</span> Nous avons construit dans {REGIONS_ARTICLES_FR[REGIONS_NAMES.indexOf(newRegionType[newBuild[i][0]])]} <u>{newRegionName[newBuild[i][0]]}</u> : notre <u>{ZONES_NAMES_FR[ZONES_NAMES.indexOf(newBuild[i][2])]}</u> !</span>)
     }
     newBuild = []
 
@@ -274,7 +276,7 @@ const gameTurnReducer = (state, action) => {
       newIsUncrossed[newCross[i]] = false
       //Check where regions exists
       let coordinatesExistRegion = []
-      for(let j = 0; j < newName.length; j++){
+      for(let j = 0; j < newRegionName.length; j++){
         if (newCoordinatesX[newCross[i]] === newCoordinatesX[j] && newCoordinatesY[newCross[i]]+1 === newCoordinatesY[j]){//haut existe
           coordinatesExistRegion.push('haut existe')
         } else if (newCoordinatesX[newCross[i]] === newCoordinatesX[j] && newCoordinatesY[newCross[i]]-1 === newCoordinatesY[j]){//bas existe
@@ -307,26 +309,26 @@ const gameTurnReducer = (state, action) => {
         newCoordinatesY.push(coordinatesNewRegion[j][1])
         newIsUncrossed.push(true)
         let z = parseInt(Math.random()*REGIONS_NAMES.length)
-        newType.push(REGIONS_NAMES[z])
-        newName.push(REGIONS_NAMES_FR[z]+' de '+NameGenerator(3, 6))
+        newRegionType.push(REGIONS_NAMES[z])
+        newRegionName.push(REGIONS_NAMES_FR[z]+' de '+NameGenerator(3, 6))
         newZoneMax.push(parseInt(Math.random()*7)+6)
         newZoneTypes.push([])
         newValues.push([])
         newZoneOwner.push([])
-        allRegionsDiscovered.push(<span key={j}> {REGIONS_ARTICLES_FR[REGIONS_NAMES.indexOf(newType[newType.length-1])]} <u>{newName[newName.length-1]}</u>{coordinatesNewRegion.length >= 2 && j === coordinatesNewRegion.length-2 ? ', et' : j < coordinatesNewRegion.length-2 ? ', ' : ''}</span>)
+        allRegionsDiscovered.push(<span key={j}> {REGIONS_ARTICLES_FR[REGIONS_NAMES.indexOf(newRegionType[newRegionType.length-1])]} <u>{newRegionName[newRegionName.length-1]}</u>{coordinatesNewRegion.length >= 2 && j === coordinatesNewRegion.length-2 ? ', et' : j < coordinatesNewRegion.length-2 ? ', ' : ''}</span>)
         if(j === coordinatesNewRegion.length-1){//last one
-          newReport.push(<span><span role="img" aria-label="crossing">🚸</span> En traversant {REGIONS_ARTICLES_FR[REGIONS_NAMES.indexOf(newType[newCross[i]])]} <u>{newName[newCross[i]]}</u>, nous avons découvert : {allRegionsDiscovered} !</span>)
+          newReport.push(<span><span role="img" aria-label="crossing">🚸</span> En traversant {REGIONS_ARTICLES_FR[REGIONS_NAMES.indexOf(newRegionType[newCross[i]])]} <u>{newRegionName[newCross[i]]}</u>, nous avons découvert : {allRegionsDiscovered} !</span>)
         }
       }
       if(allRegionsDiscovered.length === 0){//rare cas où le joueur visite autour et donc toutes les régions autours sont découvertes
-        newReport.push(<span><span role="img" aria-label="crossing">🚸</span> Après avoir visité tout autour, nous sommes enfin entré dans {REGIONS_ARTICLES_FR[REGIONS_NAMES.indexOf(newType[newCross[i]])]} <u>{newName[newCross[i]]}</u> !</span>)
+        newReport.push(<span><span role="img" aria-label="crossing">🚸</span> Après avoir visité tout autour, nous sommes enfin entré dans {REGIONS_ARTICLES_FR[REGIONS_NAMES.indexOf(newRegionType[newCross[i]])]} <u>{newRegionName[newCross[i]]}</u> !</span>)
       }
     }
     newCross = []
 
     // EXPLORE //
     for(let i = 0; i < newExplore.length; i++){
-      let regionNamePosition = REGIONS_NAMES.indexOf(newType[newExplore[i]])
+      let regionNamePosition = REGIONS_NAMES.indexOf(newRegionType[newExplore[i]])
       let zoneTypePosition = REGIONS_ZONES_POSSIBILITIES[regionNamePosition][parseInt(Math.random()*REGIONS_ZONES_POSSIBILITIES[regionNamePosition].length)]
       if(newZoneTypes[newExplore[i]].length < newZoneMax[newExplore[i]]){
         newZoneTypes[newExplore[i]].push(ZONES_NAMES[zoneTypePosition]);
@@ -336,23 +338,30 @@ const gameTurnReducer = (state, action) => {
         }
         //
         let randomOwnerText
-        if(randomOwner < 0.25) {
+        let rawDistance = newCoordinatesX[newExplore[i]]+newCoordinatesY[newExplore[i]]
+        let formula = 1-(rawDistance*3)/10
+        if (randomOwner < formula) {
           newResourcesQuantity[zoneTypePosition]++
           newZoneOwner[newExplore[i]].push('player')
           randomOwnerText = 'disponible'
-        } else if (randomOwner < 0.5) {
-          newZoneOwner[newExplore[i]].push('ally')
-          randomOwnerText = 'contrôlé par un allié'
-        } else if (randomOwner < 0.75) {
-          newZoneOwner[newExplore[i]].push('enemy')
-          randomOwnerText = 'sous l\'emprise d\'un ennemi'
         } else {
-          newZoneOwner[newExplore[i]].push('neutral')
-          randomOwnerText = 'contrôlé par un peuple neutre'
+          let speciesAllowed = []
+          for(let j = 0; j < SPECIES.regionsAllowed.length; j++){
+            if(SPECIES.regionsAllowed[j].indexOf(newRegionType[newExplore[i]]) !== -1){
+              speciesAllowed.push(j)
+            }
+          }
+          let randSpAllowed = parseInt(Math.random()*speciesAllowed.length)
+          newZoneOwner[newExplore[i]].push(SPECIES.name[speciesAllowed[randSpAllowed]])
+          randomOwnerText = 'sous l\'emprise d\'un ' +SPECIES.name[speciesAllowed[randSpAllowed]]
+          if(newRelationsSpecies.indexOf(SPECIES.name[speciesAllowed[randSpAllowed]]) === -1){
+            newRelationsSpecies.push(SPECIES.name[speciesAllowed[randSpAllowed]])
+            newRelationsLiking.push(SPECIES.likingBase[speciesAllowed[randSpAllowed]])
+          }
         }
-        newReport.push(<span><span role="img" aria-label="compass">🧭</span> En explorant {REGIONS_ARTICLES_FR[REGIONS_NAMES.indexOf(newType[newExplore[i]])]} <u>{newName[newExplore[i]]}</u>, nous sommes tombés sur un ensemble de {ZONES_NAMES_FR[zoneTypePosition]} <img alt={'['+ZONES_NAMES[zoneTypePosition]+']'} src={GetImage(ZONES_NAMES[zoneTypePosition])}/> <u>{randomOwnerText}</u> !</span>)
+        newReport.push(<span><span role="img" aria-label="compass">🧭</span> En explorant {REGIONS_ARTICLES_FR[REGIONS_NAMES.indexOf(newRegionType[newExplore[i]])]} <u>{newRegionName[newExplore[i]]}</u>, nous sommes tombés sur un ensemble de {ZONES_NAMES_FR[zoneTypePosition]} <img alt={'['+ZONES_NAMES[zoneTypePosition]+']'} src={GetImage(ZONES_NAMES[zoneTypePosition])}/> <u>{randomOwnerText}</u> !</span>)
       } else {
-        newReport.push(<span><span role="img" aria-label="compass">🧭</span> Nous n'avons rien trouvé de plus à explorer au niveau de <u>{newName[newExplore[i]]}</u>.</span>)
+        newReport.push(<span><span role="img" aria-label="compass">🧭</span> Nous n'avons rien trouvé de plus à explorer au niveau de <u>{newRegionName[newExplore[i]]}</u>.</span>)
         //retirer dans newExplore la valeur actuelle pour ne pas avoir de doublon
         let j = i+1 //les prochains seulement
         while (j < newExplore.length) {
@@ -398,8 +407,8 @@ const gameTurnReducer = (state, action) => {
     coordinatesX: newCoordinatesX,
     coordinatesY: newCoordinatesY,
     isUncrossed: newIsUncrossed,
-    type: newType,
-    name: newName,
+    regionType: newRegionType,
+    regionName: newRegionName,
     zoneMax: newZoneMax,
     zoneTypes: newZoneTypes,
     values: newValues,
@@ -409,7 +418,8 @@ const gameTurnReducer = (state, action) => {
     cross: newCross,
     explore: newExplore,
 
-    relations: newRelations
+    relationsSpecies: newRelationsSpecies,
+    relationsLiking: newRelationsLiking
   }
 }
 

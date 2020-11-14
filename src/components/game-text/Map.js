@@ -27,11 +27,11 @@ function Map() {
           <td key={[row,col]} style={{position: 'relative'}}>
           <img alt='border img'
           className={'border-image-of-region-discovered-checked'}
-          src={GetImage(gameTurnState.type[index])}
+          src={GetImage(gameTurnState.regionType[index])}
           style={{position:'absolute'}}
           />
           <img alt='img of region discovered'
-          src={GetImage(gameTurnState.type[index])}
+          src={GetImage(gameTurnState.regionType[index])}
           style={{position:'relative'}}
           />
           </td>
@@ -42,7 +42,7 @@ function Map() {
           <img alt='img of region discovered'
           className={ gameTurnState.isUncrossed[index] ? 'interactable' : 'obstacle-crossed interactable'}
           onClick={() => gameTurnDispatch({category:'informations', click:index, subClick:false})}
-          src={GetImage(gameTurnState.type[index])}
+          src={GetImage(gameTurnState.regionType[index])}
           />
           </td>
         )

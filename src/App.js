@@ -29,7 +29,7 @@ function App() {
 
         <div style={{height:topHeight, width:centerWidth}}><Header /></div>
         <div id='game-text-div' style={{height:middleHeight, width:centerWidth}}><GameText /></div>
-        <footer style={{height:bottomHeight, width:centerWidth}}>Footer de merde - Version 0.03</footer>
+        <footer style={{height:bottomHeight, width:centerWidth}}>Footer de merde - Version 0.04 : not alone</footer>
 
         <div style={{height:topHeight, width:pannelWidth}}><ResourcesView /></div>
         <div style={{height:middleHeight, width:pannelWidth}}><GameInformations /></div>
